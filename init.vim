@@ -64,11 +64,11 @@ Plug 'nvim-lua/lsp_extensions.nvim'
 " Diagram
 Plug 'jbyuki/venn.nvim'
 
-" Plug 'nvim-lua/completion-nvim'
+Plug 'nvim-lua/completion-nvim'
 Plug 'glepnir/lspsaga.nvim'
 Plug 'simrat39/symbols-outline.nvim'
-" Plug 'tjdevries/nlua.nvim'
-" Plug 'tjdevries/lsp_extensions.nvim'
+Plug 'tjdevries/nlua.nvim'
+Plug 'tjdevries/lsp_extensions.nvim'
 
 " Neovim Tree shitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -113,8 +113,22 @@ Plug 'mhinz/vim-rfc'
 Plug 'sbdchd/neoformat'
 
 " should I try another status bar???
-"  Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
-" Plug 'hoob3rt/lualine.nvim'
+" Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
+Plug 'hoob3rt/lualine.nvim'
+
+" tab buffer
+Plug 'kyazdani42/nvim-web-devicons'  
+Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
+
+" nerd tree
+Plug 'preservim/nerdtree'
+
+" status bar
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" toggle terminal
+Plug 'akinsho/toggleterm.nvim', { 'tag': 'v1.*' }
 
 call plug#end()
 
@@ -135,6 +149,7 @@ let loaded_matchparen = 1
 let mapleader = " "
 
 nnoremap <leader>ps :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})<CR>
+nnoremap <leader>fs <cmd>lua require('telescope.builtin').find_files()<cr>
 
 nnoremap <silent> Q <nop>
 nnoremap <silent> <C-f> :silent !tmux neww tmux-sessionizer<CR>
@@ -154,28 +169,15 @@ nnoremap <leader>gt <Plug>PlenaryTestFile
 nnoremap <leader>gll :let g:_search_term = expand("%")<CR><bar>:Gclog -- %<CR>:call search(g:_search_term)<CR>
 nnoremap <leader>gln :cnext<CR>:call search(_search_term)<CR>
 nnoremap <leader>glp :cprev<CR>:call search(_search_term)<CR>
-nnoremap <leader>nf :!./scripts/format.py %
 
-nnoremap <leader>pp :bp<CR>
-nnoremap <leader>nn :bn<CR>
+nnoremap <leader>pf :bp<CR>
+nnoremap <leader>nf :bn<CR>
+nnoremap <leader>bd :bd<CR>
 
 nnoremap <leader>x :silent !chmod +x %<CR>
 
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
-
-nnoremap Y yg$
-nnoremap n nzzzv
-nnoremap N Nzzzv
-nnoremap J mzJ`z
-
-" greatest remap ever
-xnoremap <leader>p "_dP
-
-" next greatest remap ever : asbjornHaland
-nnoremap <leader>y "+y
-vnoremap <leader>y "+y
-nmap <leader>Y "+Y
 
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
@@ -183,15 +185,26 @@ vnoremap <leader>d "_d
 " lua
 nnoremap <leader>vd :lua vim.lsp.buf.definition()<CR>
 nnoremap <leader>vi :lua vim.lsp.buf.implementation()<CR>
-nnoremap <leader>vsh :lua vim.lsp.buf.signature_help()<CR>
-nnoremap <leader>vgr :lua vim.lsp.buf.references() <CR>
-nnoremap <leader>vrn :lua vim.lsp.buf.rename() <CR>
+nnoremap <leader>vs :lua vim.lsp.buf.signature_help()<CR>
+nnoremap <leader>vr :lua vim.lsp.buf.references() <CR>
+nnoremap <leader>vn :lua vim.lsp.buf.rename() <CR>
 nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
 
 " vim TODO
 nmap <Leader>tu <Plug>BujoChecknormal
 nmap <Leader>th <Plug>BujoAddnormal
 let g:bujo#todo_file_path = $HOME . "/.cache/bujo"
+
+" nerd tree
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-l> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+
+" toggle terminal
+nnoremap <silent><C-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
+inoremap <silent><C-t> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
+
 
 nnoremap <Leader>ww ofunction wait(ms: number): Promise<void> {<CR>return new Promise(res => setTimeout(res, ms));<CR>}<esc>k=i{<CR>
 
@@ -218,10 +231,16 @@ augroup END
 
 augroup THE_PRIMEAGEN
     autocmd!
-    " autocmd BufWritePre *.lua Neoformat
+    autocmd BufWritePre *.lua Neoformat
     autocmd BufWritePre * %s/\s\+$//e
     autocmd BufEnter,BufWinEnter,TabEnter *.rs :lua require'lsp_extensions'.inlay_hints{}
 augroup END
+
+autocmd VimEnter * NERDTree
+
+autocmd TermEnter term://*toggleterm#*
+      \ tnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
+
 
 lua <<EOF
   -- Setup nvim-cmp.
@@ -292,4 +311,6 @@ lua <<EOF
   require('lspconfig')['tsserver'].setup {
     capabilities = capabilities
   }
+  vim.opt.termguicolors = true
+  require("bufferline").setup{}
 EOF
