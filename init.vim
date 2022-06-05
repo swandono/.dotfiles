@@ -117,7 +117,7 @@ Plug 'sbdchd/neoformat'
 Plug 'hoob3rt/lualine.nvim'
 
 " tab buffer
-Plug 'kyazdani42/nvim-web-devicons'  
+Plug 'kyazdani42/nvim-web-devicons'
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 
 " nerd tree
@@ -178,6 +178,9 @@ nnoremap <leader>x :silent !chmod +x %<CR>
 
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
+
+nnoremap <leader>y "*y
+vnoremap <leader>y "*y
 
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
@@ -313,4 +316,14 @@ lua <<EOF
   }
   vim.opt.termguicolors = true
   require("bufferline").setup{}
+  require("toggleterm").setup{
+    size = 50,
+    shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
+    start_in_insert = true,
+    insert_mappings = true, -- whether or not the open mapping applies in insert mode
+    terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
+    persist_size = true,
+    direction = 'vertical'
+  }
 EOF
+
