@@ -21,6 +21,7 @@ set scrolloff=8
 set noshowmode
 set completeopt=menu,menuone,noselect
 set signcolumn=yes
+set encoding=UTF-8
 
 set cmdheight=2
 
@@ -66,7 +67,7 @@ Plug 'nvim-lua/lsp_extensions.nvim'
 " Diagram
 Plug 'jbyuki/venn.nvim'
 
-Plug 'nvim-lua/completion-nvim'
+" Plug 'nvim-lua/completion-nvim'
 Plug 'glepnir/lspsaga.nvim'
 Plug 'simrat39/symbols-outline.nvim'
 Plug 'tjdevries/nlua.nvim'
@@ -117,18 +118,17 @@ Plug 'sbdchd/neoformat'
 
 " should I try another status bar???
 " Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
-Plug 'hoob3rt/lualine.nvim'
+Plug 'nvim-lualine/lualine.nvim'
+" Plug 'ryanoasis/vim-devicons'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+Plug 'kyazdani42/nvim-web-devicons'
 
 " tab buffer
-Plug 'kyazdani42/nvim-web-devicons'
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 
 " nerd tree
 Plug 'preservim/nerdtree'
-
-" status bar
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 
 " toggle terminal
 Plug 'akinsho/toggleterm.nvim', { 'tag': 'v1.*' }
@@ -146,6 +146,7 @@ highlight normal
 lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incremental_selection = { enable = true }, textobjects = { enable = true }}
 let g:vim_be_good_log_file = 1
 let g:vim_apm_log = 1
+let g:airline_powerline_fonts = 1
 
 if executable('rg')
     let g:rg_derive_root='true'
@@ -252,6 +253,7 @@ autocmd TermEnter term://*toggleterm#*
 
 
 lua <<EOF
+
   -- Setup nvim-cmp.
   local cmp = require'cmp'
 
@@ -320,7 +322,9 @@ lua <<EOF
   require('lspconfig')['tsserver'].setup {
     capabilities = capabilities
   }
-  vim.opt.termguicolors = true
+
+  -- Others
+  -- vim.opt.termguicolors = true
   require("bufferline").setup{}
   require("toggleterm").setup{
     size = 50,
@@ -333,5 +337,36 @@ lua <<EOF
   }
   require("luasnip.loaders.from_vscode").lazy_load({paths = "~/.config/nvim/my_snips"})
   require('Comment').setup()
+
+  -- Status and Icon
+   require('lualine').setup {
+    options = {
+      icons_enabled = true,
+      theme = 'auto',
+      component_separators = { left = 'ÓÇ±', right = 'ÓÇ≥'},
+      section_separators = { left = 'ÓÇ∞', right = 'ÓÇ≤'},
+      disabled_filetypes = {},
+      always_divide_middle = true,
+      globalstatus = false,
+    },
+    sections = {
+      lualine_a = {'mode'},
+      lualine_b = {'branch', 'diff', 'diagnostics'},
+      lualine_c = {'filename'},
+      lualine_x = {'encoding', 'fileformat', 'filetype'},
+      lualine_y = {'progress'},
+      lualine_z = {'location'}
+    },
+    inactive_sections = {
+      lualine_a = {},
+      lualine_b = {},
+      lualine_c = {'filename'},
+      lualine_x = {'location'},
+      lualine_y = {},
+      lualine_z = {}
+    },
+    tabline = {},
+    extensions = {}
+  }
 EOF
 
