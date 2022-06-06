@@ -156,7 +156,8 @@ let loaded_matchparen = 1
 let mapleader = " "
 
 nnoremap <leader>ps :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})<CR>
-nnoremap <leader>fs <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fs <cmd>lua require('telescope.builtin').find_files()<CR>
+nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-r><C-w>})<CR>
 
 nnoremap <silent> Q <nop>
 nnoremap <silent> <C-f> :silent !tmux neww tmux-sessionizer<CR>
@@ -386,5 +387,4 @@ lua <<EOF
     }
   }
 EOF
-
 
