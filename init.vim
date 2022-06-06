@@ -143,7 +143,7 @@ highlight normal
 
 " let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools', 'CodeLLDB' ]
 
-lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incremental_selection = { enable = true }, textobjects = { enable = true }}
+" lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incremental_selection = { enable = true }, textobjects = { enable = true }}
 let g:vim_be_good_log_file = 1
 let g:vim_apm_log = 1
 let g:airline_powerline_fonts = 1
@@ -368,5 +368,23 @@ lua <<EOF
     tabline = {},
     extensions = {}
   }
+  require'nvim-treesitter.configs'.setup {
+    highlight = {
+      enable = true,
+    },
+    incremental_selection = {
+      enable = true,
+      keymaps = {
+        init_selection = "gnn",
+        node_incremental = "grn",
+        scope_incremental = "grc",
+        node_decremental = "grm",
+      },
+    },
+    textobjects = {
+      enable = true
+    }
+  }
 EOF
+
 
