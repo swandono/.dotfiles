@@ -77,6 +77,7 @@ Plug 'tjdevries/lsp_extensions.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/playground'
 Plug 'romgrk/nvim-treesitter-context'
+Plug 'p00f/nvim-ts-rainbow'
 
 " Debugger Plugins
 Plug 'mfussenegger/nvim-dap'
@@ -110,7 +111,7 @@ Plug 'vim-conf-live/vimconflive2021-colorscheme'
 Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/base16-vim'
 
-" HARPOON!!
+" vim-rfc!!
 Plug 'mhinz/vim-rfc'
 
 " prettier
@@ -135,6 +136,9 @@ Plug 'akinsho/toggleterm.nvim', { 'tag': 'v1.*' }
 
 " comment
 Plug 'numToStr/Comment.nvim'
+
+" line
+Plug 'lukas-reineke/indent-blankline.nvim'
 
 call plug#end()
 
@@ -384,7 +388,18 @@ lua <<EOF
     },
     textobjects = {
       enable = true
+    },
+    rainbow = {
+      enable = true,
+      -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
+      extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+      max_file_lines = nil, -- Do not enable for files with more than n lines, int
+      -- colors = {}, -- table of hex strings
+      -- termcolors = {} -- table of colour name strings
     }
+  }
+  require("indent_blankline").setup {
+    show_current_context_start = true,
   }
 EOF
 
