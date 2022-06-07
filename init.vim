@@ -150,6 +150,8 @@ Plug 'numToStr/Comment.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'yamatsum/nvim-cursorline'
 
+" fold
+
 call plug#end()
 
 
@@ -201,6 +203,11 @@ vnoremap K :m '<-2<CR>gv=gv
 
 nnoremap <leader>y "*y
 vnoremap <leader>y "*y
+
+nnoremap <leader>p "*p
+vnoremap <leader>p "*p
+nnoremap <leader>P "*P
+vnoremap <leader>P "*P
 
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
@@ -379,8 +386,8 @@ lua <<EOF
     options = {
       icons_enabled = true,
       theme = 'auto',
-      component_separators = { left = 'ÓÇ±', right = 'ÓÇ≥'},
-      section_separators = { left = 'ÓÇ∞', right = 'ÓÇ≤'},
+      component_separators = { left = '', right = ''},
+      section_separators = { left = '', right = ''},
       disabled_filetypes = {},
       always_divide_middle = true,
       globalstatus = false,
