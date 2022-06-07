@@ -123,13 +123,13 @@ Plug 'nvim-lualine/lualine.nvim'
 " Plug 'ryanoasis/vim-devicons'
 " Plug 'vim-airline/vim-airline'
 " Plug 'vim-airline/vim-airline-themes'
-Plug 'kyazdani42/nvim-web-devicons'
 
 " tab buffer
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 
-" nerd tree
-Plug 'preservim/nerdtree'
+" tree
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'kyazdani42/nvim-web-devicons'
 
 " toggle terminal
 Plug 'akinsho/toggleterm.nvim', { 'tag': 'v1.*' }
@@ -139,6 +139,7 @@ Plug 'numToStr/Comment.nvim'
 
 " line
 Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'yamatsum/nvim-cursorline'
 
 call plug#end()
 
@@ -150,7 +151,7 @@ highlight normal
 " lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incremental_selection = { enable = true }, textobjects = { enable = true }}
 let g:vim_be_good_log_file = 1
 let g:vim_apm_log = 1
-let g:airline_powerline_fonts = 1
+" let g:airline_powerline_fonts = 1
 
 if executable('rg')
     let g:rg_derive_root='true'
@@ -159,7 +160,7 @@ endif
 let loaded_matchparen = 1
 let mapleader = " "
 
-nnoremap <leader>ps :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})<CR>
+nnoremap <leader>ps :lua require('telescope.builtin').live_grep()<CR>
 nnoremap <leader>fs <cmd>lua require('telescope.builtin').find_files()<CR>
 nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-r><C-w>})<CR>
 
@@ -174,10 +175,6 @@ nnoremap <Leader>] :vertical resize +5<CR>
 nnoremap <Leader>[ :vertical resize -5<CR>
 nnoremap <Leader>rp :resize 100<CR>
 nnoremap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
-nnoremap <leader>gt <Plug>PlenaryTestFile
-nnoremap <leader>gll :let g:_search_term = expand("%")<CR><bar>:Gclog -- %<CR>:call search(g:_search_term)<CR>
-nnoremap <leader>gln :cnext<CR>:call search(_search_term)<CR>
-nnoremap <leader>glp :cprev<CR>:call search(_search_term)<CR>
 
 nnoremap <C-f>h :bp<CR>
 nnoremap <C-f>l :bn<CR>
@@ -207,17 +204,34 @@ nmap <Leader>tu <Plug>BujoChecknormal
 nmap <Leader>th <Plug>BujoAddnormal
 let g:bujo#todo_file_path = $HOME . "/.cache/bujo"
 
-" nerd tree
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-l> :NERDTreeToggle<CR>
+" tree
+nnoremap <C-n>l :NvimTreeRefresh<CR>
+nnoremap <C-l> :NvimTreeToggle<CR>
 
 " toggle terminal
 nnoremap <silent><C-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 inoremap <silent><C-t> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 " snip
-snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<Cr>
-snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<Cr>
+snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<CR>
+snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<CR>
+
+" vim-fugitive
+nnoremap <leader>gg :G<space>
+nnoremap <leader>ga :G add<space>
+nnoremap <leader>gb :G branch<CR>
+nnoremap <leader>gc :G checkout<space>
+nnoremap <leader>ge :G branch<space>
+nnoremap <leader>gy :G commit<space>
+nnoremap <leader>gt :G add .<CR>
+nnoremap <leader>gl :G log<CR>
+nnoremap <leader>gf :G fetch<CR>
+nnoremap <leader>gpl :G pull<CR>
+nnoremap <leader>gps :G push<CR>
+nnoremap <leader>gd :G diff<CR>
+nnoremap <leader>gi :G status<CR>
+nnoremap <leader>gsh :G show<CR>
+nnoremap <leader>gsw :G switch<space>
 
 " function
 nnoremap <Leader>ee oif err != nil {<CR>return nil, err<CR>}<CR><esc>kkI<esc>
@@ -228,6 +242,7 @@ nmap <leader>ii :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '>
 
 " close
 inoremap <C-c> <esc>
+
 
 fun! EmptyRegisters()
     let regs=split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-"', '\zs')
@@ -250,8 +265,6 @@ augroup THE_PRIMEAGEN
     autocmd BufWritePre * %s/\s\+$//e
     autocmd BufEnter,BufWinEnter,TabEnter *.rs :lua require'lsp_extensions'.inlay_hints{}
 augroup END
-
-autocmd VimEnter * NERDTree
 
 autocmd TermEnter term://*toggleterm#*
       \ tnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
@@ -391,15 +404,18 @@ lua <<EOF
     },
     rainbow = {
       enable = true,
-      -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
       extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
       max_file_lines = nil, -- Do not enable for files with more than n lines, int
-      -- colors = {}, -- table of hex strings
-      -- termcolors = {} -- table of colour name strings
     }
   }
-  require("indent_blankline").setup {
-    show_current_context_start = true,
+  require("indent_blankline").setup {}
+  require'nvim-tree'.setup{}
+  require('nvim-cursorline').setup {
+    cursorline = {
+      enable = true,
+      timeout = 0,
+      number = false,
+    }
   }
 EOF
 
