@@ -1,3 +1,7 @@
+""""""""""""""""""""""""
+"" SET
+""""""""""""""""""""""""
+
 set exrc
 set guicursor=
 set relativenumber
@@ -44,6 +48,11 @@ set wildignore+=**/node_modules/*
 set wildignore+=**/android/*
 set wildignore+=**/ios/*
 set wildignore+=**/.git/*
+
+
+""""""""""""""""""""""""
+"" PLUGIN
+""""""""""""""""""""""""
 
 call plug#begin('~/.vim/plugged')
 
@@ -143,6 +152,11 @@ Plug 'yamatsum/nvim-cursorline'
 
 call plug#end()
 
+
+""""""""""""""""""""""""
+"" MAP & OTHER's
+""""""""""""""""""""""""
+
 colorscheme gruvbox
 highlight normal
 
@@ -209,8 +223,8 @@ nnoremap <C-n>l :NvimTreeRefresh<CR>
 nnoremap <C-l> :NvimTreeToggle<CR>
 
 " toggle terminal
-nnoremap <silent><C-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
-inoremap <silent><C-t> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
+nnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
+inoremap <silent><C-k> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 " snip
 snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<CR>
@@ -267,8 +281,12 @@ augroup THE_PRIMEAGEN
 augroup END
 
 autocmd TermEnter term://*toggleterm#*
-      \ tnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
+      \ tnoremap <silent><c-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 
+
+""""""""""""""""""""""""
+"" LUA
+""""""""""""""""""""""""
 
 lua <<EOF
 
@@ -415,6 +433,9 @@ lua <<EOF
       enable = true,
       timeout = 0,
       number = false,
+    },
+    cursorword = {
+      enable = false
     }
   }
 EOF
