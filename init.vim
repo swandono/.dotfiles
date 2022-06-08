@@ -195,6 +195,7 @@ nnoremap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 nnoremap <C-f>h :bp<CR>
 nnoremap <C-f>l :bn<CR>
 nnoremap <leader>bd :bd<CR>
+nnoremap <leader>j :b<space>
 
 nnoremap <leader>x :silent !chmod +x %<CR>
 
