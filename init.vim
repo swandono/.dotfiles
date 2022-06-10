@@ -117,7 +117,7 @@ Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'mhinz/vim-rfc'
 
 " Prettier
-Plug 'sbdchd/neoformat'
+Plug 'mhartington/formatter.nvim'
 
 " Status Bar
 Plug 'nvim-lualine/lualine.nvim'
@@ -279,9 +279,9 @@ augroup highlight_yank
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 40})
 augroup END
 
-augroup THE_PRIMEAGEN
+augroup SWANDONO
     autocmd!
-    autocmd BufWritePre *.lua Neoformat
+    autocmd BufWritePost * FormatWrite
     autocmd BufWritePre * %s/\s\+$//e
     autocmd BufEnter,BufWinEnter,TabEnter *.rs :lua require'lsp_extensions'.inlay_hints{}
 augroup END
@@ -323,13 +323,7 @@ lua <<EOF
       { name = 'luasnip' }, -- For luasnip users.
     }, {
       { name = 'buffer' },
-    }),
-    formatting = {
-      format = lspkind.cmp_format({
-        mode = 'symbol',
-        maxwidth = 50
-      })
-    }
+    })
   })
 
   -- Set configuration for specific filetype.
@@ -467,5 +461,20 @@ lua <<EOF
   vim.o.incsearch = false
   vim.wo.signcolumn = 'yes'
   require('vgit').setup()
+
+  -- Utilities for creating configurations
+  local util = require "formatter.util"
+  -- Provides the Format and FormatWrite commands
+  require('formatter').setup {
+    -- All formatter configurations are opt-in
+    filetype = {
+      lua = {
+        require('formatter.filetypes.lua').stylua,
+      },
+      typescript = {
+        require('formatter.filetypes.typescript').prettier,
+      }
+    }
+  }
 EOF
 
