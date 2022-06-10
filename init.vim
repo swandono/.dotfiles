@@ -56,9 +56,6 @@ set wildignore+=**/.git/*
 
 call plug#begin('~/.vim/plugged')
 
-" Yes, I am a sneaky snek now
-Plug 'ambv/black'
-
 " Plebvim lsp Plugins
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -69,18 +66,8 @@ Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 Plug 'onsails/lspkind-nvim'
-Plug 'nvim-lua/lsp_extensions.nvim'
-
-" Diagram
-Plug 'jbyuki/venn.nvim'
-
-" Plug 'nvim-lua/completion-nvim'
-Plug 'glepnir/lspsaga.nvim'
 Plug 'simrat39/symbols-outline.nvim'
-Plug 'tjdevries/nlua.nvim'
-Plug 'tjdevries/lsp_extensions.nvim'
 
 " Neovim Tree shitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -98,59 +85,60 @@ Plug 'L3MON4D3/LuaSnip'
 Plug 'rafamadriz/friendly-snippets'
 Plug 'saadparwaiz1/cmp_luasnip'
 
+" Language
 Plug 'rust-lang/rust.vim'
 Plug 'darrikonn/vim-gofmt'
+Plug 'tomlion/vim-solidity'
+
+" Git
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'junegunn/gv.vim'
+
+" Undo
 Plug 'mbbill/undotree'
+
+" Compiler
 Plug 'tpope/vim-dispatch'
+
+" Theme
 Plug 'gruvbox-community/gruvbox'
 Plug 'luisiacc/gruvbox-baby'
-Plug 'tpope/vim-projectionist'
-Plug 'tomlion/vim-solidity'
+Plug 'vim-conf-live/vimconflive2021-colorscheme'
+Plug 'flazz/vim-colorschemes'
+Plug 'chriskempson/base16-vim'
+Plug 'kyazdani42/nvim-web-devicons'
 
-" telescope requirements...
+" Telescope
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
-Plug 'vim-conf-live/vimconflive2021-colorscheme'
-Plug 'flazz/vim-colorschemes'
-Plug 'chriskempson/base16-vim'
-
 " vim-rfc!!
 Plug 'mhinz/vim-rfc'
 
-" prettier
+" Prettier
 Plug 'sbdchd/neoformat'
 
-" should I try another status bar???
-" Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
+" Status Bar
 Plug 'nvim-lualine/lualine.nvim'
-" Plug 'ryanoasis/vim-devicons'
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
 
-" tab buffer
+" Tab Buffer
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 
-" tree
+" Tree
 Plug 'kyazdani42/nvim-tree.lua'
-Plug 'kyazdani42/nvim-web-devicons'
 
-" toggle terminal
+" Toggle Terminal
 Plug 'akinsho/toggleterm.nvim', { 'tag': 'v1.*' }
 
-" comment
+" Comment
 Plug 'numToStr/Comment.nvim'
 
-" line
+" Line
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'yamatsum/nvim-cursorline'
-
-" fold
 
 call plug#end()
 
@@ -289,7 +277,7 @@ augroup THE_PRIMEAGEN
 augroup END
 
 autocmd TermEnter term://*toggleterm#*
-      \ tnoremap <silent><c-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
+      \ tnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 
 """"""""""""""""""""""""
@@ -300,6 +288,7 @@ lua <<EOF
 
   -- Setup nvim-cmp.
   local cmp = require'cmp'
+  local lspkind = require('lspkind')
 
   cmp.setup({
     snippet = {
@@ -316,21 +305,21 @@ lua <<EOF
        documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
-      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.abort(),
       ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     }),
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
-      -- { name = 'vsnip' }, -- For vsnip users.
       { name = 'luasnip' }, -- For luasnip users.
-      -- { name = 'ultisnips' }, -- For ultisnips users.
-      -- { name = 'snippy' }, -- For snippy users.
     }, {
       { name = 'buffer' },
-    })
+    }),
+    formatting = {
+      format = lspkind.cmp_format({
+        mode = 'symbol',
+        maxwidth = 50
+      })
+    }
   })
 
   -- Set configuration for specific filetype.
@@ -387,8 +376,8 @@ lua <<EOF
     options = {
       icons_enabled = true,
       theme = 'auto',
-      component_separators = { left = '', right = ''},
-      section_separators = { left = '', right = ''},
+      component_separators = { left = 'ÓÇ±', right = 'ÓÇ≥'},
+      section_separators = { left = 'ÓÇ∞', right = 'ÓÇ≤'},
       disabled_filetypes = {},
       always_divide_middle = true,
       globalstatus = false,
@@ -445,6 +434,23 @@ lua <<EOF
     cursorword = {
       enable = false
     }
+  }
+  require'treesitter-context'.setup{
+    enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+    max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+    patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
+        default = {
+            'class',
+            'function',
+            'method',
+            -- 'for', -- These won't appear in the context
+            -- 'while',
+            -- 'if',
+            -- 'switch',
+            -- 'case',
+        },
+    },
+    zindex = 20, -- The Z-index of the context window
   }
 EOF
 
