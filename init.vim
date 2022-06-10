@@ -252,6 +252,7 @@ nnoremap <leader>gpr :VGit project_reset_all<CR>
 nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
 nnoremap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 nnoremap <leader>x :silent !chmod +x %<CR>
+nnoremap <leader>1 :set nowrap!<CR>
 
 " Function
 nnoremap <Leader>ee oif err != nil {<CR>return nil, err<CR>}<CR><esc>kkI<esc>
