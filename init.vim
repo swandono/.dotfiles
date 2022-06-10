@@ -2,6 +2,7 @@
 "" SET
 """"""""""""""""""""""""
 
+" Base
 set exrc
 set guicursor=
 set relativenumber
@@ -27,16 +28,11 @@ set completeopt=menu,menuone,noselect
 set signcolumn=yes
 set encoding=UTF-8
 
+" Other
 set cmdheight=2
-
 set updatetime=50
-
 set shortmess+=c
-
-" hello front end masters
 set path+=**
-
-" Nice menu when typing `:find *.py`
 set wildmode=longest,list,full
 set wildmenu
 
@@ -56,7 +52,7 @@ set wildignore+=**/.git/*
 
 call plug#begin('~/.vim/plugged')
 
-" Plebvim lsp Plugins
+" LSP Plugins
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
@@ -69,7 +65,7 @@ Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'onsails/lspkind-nvim'
 Plug 'simrat39/symbols-outline.nvim'
 
-" Neovim Tree shitter
+" Neovim Tree Sitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/playground'
 Plug 'romgrk/nvim-treesitter-context'
@@ -151,12 +147,8 @@ call plug#end()
 colorscheme gruvbox
 highlight normal
 
-" let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools', 'CodeLLDB' ]
-
-" lua require'nvim-treesitter.configs'.setup { highlight = { enable = true }, incremental_selection = { enable = true }, textobjects = { enable = true }}
 let g:vim_be_good_log_file = 1
 let g:vim_apm_log = 1
-" let g:airline_powerline_fonts = 1
 
 if executable('rg')
     let g:rg_derive_root='true'
@@ -256,17 +248,17 @@ nnoremap <leader>1 :set nowrap!<CR>
 nnoremap <leader>4 :LspRestart<CR>
 nnoremap <leader>5 :edit<CR>
 
-" Function
+" Close
+inoremap <C-c> <esc>
+
+" Template
 nnoremap <Leader>ee oif err != nil {<CR>return nil, err<CR>}<CR><esc>kkI<esc>
 nnoremap <Leader>ww ofunction wait(ms: number): Promise<void> {<CR>return new Promise(res => setTimeout(res, ms));<CR>}<esc>k=i{<CR>
 nmap <leader>ii :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-" Close
-inoremap <C-c> <esc>
-
-
+" Function
 fun! EmptyRegisters()
     let regs=split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-"', '\zs')
     for r in regs
@@ -277,6 +269,7 @@ endfun
 " ES
 com! W w
 
+" Autogroup
 augroup highlight_yank
     autocmd!
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 40})
@@ -289,6 +282,7 @@ augroup SWANDONO
     autocmd BufEnter,BufWinEnter,TabEnter *.rs :lua require'lsp_extensions'.inlay_hints{}
 augroup END
 
+" Startup
 autocmd TermEnter term://*toggleterm#*
       \ tnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 
@@ -408,6 +402,7 @@ lua <<EOF
     tabline = {},
     extensions = {}
   }
+
   require'nvim-treesitter.configs'.setup {
     highlight = {
       enable = true,
@@ -430,8 +425,11 @@ lua <<EOF
       max_file_lines = nil, -- Do not enable for files with more than n lines, int
     }
   }
+
   require("indent_blankline").setup {}
+
   require'nvim-tree'.setup{}
+
   require('nvim-cursorline').setup {
     cursorline = {
       enable = true,
@@ -442,6 +440,7 @@ lua <<EOF
       enable = false
     }
   }
+
   require'treesitter-context'.setup{
     enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
     max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
@@ -459,10 +458,12 @@ lua <<EOF
     },
     zindex = 20, -- The Z-index of the context window
   }
+
   require'alpha'.setup(require'alpha.themes.startify'.config)
   vim.o.updatetime = 300
   vim.o.incsearch = false
   vim.wo.signcolumn = 'yes'
+
   require('vgit').setup()
 
   -- Utilities for creating configurations
