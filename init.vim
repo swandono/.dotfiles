@@ -222,14 +222,15 @@ nnoremap <leader>gc :VGit checkout<space>
 nnoremap <leader>gk :VGit hunk_up<CR>
 nnoremap <leader>gj :VGit hunk_down<CR>
 
-nnoremap <leader>gg :!git<space>
+nnoremap <leader>gg :!git commit<space>
 nnoremap <leader>gy :!git commit<space>
 nnoremap <leader>gq :!git branch<space>
 nnoremap <leader>ga :!git add .<CR>
 nnoremap <leader>gs :!git status<CR>
 nnoremap <leader>gh :!git branch<CR>
 nnoremap <leader>go :!git pull<CR>
-nnoremap <leader>gi :!git push<CR>
+nnoremap <leader>gi :!git fetch<CR>
+nnoremap <leader>g0 :!git push<CR>
 
 nnoremap <leader>gd :VGit project_diff_preview<CR>
 nnoremap <leader>gl :VGit project_logs_preview<CR>
@@ -245,7 +246,7 @@ nnoremap <leader>gbr :VGit buffer_reset<CR>
 
 nnoremap <leader>gps :VGit project_stage_all<CR>
 nnoremap <leader>gpu :VGit project_unstage_all<CR>
-nnoremap <leader>gps :VGit project_reset_all<CR>
+nnoremap <leader>gpr :VGit project_reset_all<CR>
 
 " Others
 nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
