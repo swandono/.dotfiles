@@ -91,9 +91,7 @@ Plug 'darrikonn/vim-gofmt'
 Plug 'tomlion/vim-solidity'
 
 " Git
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
-Plug 'junegunn/gv.vim'
+Plug 'tanvirtin/vgit.nvim'
 
 " Undo
 Plug 'mbbill/undotree'
@@ -140,6 +138,9 @@ Plug 'numToStr/Comment.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'yamatsum/nvim-cursorline'
 
+" Stratup
+Plug 'goolord/alpha-nvim'
+
 call plug#end()
 
 
@@ -164,44 +165,38 @@ endif
 let loaded_matchparen = 1
 let mapleader = " "
 
+" Telescope
 nnoremap <leader>ps :lua require('telescope.builtin').live_grep()<CR>
 nnoremap <leader>fs <cmd>lua require('telescope.builtin').find_files()<CR>
 nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-r><C-w>})<CR>
 
-nnoremap <silent> Q <nop>
-nnoremap <silent> <C-f> :silent !tmux neww tmux-sessionizer<CR>
-" Probably rename this, because its straight silly to be a worktree.
-
+" Undo
 nnoremap <leader>u :UndotreeShow<CR>
-nnoremap <leader>pv :Ex<CR>
-nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
+
+" Resize Windows
 nnoremap <Leader>] :vertical resize +5<CR>
 nnoremap <Leader>[ :vertical resize -5<CR>
 nnoremap <Leader>rp :resize 100<CR>
-nnoremap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 
+" Tab/Buffer Navigation
 nnoremap <C-f>h :bp<CR>
 nnoremap <C-f>l :bn<CR>
 nnoremap <leader>bd :bd<CR>
 nnoremap <leader>j :b<space>
 
-nnoremap <leader>x :silent !chmod +x %<CR>
-
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-
+" Copy Paste Delete
 nnoremap <leader>y "*y
 vnoremap <leader>y "*y
-
 nnoremap <leader>p "*p
 vnoremap <leader>p "*p
 nnoremap <leader>P "*P
 vnoremap <leader>P "*P
-
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
 
-" lua
+" Lua
 nnoremap <leader>vd :lua vim.lsp.buf.definition()<CR>
 nnoremap <leader>vi :lua vim.lsp.buf.implementation()<CR>
 nnoremap <leader>vs :lua vim.lsp.buf.signature_help()<CR>
@@ -209,48 +204,62 @@ nnoremap <leader>vr :lua vim.lsp.buf.references() <CR>
 nnoremap <leader>vn :lua vim.lsp.buf.rename() <CR>
 nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
 
-" vim TODO
-nmap <Leader>tu <Plug>BujoChecknormal
-nmap <Leader>th <Plug>BujoAddnormal
-let g:bujo#todo_file_path = $HOME . "/.cache/bujo"
-
-" tree
+" Tree
 nnoremap <C-n>l :NvimTreeRefresh<CR>
 nnoremap <C-l> :NvimTreeToggle<CR>
+nnoremap <leader>pv :Ex<CR>
 
-" toggle terminal
+" Toggle Terminal
 nnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 inoremap <silent><C-k> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 
-" snip
+" Snip
 snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<CR>
 snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<CR>
 
-" vim-fugitive
-nnoremap <leader>gg :G<space>
-nnoremap <leader>ga :G add<space>
-nnoremap <leader>gb :G branch<CR>
-nnoremap <leader>gc :G checkout<space>
-nnoremap <leader>ge :G branch<space>
-nnoremap <leader>gy :G commit<space>
-nnoremap <leader>gt :G add .<CR>
-nnoremap <leader>gl :G log<CR>
-nnoremap <leader>gf :G fetch<CR>
-nnoremap <leader>gpl :G pull<CR>
-nnoremap <leader>gps :G push<CR>
-nnoremap <leader>gd :G diff<CR>
-nnoremap <leader>gi :G status<CR>
-nnoremap <leader>gsh :G show<CR>
-nnoremap <leader>gsw :G switch<space>
+" Git | vim-fugitive
+nnoremap <leader>gc :VGit checkout<space>
+nnoremap <leader>gk :VGit hunk_up<CR>
+nnoremap <leader>gj :VGit hunk_down<CR>
 
-" function
+nnoremap <leader>gg :!git<space>
+nnoremap <leader>gy :!git commit<space>
+nnoremap <leader>gq :!git branch<space>
+nnoremap <leader>ga :!git add .<CR>
+nnoremap <leader>gs :!git status<CR>
+nnoremap <leader>gh :!git branch<CR>
+nnoremap <leader>go :!git pull<CR>
+nnoremap <leader>gi :!git push<CR>
+
+nnoremap <leader>gd :VGit project_diff_preview<CR>
+nnoremap <leader>gl :VGit project_logs_preview<CR>
+
+nnoremap <leader>gtg :VGit toggle_live_gutter<CR>
+nnoremap <leader>gtb :VGit toggle_live_blame<CR>
+nnoremap <leader>gtp :VGit toggle_diff_preference<CR>
+
+nnoremap <leader>gbh :VGit buffer_hunk_preview<CR>
+nnoremap <leader>gbs :VGit buffer_stage<CR>
+nnoremap <leader>gbu :VGit buffer_unstage<CR>
+nnoremap <leader>gbr :VGit buffer_reset<CR>
+
+nnoremap <leader>gps :VGit project_stage_all<CR>
+nnoremap <leader>gpu :VGit project_unstage_all<CR>
+nnoremap <leader>gps :VGit project_reset_all<CR>
+
+" Others
+nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
+nnoremap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
+nnoremap <leader>x :silent !chmod +x %<CR>
+
+" Function
 nnoremap <Leader>ee oif err != nil {<CR>return nil, err<CR>}<CR><esc>kkI<esc>
 nnoremap <Leader>ww ofunction wait(ms: number): Promise<void> {<CR>return new Promise(res => setTimeout(res, ms));<CR>}<esc>k=i{<CR>
 nmap <leader>ii :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-" close
+" Close
 inoremap <C-c> <esc>
 
 
@@ -452,5 +461,10 @@ lua <<EOF
     },
     zindex = 20, -- The Z-index of the context window
   }
+  require'alpha'.setup(require'alpha.themes.startify'.config)
+  vim.o.updatetime = 300
+  vim.o.incsearch = false
+  vim.wo.signcolumn = 'yes'
+  require('vgit').setup()
 EOF
 
