@@ -35,6 +35,8 @@ set shortmess+=c
 set path+=**
 set wildmode=longest,list,full
 set wildmenu
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
 
 " Ignore files
 set wildignore+=*.pyc
@@ -176,7 +178,7 @@ nnoremap <Leader>rp :resize 100<CR>
 nnoremap <C-f>h :bp<CR>
 nnoremap <C-f>l :bn<CR>
 nnoremap <leader>bd :bd<CR>
-nnoremap <leader>j :b<space>
+nnoremap <C-j> :b<space>
 
 " Copy Paste Delete
 nnoremap <leader>y "*y
@@ -291,6 +293,8 @@ augroup END
 " Startup
 autocmd TermEnter term://*toggleterm#*
       \ tnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
+
+autocmd BufReadPost,FileReadPost * normal zR
 
 
 """"""""""""""""""""""""
