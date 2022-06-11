@@ -173,10 +173,10 @@ nnoremap <Leader>[ :vertical resize -5<CR>
 nnoremap <Leader>rp :resize 100<CR>
 
 " Tab/Buffer Navigation
-nnoremap <silent><leader>b[ :BufferLineCycleNext<CR>
-nnoremap <silent><leader>b] :BufferLineCyclePrev<CR>
-nnoremap <silent><leader>b. :BufferLineMoveNext<CR>
+nnoremap <silent><leader>b[ :BufferLineCyclePrev<CR>
+nnoremap <silent><leader>b] :BufferLineCycleNext<CR>
 nnoremap <silent><leader>b, :BufferLineMovePrev<CR>
+nnoremap <silent><leader>b. :BufferLineMoveNext<CR>
 nnoremap <silent><leader>be :BufferLineSortByExtension<CR>
 nnoremap <silent><leader>bf :BufferLineSortByDirectory<CR>
 nnoremap <leader>bd :bd<CR>
