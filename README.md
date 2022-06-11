@@ -1,1 +1,3 @@
-THIS IS VIM CONFIG
+NeoVim Config
+
+Make NeoVim best IDE
