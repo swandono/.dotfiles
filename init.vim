@@ -88,6 +88,8 @@ Plug 'tomlion/vim-solidity'
 
 " Git
 Plug 'tanvirtin/vgit.nvim'
+Plug 'TimUntersberger/neogit'
+Plug 'sindrets/diffview.nvim'
 
 " Undo
 Plug 'mbbill/undotree'
@@ -209,17 +211,21 @@ inoremap <silent><C-k> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<CR>
 snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<CR>
 
-" Git | vim-fugitive
+" Git
+nnoremap <leader>gn :Neogit<CR>
 nnoremap <leader>gc :VGit checkout<space>
 nnoremap <leader>gk :VGit hunk_up<CR>
 nnoremap <leader>gj :VGit hunk_down<CR>
+nnoremap <leader>gh :VGit buffer_hunk_preview<CR>
+nnoremap <leader>g. :VGit buffer_hunk_stage<CR>
+nnoremap <leader>g, :VGit buffer_hunk_reset<CR>
 
-nnoremap <leader>gg :!git commit<space>
+nnoremap <leader>gg :!git<space>
 nnoremap <leader>gy :!git commit<space>
 nnoremap <leader>gq :!git branch<space>
 nnoremap <leader>ga :!git add .<CR>
 nnoremap <leader>gs :!git status<CR>
-nnoremap <leader>gh :!git branch<CR>
+nnoremap <leader>g/ :!git branch<CR>
 nnoremap <leader>go :!git pull<CR>
 nnoremap <leader>gi :!git fetch<CR>
 nnoremap <leader>g0 :!git push<CR>
@@ -480,5 +486,9 @@ lua <<EOF
       }
     }
   }
+
+  -- neogit
+  local neogit = require('neogit')
+  neogit.setup {}
 EOF
 
