@@ -56,16 +56,15 @@ call plug#begin('~/.vim/plugged')
 
 " LSP Plugins
 Plug 'neovim/nvim-lspconfig'
+Plug 'onsails/lspkind-nvim'
+Plug 'simrat39/symbols-outline.nvim'
+
+" Completion
+Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/cmp-vsnip'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'onsails/lspkind-nvim'
-Plug 'simrat39/symbols-outline.nvim'
 
 " Neovim Tree Sitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -101,7 +100,6 @@ Plug 'tpope/vim-dispatch'
 
 " Theme
 Plug 'gruvbox-community/gruvbox'
-Plug 'luisiacc/gruvbox-baby'
 Plug 'vim-conf-live/vimconflive2021-colorscheme'
 Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/base16-vim'
@@ -175,8 +173,12 @@ nnoremap <Leader>[ :vertical resize -5<CR>
 nnoremap <Leader>rp :resize 100<CR>
 
 " Tab/Buffer Navigation
-nnoremap <C-f>h :bp<CR>
-nnoremap <C-f>l :bn<CR>
+nnoremap <silent><leader>b[ :BufferLineCycleNext<CR>
+nnoremap <silent><leader>b] :BufferLineCyclePrev<CR>
+nnoremap <silent><leader>b. :BufferLineMoveNext<CR>
+nnoremap <silent><leader>b, :BufferLineMovePrev<CR>
+nnoremap <silent><leader>be :BufferLineSortByExtension<CR>
+nnoremap <silent><leader>bf :BufferLineSortByDirectory<CR>
 nnoremap <leader>bd :bd<CR>
 nnoremap <C-j> :b<space>
 
@@ -311,7 +313,6 @@ lua <<EOF
     snippet = {
       -- REQUIRED - you must specify a snippet engine
       expand = function(args)
-        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
         require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
         -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
         -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
@@ -328,17 +329,15 @@ lua <<EOF
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
       { name = 'luasnip' }, -- For luasnip users.
-    }, {
-      { name = 'buffer' },
+      { name = 'buffer' }
     })
   })
 
   -- Set configuration for specific filetype.
   cmp.setup.filetype('gitcommit', {
     sources = cmp.config.sources({
-      { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
-    }, {
-      { name = 'buffer' },
+      -- { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+      { name = 'buffer' }
     })
   })
 
@@ -354,8 +353,7 @@ lua <<EOF
   cmp.setup.cmdline(':', {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
-      { name = 'path' }
-    }, {
+      { name = 'path' },
       { name = 'cmdline' }
     })
   })
