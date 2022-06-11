@@ -136,6 +136,9 @@ Plug 'numToStr/Comment.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'yamatsum/nvim-cursorline'
 
+" Pairs
+Plug 'windwp/nvim-autopairs'
+
 " Stratup
 Plug 'goolord/alpha-nvim'
 
@@ -492,6 +495,7 @@ lua <<EOF
   -- neogit
   local neogit = require('neogit')
   neogit.setup {}
+  require("nvim-autopairs").setup {}
 EOF
 
 """"""""""""""""""""""""
