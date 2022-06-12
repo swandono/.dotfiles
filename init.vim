@@ -27,6 +27,7 @@ set noshowmode
 set completeopt=menu,menuone,noselect
 set signcolumn=yes
 set encoding=UTF-8
+set laststatus=3
 
 " Other
 set cmdheight=2
