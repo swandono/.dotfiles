@@ -365,9 +365,16 @@ lua <<EOF
   -- Setup lspconfig.
   local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  require('lspconfig')['tsserver'].setup {
-    capabilities = capabilities
-  }
+  local servers = { 'golangci_lint_ls', 'tsserver' }
+  for _, lsp in pairs(servers) do
+    require('lspconfig')[lsp].setup {
+      on_attach = on_attach,
+      flags = {
+        -- This will be the default in neovim 0.7+
+        debounce_text_changes = 150,
+      }
+    }
+  end
 
   -- Others
   -- vim.opt.termguicolors = true
