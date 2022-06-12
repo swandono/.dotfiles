@@ -38,6 +38,7 @@ set wildmode=longest,list,full
 set wildmenu
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
+let g:neoformat_try_node_exe = 1
 
 " Ignore files
 set wildignore+=*.pyc
@@ -116,7 +117,7 @@ Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'mhinz/vim-rfc'
 
 " Prettier
-Plug 'mhartington/formatter.nvim'
+Plug 'sbdchd/neoformat'
 
 " Status Bar
 Plug 'nvim-lualine/lualine.nvim'
@@ -264,6 +265,10 @@ nnoremap <leader>5 :edit<CR>
 " Close
 inoremap <C-c> <esc>
 
+" Formatter
+nnoremap <silent> <leader>fn :Format<CR>
+nnoremap <silent> <leader>fl :FormatWrite<CR>
+
 " Template
 nnoremap <Leader>ee oif err != nil {<CR>return nil, err<CR>}<CR><esc>kkI<esc>
 nnoremap <Leader>ww ofunction wait(ms: number): Promise<void> {<CR>return new Promise(res => setTimeout(res, ms));<CR>}<esc>k=i{<CR>
@@ -292,14 +297,15 @@ augroup SWANDONO
     autocmd!
     autocmd BufWritePost * FormatWrite
     autocmd BufWritePre * %s/\s\+$//e
-    autocmd BufEnter,BufWinEnter,TabEnter *.rs :lua require'lsp_extensions'.inlay_hints{}
 augroup END
 
-" Startup
+" Auto Command
 autocmd TermEnter term://*toggleterm#*
       \ tnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 autocmd BufReadPost,FileReadPost * normal zR
+
+"autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx,*.json,*.vue,*.css,*.html,*.yaml,*.yml,*.md Neoformat
 
 
 """"""""""""""""""""""""
@@ -484,25 +490,11 @@ lua <<EOF
 
   require('vgit').setup()
 
-  -- Utilities for creating configurations
-  local util = require "formatter.util"
-  -- Provides the Format and FormatWrite commands
-  require('formatter').setup {
-    -- All formatter configurations are opt-in
-    filetype = {
-      lua = {
-        require('formatter.filetypes.lua').stylua,
-      },
-      typescript = {
-        require('formatter.filetypes.typescript').prettier,
-      }
-    }
-  }
-
   -- neogit
   local neogit = require('neogit')
   neogit.setup {}
   require("nvim-autopairs").setup {}
+
 EOF
 
 """"""""""""""""""""""""
