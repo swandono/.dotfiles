@@ -209,7 +209,6 @@ nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
 " Tree
 nnoremap <C-n>l :NvimTreeRefresh<CR>
 nnoremap <C-l> :NvimTreeToggle<CR>
-nnoremap <leader>pv :Ex<CR>
 
 " Toggle Terminal
 nnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
