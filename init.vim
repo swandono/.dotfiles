@@ -266,8 +266,7 @@ nnoremap <leader>5 :edit<CR>
 inoremap <C-c> <esc>
 
 " Formatter
-nnoremap <silent> <leader>fn :Format<CR>
-nnoremap <silent> <leader>fl :FormatWrite<CR>
+nnoremap <silent> <leader>fn :Neoformat<CR>
 
 " Template
 nnoremap <Leader>ee oif err != nil {<CR>return nil, err<CR>}<CR><esc>kkI<esc>
@@ -295,7 +294,6 @@ augroup END
 
 augroup SWANDONO
     autocmd!
-    autocmd BufWritePost * FormatWrite
     autocmd BufWritePre * %s/\s\+$//e
 augroup END
 
