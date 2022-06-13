@@ -87,6 +87,8 @@ Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'rust-lang/rust.vim'
 Plug 'darrikonn/vim-gofmt'
 Plug 'tomlion/vim-solidity'
+Plug 'ray-x/go.nvim'
+Plug 'ray-x/guihua.lua'
 
 " Git
 Plug 'tanvirtin/vgit.nvim'
@@ -378,7 +380,7 @@ lua <<EOF
     })
   })
 
-  require("luasnip.loaders.from_vscode").lazy_load({paths = "~/.config/nvim/my_snips"})
+  require("luasnip.loaders.from_vscode").lazy_load({paths = "/Users/swandono/.config/nvim/my_snips"})
 EOF
 
 " Treesitter
@@ -497,6 +499,13 @@ lua <<EOF
     },
     tabline = {},
     extensions = {}
+  }
+EOF
+
+" Language
+lua <<EOF
+  require('go').setup{
+    gopls_cmd = {'/Users/swandono/.local/share/nvim/lsp_servers/gopls/gopls'}
   }
 EOF
 
