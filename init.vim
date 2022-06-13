@@ -144,6 +144,9 @@ Plug 'windwp/nvim-autopairs'
 " Stratup
 Plug 'goolord/alpha-nvim'
 
+" Markdown
+Plug 'ellisonleao/glow.nvim', {'branch': 'main'}
+
 call plug#end()
 
 
@@ -271,6 +274,9 @@ inoremap <C-c> <esc>
 
 " Formatter
 nnoremap <silent> <leader>fn :Neoformat<CR>
+
+" Markdown
+nnoremap <leader>pm :Glow<CR>
 
 " Template
 nnoremap <Leader>ee oif err != nil {<CR>return nil, err<CR>}<CR><esc>kkI<esc>
