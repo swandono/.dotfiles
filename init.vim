@@ -60,6 +60,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'neovim/nvim-lspconfig'
 Plug 'onsails/lspkind-nvim'
 Plug 'simrat39/symbols-outline.nvim'
+Plug 'williamboman/nvim-lsp-installer'
 
 " Completion
 Plug 'hrsh7th/nvim-cmp'
@@ -202,7 +203,7 @@ vnoremap <leader>d "_d
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-" Lua
+" LSP
 nnoremap <leader>vd :lua vim.lsp.buf.definition()<CR>
 nnoremap <leader>vi :lua vim.lsp.buf.implementation()<CR>
 nnoremap <leader>vs :lua vim.lsp.buf.signature_help()<CR>
@@ -322,6 +323,21 @@ autocmd BufReadPost,FileReadPost * normal zR
 
 lua <<EOF
 
+  -- Add additional capabilities supported by nvim-cmp
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+  -- Setup lspconfig.
+  require("nvim-lsp-installer").setup {}
+  local lspconfig = require('lspconfig')
+  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+  local servers = { 'gopls', 'tsserver' }
+  for _, lsp in pairs(servers) do
+    lspconfig[lsp].setup {
+        capabilities = capabilities,
+    }
+  end
+
   -- Setup nvim-cmp.
   local cmp = require'cmp'
   local lspkind = require('lspkind')
@@ -339,14 +355,17 @@ lua <<EOF
        completion = cmp.config.window.bordered(),
        documentation = cmp.config.window.bordered(),
     },
-    mapping = cmp.mapping.preset.insert({
-      ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-    }),
+    mapping = {
+        ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+        ['<Tab>'] = cmp.mapping.select_next_item(),
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    },
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
       { name = 'luasnip' }, -- For luasnip users.
-      { name = 'buffer' }
+      { name = 'buffer' },
+      { name = 'nvim_lsp_signature_help' }
     })
   })
 
@@ -374,20 +393,6 @@ lua <<EOF
       { name = 'cmdline' }
     })
   })
-
-  -- Setup lspconfig.
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  local servers = { 'golangci_lint_ls', 'tsserver' }
-  for _, lsp in pairs(servers) do
-    require('lspconfig')[lsp].setup {
-      on_attach = on_attach,
-      flags = {
-        -- This will be the default in neovim 0.7+
-        debounce_text_changes = 150,
-      }
-    }
-  end
 
   -- Others
   -- vim.opt.termguicolors = true
