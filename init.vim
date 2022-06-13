@@ -38,7 +38,6 @@ set wildmode=longest,list,full
 set wildmenu
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
-let g:neoformat_try_node_exe = 1
 
 " Ignore files
 set wildignore+=*.pyc
@@ -48,7 +47,6 @@ set wildignore+=**/node_modules/*
 set wildignore+=**/android/*
 set wildignore+=**/ios/*
 set wildignore+=**/.git/*
-
 
 """"""""""""""""""""""""
 "" PLUGIN
@@ -150,21 +148,18 @@ Plug 'ellisonleao/glow.nvim', {'branch': 'main'}
 
 call plug#end()
 
-
 """"""""""""""""""""""""
 "" MAP & OTHER's
 """"""""""""""""""""""""
 
 colorscheme gruvbox
 highlight normal
-
 let g:vim_be_good_log_file = 1
 let g:vim_apm_log = 1
-
+let g:neoformat_try_node_exe = 1
 if executable('rg')
     let g:rg_derive_root='true'
 endif
-
 let loaded_matchparen = 1
 let mapleader = " "
 
@@ -235,7 +230,6 @@ nnoremap <leader>gj :VGit hunk_down<CR>
 nnoremap <leader>gh :VGit buffer_hunk_preview<CR>
 nnoremap <leader>g. :VGit buffer_hunk_stage<CR>
 nnoremap <leader>g, :VGit buffer_hunk_reset<CR>
-
 nnoremap <leader>gg :!git<space>
 nnoremap <leader>gy :!git commit<space>
 nnoremap <leader>gq :!git branch<space>
@@ -245,19 +239,15 @@ nnoremap <leader>g/ :!git branch<CR>
 nnoremap <leader>go :!git pull<CR>
 nnoremap <leader>gi :!git fetch<CR>
 nnoremap <leader>g0 :!git push<CR>
-
 nnoremap <leader>gd :VGit project_diff_preview<CR>
 nnoremap <leader>gl :VGit project_logs_preview<CR>
-
 nnoremap <leader>gtg :VGit toggle_live_gutter<CR>
 nnoremap <leader>gtb :VGit toggle_live_blame<CR>
 nnoremap <leader>gtp :VGit toggle_diff_preference<CR>
-
 nnoremap <leader>gbh :VGit buffer_hunk_preview<CR>
 nnoremap <leader>gbs :VGit buffer_stage<CR>
 nnoremap <leader>gbu :VGit buffer_unstage<CR>
 nnoremap <leader>gbr :VGit buffer_reset<CR>
-
 nnoremap <leader>gps :VGit project_stage_all<CR>
 nnoremap <leader>gpu :VGit project_unstage_all<CR>
 nnoremap <leader>gpr :VGit project_reset_all<CR>
@@ -302,7 +292,6 @@ augroup highlight_yank
     autocmd!
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 40})
 augroup END
-
 augroup SWANDONO
     autocmd!
     autocmd BufWritePre * %s/\s\+$//e
@@ -313,20 +302,17 @@ autocmd TermEnter term://*toggleterm#*
       \ tnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 autocmd BufReadPost,FileReadPost * normal zR
-
 "autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx,*.json,*.vue,*.css,*.html,*.yaml,*.yml,*.md Neoformat
-
 
 """"""""""""""""""""""""
 "" LUA
 """"""""""""""""""""""""
 
+" LSP
 lua <<EOF
-
   -- Add additional capabilities supported by nvim-cmp
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-
   -- Setup lspconfig.
   require("nvim-lsp-installer").setup {}
   local lspconfig = require('lspconfig')
@@ -337,11 +323,12 @@ lua <<EOF
         capabilities = capabilities,
     }
   end
+EOF
 
-  -- Setup nvim-cmp.
+" CMP
+lua <<EOF
   local cmp = require'cmp'
   local lspkind = require('lspkind')
-
   cmp.setup({
     snippet = {
       -- REQUIRED - you must specify a snippet engine
@@ -362,13 +349,12 @@ lua <<EOF
         ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     },
     sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
       { name = 'luasnip' }, -- For luasnip users.
+      { name = 'nvim_lsp' },
       { name = 'buffer' },
       { name = 'nvim_lsp_signature_help' }
     })
   })
-
   -- Set configuration for specific filetype.
   cmp.setup.filetype('gitcommit', {
     sources = cmp.config.sources({
@@ -376,7 +362,6 @@ lua <<EOF
       { name = 'buffer' }
     })
   })
-
   -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
   cmp.setup.cmdline('/', {
     mapping = cmp.mapping.preset.cmdline(),
@@ -384,7 +369,6 @@ lua <<EOF
       { name = 'buffer' }
     }
   })
-
   -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
   cmp.setup.cmdline(':', {
     mapping = cmp.mapping.preset.cmdline(),
@@ -394,8 +378,66 @@ lua <<EOF
     })
   })
 
-  -- Others
-  -- vim.opt.termguicolors = true
+  require("luasnip.loaders.from_vscode").lazy_load({paths = "~/.config/nvim/my_snips"})
+EOF
+
+" Treesitter
+lua <<EOF
+  require'nvim-treesitter.configs'.setup {
+    highlight = {
+      enable = true,
+    },
+    incremental_selection = {
+      enable = true,
+      keymaps = {
+        init_selection = "gnn",
+        node_incremental = "grn",
+        scope_incremental = "grc",
+        node_decremental = "grm",
+      },
+    },
+    textobjects = {
+      enable = true
+    },
+    rainbow = {
+      enable = true,
+      extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+      max_file_lines = nil, -- Do not enable for files with more than n lines, int
+    }
+  }
+  require'treesitter-context'.setup{
+    enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+    max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+    patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
+        default = {
+            'class',
+            'function',
+            'method',
+            -- 'for', -- These won't appear in the context
+            -- 'while',
+            -- 'if',
+            -- 'switch',
+            -- 'case',
+        },
+    },
+    zindex = 20, -- The Z-index of the context window
+  }
+EOF
+
+" Addon
+lua <<EOF
+  require("indent_blankline").setup {}
+  require'nvim-tree'.setup{}
+  require('nvim-cursorline').setup {
+    cursorline = {
+      enable = true,
+      timeout = 0,
+      number = false,
+    },
+    cursorword = {
+      enable = false
+    }
+  }
   require("bufferline").setup{}
   require("toggleterm").setup{
     size = 50,
@@ -406,10 +448,27 @@ lua <<EOF
     persist_size = true,
     -- direction = 'vertical'
   }
-  require("luasnip.loaders.from_vscode").lazy_load({paths = "~/.config/nvim/my_snips"})
-  require('Comment').setup()
+EOF
 
-  -- Status and Icon
+" Dashboard
+lua <<EOF
+  require'alpha'.setup(require'alpha.themes.startify'.config)
+EOF
+
+" Git
+lua <<EOF
+  vim.o.updatetime = 300
+  vim.o.incsearch = false
+  vim.wo.signcolumn = 'yes'
+  -- vgit
+  require('vgit').setup()
+  -- neogit
+  local neogit = require('neogit')
+  neogit.setup {}
+EOF
+
+" Lualine
+lua <<EOF
    require('lualine').setup {
     options = {
       icons_enabled = true,
@@ -439,73 +498,12 @@ lua <<EOF
     tabline = {},
     extensions = {}
   }
+EOF
 
-  require'nvim-treesitter.configs'.setup {
-    highlight = {
-      enable = true,
-    },
-    incremental_selection = {
-      enable = true,
-      keymaps = {
-        init_selection = "gnn",
-        node_incremental = "grn",
-        scope_incremental = "grc",
-        node_decremental = "grm",
-      },
-    },
-    textobjects = {
-      enable = true
-    },
-    rainbow = {
-      enable = true,
-      extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-      max_file_lines = nil, -- Do not enable for files with more than n lines, int
-    }
-  }
-
-  require("indent_blankline").setup {}
-
-  require'nvim-tree'.setup{}
-
-  require('nvim-cursorline').setup {
-    cursorline = {
-      enable = true,
-      timeout = 0,
-      number = false,
-    },
-    cursorword = {
-      enable = false
-    }
-  }
-
-  require'treesitter-context'.setup{
-    enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-    max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
-    patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
-        default = {
-            'class',
-            'function',
-            'method',
-            -- 'for', -- These won't appear in the context
-            -- 'while',
-            -- 'if',
-            -- 'switch',
-            -- 'case',
-        },
-    },
-    zindex = 20, -- The Z-index of the context window
-  }
-
-  require'alpha'.setup(require'alpha.themes.startify'.config)
-  vim.o.updatetime = 300
-  vim.o.incsearch = false
-  vim.wo.signcolumn = 'yes'
-
-  require('vgit').setup()
-
-  -- neogit
-  local neogit = require('neogit')
-  neogit.setup {}
+" Other
+lua <<EOF
+  -- vim.opt.termguicolors = true
+  require('Comment').setup()
   require("nvim-autopairs").setup {}
 
 EOF
