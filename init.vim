@@ -191,10 +191,10 @@ nnoremap <C-j> :b<space>
 " Copy Paste Delete
 nnoremap <leader>y "*y
 vnoremap <leader>y "*y
-nnoremap <leader>p "*p
-vnoremap <leader>p "*p
-nnoremap <leader>P "*P
-vnoremap <leader>P "*P
+nnoremap <leader>p[ "*p
+vnoremap <leader>p[ "*p
+nnoremap <leader>p] "*P
+vnoremap <leader>p] "*P
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
 vnoremap J :m '>+1<CR>gv=gv
