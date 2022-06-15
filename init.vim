@@ -168,7 +168,10 @@ let mapleader = " "
 
 " Telescope
 nnoremap <leader>ps :lua require('telescope.builtin').live_grep()<CR>
-nnoremap <leader>fs <cmd>lua require('telescope.builtin').find_files()<CR>
+nnoremap <leader>fs :lua require('telescope.builtin').find_files()<CR>
+nnoremap <leader>bs :lua require('telescope.builtin').buffers()<CR>
+nnoremap <leader>os :lua require('telescope.builtin').oldfiles()<CR>
+nnoremap <leader>ms :lua require('telescope.builtin').marks()<CR>
 nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-r><C-w>})<CR>
 
 " Undo
@@ -197,8 +200,6 @@ nnoremap <leader>p[ "*p
 vnoremap <leader>p[ "*p
 nnoremap <leader>p] "*P
 vnoremap <leader>p] "*P
-nnoremap <leader>d "_d
-vnoremap <leader>d "_d
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
