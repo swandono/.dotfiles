@@ -66,6 +66,7 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 
 " Neovim Tree Sitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -323,6 +324,8 @@ lua <<EOF
   for _, lsp in pairs(servers) do
     lspconfig[lsp].setup {
         capabilities = capabilities,
+        -- on_attach = on_attach,
+        -- flags = lsp_flags,
     }
   end
 EOF
@@ -348,14 +351,21 @@ lua <<EOF
         ['<S-Tab>'] = cmp.mapping.select_prev_item(),
         ['<Tab>'] = cmp.mapping.select_next_item(),
         ['<C-e>'] = cmp.mapping.abort(),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ['<CR>'] = cmp.mapping.confirm({
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = true
+        }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     },
     sources = cmp.config.sources({
-      { name = 'luasnip' }, -- For luasnip users.
       { name = 'nvim_lsp' },
+      { name = 'luasnip' }, -- For luasnip users.
       { name = 'buffer' },
-      { name = 'nvim_lsp_signature_help' }
-    })
+      { name = 'nvim_lsp_signature_help' },
+      { name = 'path' }
+    }),
+    formatting = {
+        format = lspkind.cmp_format({with_text = true, maxwidth = 50})
+    },
   })
   -- Set configuration for specific filetype.
   cmp.setup.filetype('gitcommit', {
@@ -514,7 +524,6 @@ lua <<EOF
   -- vim.opt.termguicolors = true
   require('Comment').setup()
   require("nvim-autopairs").setup {}
-
 EOF
 
 """"""""""""""""""""""""
