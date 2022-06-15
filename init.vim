@@ -175,9 +175,10 @@ nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-
 nnoremap <leader>u :UndotreeShow<CR>
 
 " Resize Windows
-nnoremap <Leader>] :vertical resize +5<CR>
-nnoremap <Leader>[ :vertical resize -5<CR>
-nnoremap <Leader>rp :resize 100<CR>
+nnoremap <leader>sd[ :vertical resize -5<CR>
+nnoremap <leader>sd] :vertical resize +5<CR>
+nnoremap <leader>sd; :resize -5<CR>
+nnoremap <leader>sd' :resize +5<CR>
 
 " Tab/Buffer Navigation
 nnoremap <silent><leader>b[ :BufferLineCyclePrev<CR>
@@ -262,7 +263,7 @@ nnoremap <leader>gpr :VGit project_reset_all<CR>
 
 " Others
 nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
-nnoremap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
+nnoremap <leader>3 :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 nnoremap <leader>x :silent !chmod +x %<CR>
 nnoremap <leader>1 :set nowrap!<CR>
 nnoremap <leader>4 :LspRestart<CR>
