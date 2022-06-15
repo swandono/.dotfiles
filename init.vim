@@ -208,6 +208,11 @@ nnoremap <leader>vs :lua vim.lsp.buf.signature_help()<CR>
 nnoremap <leader>vr :lua vim.lsp.buf.references() <CR>
 nnoremap <leader>vn :lua vim.lsp.buf.rename() <CR>
 nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
+nnoremap <leader>vf :lua vim.lsp.buf.formatting()<CR>
+nnoremap <leader>va :lua vim.lsp.buf.code_action()<CR>
+nnoremap <leader>v[ :lua vim.diagnostic.goto_prev()<CR>
+nnoremap <leader>v] :lua vim.diagnostic.goto_next()<CR>
+nnoremap <leader>ve :lua vim.diagnostic.open_float()<CR>
 
 " Tree
 nnoremap <C-n>l :NvimTreeRefresh<CR>
