@@ -78,6 +78,8 @@ Plug 'p00f/nvim-ts-rainbow'
 Plug 'mfussenegger/nvim-dap'
 Plug 'Pocco81/DAPInstall.nvim'
 Plug 'szw/vim-maximizer'
+Plug 'theHamsta/nvim-dap-virtual-text'
+Plug 'rcarriga/nvim-dap-ui'
 
 " Snippets
 Plug 'L3MON4D3/LuaSnip'
@@ -146,6 +148,9 @@ Plug 'windwp/nvim-autopairs'
 
 " Stratup
 Plug 'goolord/alpha-nvim'
+
+" Mark
+Plug 'ThePrimeagen/harpoon'
 
 " Markdown
 Plug 'ellisonleao/glow.nvim', {'branch': 'main'}
@@ -276,6 +281,13 @@ inoremap <C-c> <esc>
 
 " Formatter
 nnoremap <silent> <leader>fn :Neoformat<CR>
+
+" Mark
+nnoremap <leader>mt :Telescope harpoon marks<CR>
+nnoremap <leader>mm :lua require("harpoon.ui").toggle_quick_menu()<CR>
+nnoremap <leader>ma :lua require("harpoon.mark").add_file()<CR>
+nnoremap <leader>m[ :lua require("harpoon.ui").nav_prev()<CR>
+nnoremap <leader>m] :lua require("harpoon.ui").nav_next()<CR>
 
 " Markdown
 nnoremap <leader>pm :Glow<CR>
@@ -536,6 +548,7 @@ lua <<EOF
     }
   }
   require('telescope').load_extension('fzf')
+  require("telescope").load_extension('harpoon')
 EOF
 
 " Language
@@ -543,6 +556,12 @@ lua <<EOF
   require('go').setup{
     gopls_cmd = {'/Users/swandono/.local/share/nvim/lsp_servers/gopls/gopls'}
   }
+EOF
+
+" Debug
+lua <<EOF
+  require("nvim-dap-virtual-text").setup()
+  require("dapui").setup()
 EOF
 
 " Other
