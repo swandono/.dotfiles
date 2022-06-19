@@ -143,8 +143,9 @@ Plug 'numToStr/Comment.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'yamatsum/nvim-cursorline'
 
-" Pairs
+" Pairs and Tags
 Plug 'windwp/nvim-autopairs'
+Plug 'windwp/nvim-ts-autotag'
 
 " Stratup
 Plug 'goolord/alpha-nvim'
@@ -448,6 +449,9 @@ lua <<EOF
       enable = true,
       extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
       max_file_lines = nil, -- Do not enable for files with more than n lines, int
+    },
+    autotag = {
+      enable = true,
     }
   }
   require'treesitter-context'.setup{
@@ -458,11 +462,11 @@ lua <<EOF
             'class',
             'function',
             'method',
-            -- 'for', -- These won't appear in the context
-            -- 'while',
-            -- 'if',
-            -- 'switch',
-            -- 'case',
+            'for', -- These won't appear in the context
+            'while',
+            'if',
+            'switch',
+            'case',
         },
     },
     zindex = 20, -- The Z-index of the context window
