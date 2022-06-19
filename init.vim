@@ -114,8 +114,9 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-"Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-telescope/telescope-project.nvim/'
+Plug 'nvim-telescope/telescope-file-browser.nvim'
 
 " vim-rfc!!
 Plug 'mhinz/vim-rfc'
@@ -179,6 +180,8 @@ nnoremap <leader>bs :lua require('telescope.builtin').buffers()<CR>
 nnoremap <leader>os :lua require('telescope.builtin').oldfiles()<CR>
 nnoremap <leader>ms :lua require('telescope.builtin').marks()<CR>
 nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-r><C-w>})<CR>
+nnoremap <leader>pw :lua require'telescope'.extensions.project.project{}<CR>
+nnoremap <leader>fb :Telescope file_browser<CR>
 
 " Undo
 nnoremap <leader>u :UndotreeShow<CR>
@@ -550,8 +553,6 @@ EOF
 
 " Telescope
 lua <<EOF
-  -- require('telescope').setup()
-  -- require('telescope').load_extension('fzy_native')
   require('telescope').setup {
     extensions = {
       fzf = {
@@ -559,12 +560,25 @@ lua <<EOF
         override_generic_sorter = true,  -- override the generic sorter
         override_file_sorter = true,     -- override the file sorter
         case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-                                         -- the default case_mode is "smart_case"
+      },
+      file_browser = {
+        theme = "ivy",
+        hijack_netrw = true,
+        mappings = {},
+      },
+      project = {
+        base_dirs = {
+          {path = '~/Work', max_depth = 3},
+        },
+        hidden_files = true, -- default: false
+        theme = "dropdown"
       }
     }
   }
   require('telescope').load_extension('fzf')
-  require("telescope").load_extension('harpoon')
+  require('telescope').load_extension('harpoon')
+  require('telescope').load_extension('project')
+  require("telescope").load_extension('file_browser')
 EOF
 
 " Language
