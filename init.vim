@@ -27,7 +27,6 @@ set noshowmode
 set completeopt=menu,menuone,noselect
 set signcolumn=yes
 set encoding=UTF-8
-set laststatus=3
 
 " Other
 set cmdheight=2
@@ -526,7 +525,7 @@ lua <<EOF
       section_separators = { left = 'ÓÇ∞', right = 'ÓÇ≤'},
       disabled_filetypes = {},
       always_divide_middle = true,
-      globalstatus = false,
+      globalstatus = true,
     },
     sections = {
       lualine_a = {'mode'},
