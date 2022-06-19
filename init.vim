@@ -475,7 +475,7 @@ EOF
 
 " Addon
 lua <<EOF
-  require("indent_blankline").setup {}
+  require("indent_blankline").setup{}
   require'nvim-tree'.setup{}
   require('nvim-cursorline').setup {
     cursorline = {
