@@ -68,9 +68,9 @@ Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 
-" Neovim Tree Sitter
+" Neovim TreeSitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/playground'
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'romgrk/nvim-treesitter-context'
 Plug 'p00f/nvim-ts-rainbow'
 
@@ -184,10 +184,10 @@ nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-
 nnoremap <leader>u :UndotreeShow<CR>
 
 " Resize Windows
-nnoremap <leader>sd[ :vertical resize -5<CR>
-nnoremap <leader>sd] :vertical resize +5<CR>
-nnoremap <leader>sd; :resize -5<CR>
-nnoremap <leader>sd' :resize +5<CR>
+nnoremap <leader>ws[ :vertical resize -5<CR>
+nnoremap <leader>ws] :vertical resize +5<CR>
+nnoremap <leader>ws; :resize -5<CR>
+nnoremap <leader>ws' :resize +5<CR>
 
 " Tab/Buffer Navigation
 nnoremap <silent><leader>b[ :BufferLineCyclePrev<CR>
@@ -429,7 +429,20 @@ lua <<EOF
       },
     },
     textobjects = {
-      enable = true
+      select = {
+        enable = true,
+
+        -- Automatically jump forward to textobj, similar to targets.vim
+        lookahead = true,
+
+        keymaps = {
+          -- You can use the capture groups defined in textobjects.scm
+          ["<leader>si"] = "@function.inner",
+          ["<leader>so"] = "@function.outer",
+          ["<leader>sk"] = "@class.inner",
+          ["<leader>sl"] = "@class.outer",
+        },
+      },
     },
     rainbow = {
       enable = true,
