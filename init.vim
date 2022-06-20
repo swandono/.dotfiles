@@ -524,8 +524,8 @@ lua <<EOF
     options = {
       icons_enabled = true,
       theme = 'auto',
-      component_separators = { left = 'ÓÇ±', right = 'ÓÇ≥'},
-      section_separators = { left = 'ÓÇ∞', right = 'ÓÇ≤'},
+      component_separators = { left = '', right = ''},
+      section_separators = { left = '', right = ''},
       disabled_filetypes = {},
       always_divide_middle = true,
       globalstatus = true,
