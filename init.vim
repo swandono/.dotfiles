@@ -204,6 +204,7 @@ nnoremap <silent><leader>be :BufferLineSortByExtension<CR>
 nnoremap <silent><leader>bf :BufferLineSortByDirectory<CR>
 nnoremap <silent><leader>bc[ :BufferLineCloseLeft<CR>
 nnoremap <silent><leader>bc] :BufferLineCloseRight<CR>
+nnoremap <silent><leader>bcp :BufferLinePickClose<CR>
 nnoremap <silent><leader>b1 :BufferLineGoToBuffer 1<CR>
 nnoremap <silent><leader>b2 :BufferLineGoToBuffer 2<CR>
 nnoremap <silent><leader>b3 :BufferLineGoToBuffer 3<CR>
