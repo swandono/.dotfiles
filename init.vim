@@ -193,12 +193,23 @@ nnoremap <leader>ws; :resize -5<CR>
 nnoremap <leader>ws' :resize +5<CR>
 
 " Tab/Buffer Navigation
+" Little tweak, for preventing unsaved buffer to be closed
+" Edit api.nvim_buf_delete(id, { force = true }) to api.nvim_buf_delete(id, {})
+nnoremap <silent><leader>bp :BufferLinePick<CR>
 nnoremap <silent><leader>b[ :BufferLineCyclePrev<CR>
 nnoremap <silent><leader>b] :BufferLineCycleNext<CR>
 nnoremap <silent><leader>b, :BufferLineMovePrev<CR>
 nnoremap <silent><leader>b. :BufferLineMoveNext<CR>
 nnoremap <silent><leader>be :BufferLineSortByExtension<CR>
 nnoremap <silent><leader>bf :BufferLineSortByDirectory<CR>
+nnoremap <silent><leader>bc[ :BufferLineCloseLeft<CR>
+nnoremap <silent><leader>bc] :BufferLineCloseRight<CR>
+nnoremap <silent><leader>b1 :BufferLineGoToBuffer 1<CR>
+nnoremap <silent><leader>b2 :BufferLineGoToBuffer 2<CR>
+nnoremap <silent><leader>b3 :BufferLineGoToBuffer 3<CR>
+nnoremap <silent><leader>b4 :BufferLineGoToBuffer 4<CR>
+nnoremap <silent><leader>b5 :BufferLineGoToBuffer 5<CR>
+nnoremap <leader>bj :BufferLineGoToBuffer<space>
 nnoremap <leader>bd :bd<CR>
 nnoremap <C-j> :b<space>
 
