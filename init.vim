@@ -252,6 +252,8 @@ inoremap <silent><C-t>f <Esc>:ToggleTerm direction=float<CR>
 " Snip
 snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<CR>
 snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<CR>
+inoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<CR>
+inoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<CR>
 
 " Git
 nnoremap <leader>gn :Neogit<CR>
