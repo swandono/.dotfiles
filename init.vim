@@ -176,12 +176,12 @@ let mapleader = " "
 " Telescope
 nnoremap <leader>ps :lua require('telescope.builtin').live_grep()<CR>
 nnoremap <leader>fs :lua require('telescope.builtin').find_files()<CR>
-nnoremap <leader>bs :lua require('telescope.builtin').buffers()<CR>
 nnoremap <leader>os :lua require('telescope.builtin').oldfiles()<CR>
 nnoremap <leader>ms :lua require('telescope.builtin').marks()<CR>
 nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-r><C-w>})<CR>
 nnoremap <leader>pw :lua require'telescope'.extensions.project.project{}<CR>
 nnoremap <leader>fb :Telescope file_browser<CR>
+nnoremap <C-j> :lua require('telescope.builtin').buffers()<CR>
 
 " Undo
 nnoremap <leader>u :UndotreeShow<CR>
@@ -210,9 +210,12 @@ nnoremap <silent><leader>b2 :BufferLineGoToBuffer 2<CR>
 nnoremap <silent><leader>b3 :BufferLineGoToBuffer 3<CR>
 nnoremap <silent><leader>b4 :BufferLineGoToBuffer 4<CR>
 nnoremap <silent><leader>b5 :BufferLineGoToBuffer 5<CR>
-nnoremap <leader>bj :BufferLineGoToBuffer<space>
+nnoremap <silent><leader>bh :split<CR>
+nnoremap <silent><leader>bv :vsplit<CR>
+nnoremap <leader>bn :vertical rightbelow sb<space>
+nnoremap <leader>bk :BufferLineGoToBuffer<space>
 nnoremap <leader>bd :bd<CR>
-nnoremap <C-j> :b<space>
+nnoremap <leader>bj :b<space>
 
 " Copy Paste Delete
 nnoremap <leader>y "*y
@@ -242,8 +245,8 @@ nnoremap <C-n>l :NvimTreeRefresh<CR>
 nnoremap <C-l> :NvimTreeToggle<CR>
 
 " Toggle Terminal
-nnoremap <silent><C-k> :ToggleTerm size=50 direction=vertical<CR>
-inoremap <silent><C-k> <Esc>:ToggleTerm size=50 direction=vertical<CR>
+nnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
+inoremap <silent><C-k> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 nnoremap <silent><C-t>h :ToggleTerm size=15 direction=horizontal<CR>
 inoremap <silent><C-t>h <Esc>:ToggleTerm size=15 direction=horizontal<CR>
 nnoremap <silent><C-t>f :ToggleTerm direction=float<CR>
@@ -531,7 +534,7 @@ lua <<EOF
     insert_mappings = true, -- whether or not the open mapping applies in insert mode
     terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
     persist_size = true,
-    -- direction = 'vertical'
+    direction = 'vertical'
   }
 EOF
 
