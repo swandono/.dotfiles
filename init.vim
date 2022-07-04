@@ -122,7 +122,7 @@ Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'mhinz/vim-rfc'
 
 " Prettier
-Plug 'sbdchd/neoformat'
+Plug 'mhartington/formatter.nvim'
 
 " Status Bar
 Plug 'nvim-lualine/lualine.nvim'
@@ -166,7 +166,6 @@ colorscheme gruvbox
 highlight normal
 let g:vim_be_good_log_file = 1
 let g:vim_apm_log = 1
-let g:neoformat_try_node_exe = 1
 if executable('rg')
     let g:rg_derive_root='true'
 endif
@@ -295,7 +294,8 @@ nnoremap <leader>2 :IndentBlanklineEnable<CR>
 inoremap <C-c> <esc>
 
 " Formatter
-nnoremap <silent> <leader>fn :Neoformat<CR>
+nnoremap <silent> <leader>fn :Format<CR>
+nnoremap <silent> <leader>fw :FormatWrite<CR>
 
 " Mark
 nnoremap <leader>mt :Telescope harpoon marks<CR>
@@ -340,7 +340,6 @@ autocmd TermEnter term://*toggleterm#*
       \ tnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 autocmd BufReadPost,FileReadPost * normal zR
-"autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx,*.json,*.vue,*.css,*.html,*.yaml,*.yml,*.md Neoformat
 
 """"""""""""""""""""""""
 "" LUA
@@ -638,6 +637,29 @@ lua <<EOF
   require("nvim-autopairs").setup {}
 EOF
 
+" Formatter
+lua <<EOF
+  -- Utilities for creating configurations
+  local util = require "formatter.util"
+  -- Provides the Format and FormatWrite commands
+  function prettier ()
+    return {
+      exe = "prettierd",
+      args = {vim.api.nvim_buf_get_name(0)},
+      stdin = true
+    }
+  end
+  require("formatter").setup {
+    logging = true,
+    filetype = {
+      javascript = { prettier },
+      typescript = { prettier },
+      typescriptreact = { prettier },
+      css = { prettier },
+      vue = { prettier }
+    }
+  }
+EOF
 """"""""""""""""""""""""
 "" END
 """"""""""""""""""""""""
