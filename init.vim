@@ -304,7 +304,7 @@ nnoremap <leader>m[ :lua require("harpoon.ui").nav_prev()<CR>
 nnoremap <leader>m] :lua require("harpoon.ui").nav_next()<CR>
 
 " Markdown
-nnoremap <leader>pm :Glow<CR>
+nnoremap <leader>mg :Glow<CR>
 
 " Template
 nnoremap <Leader>ee oif err != nil {<CR>return nil, err<CR>}<CR><esc>kkI<esc>
