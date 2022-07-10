@@ -95,7 +95,6 @@ Plug 'ray-x/guihua.lua'
 " Git
 Plug 'tanvirtin/vgit.nvim'
 Plug 'TimUntersberger/neogit'
-Plug 'sindrets/diffview.nvim'
 
 " Undo
 Plug 'mbbill/undotree'
