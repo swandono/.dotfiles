@@ -282,12 +282,12 @@ nnoremap <leader>gpr :VGit project_reset_all<CR>
 
 " Others
 nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
-nnoremap <leader>3 :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 nnoremap <leader>x :silent !chmod +x %<CR>
 nnoremap <leader>1 :set nowrap!<CR>
+nnoremap <leader>2 :IndentBlanklineEnable<CR>
+nnoremap <leader>3 :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 nnoremap <leader>4 :LspRestart<CR>
 nnoremap <leader>5 :edit<CR>
-nnoremap <leader>2 :IndentBlanklineEnable<CR>
 
 " Close
 inoremap <C-c> <esc>
