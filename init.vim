@@ -649,14 +649,25 @@ lua <<EOF
       stdin = true
     }
   end
+  function go ()
+    return {
+      exe = "gofmt",
+      stdin = true,
+    }
+  end
   require("formatter").setup {
     logging = true,
     filetype = {
       javascript = { prettier },
+      javascriptreact = { prettier },
       typescript = { prettier },
       typescriptreact = { prettier },
       css = { prettier },
-      vue = { prettier }
+      vue = { prettier },
+      json = { prettier },
+      markdown = { prettier },
+      html = { prettier },
+      go = { go }
     }
   }
 EOF
