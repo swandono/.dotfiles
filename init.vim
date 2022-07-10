@@ -90,7 +90,6 @@ Plug 'rust-lang/rust.vim'
 Plug 'darrikonn/vim-gofmt'
 Plug 'tomlion/vim-solidity'
 Plug 'ray-x/go.nvim'
-Plug 'ray-x/guihua.lua'
 
 " Git
 Plug 'tanvirtin/vgit.nvim'
@@ -108,6 +107,7 @@ Plug 'vim-conf-live/vimconflive2021-colorscheme'
 Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/base16-vim'
 Plug 'kyazdani42/nvim-web-devicons'
+Plug 'stevearc/dressing.nvim'
 
 " Telescope
 Plug 'nvim-lua/popup.nvim'
@@ -634,6 +634,7 @@ lua <<EOF
   -- vim.opt.termguicolors = true
   require('Comment').setup()
   require("nvim-autopairs").setup {}
+  require('dressing').setup()
 EOF
 
 " Formatter
