@@ -245,8 +245,10 @@ nnoremap <C-l> :NvimTreeToggle<CR>
 " Toggle Terminal
 nnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 inoremap <silent><C-k> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
-nnoremap <silent><C-t>h :ToggleTerm size=15 direction=horizontal<CR>
-inoremap <silent><C-t>h <Esc>:ToggleTerm size=15 direction=horizontal<CR>
+nnoremap <silent><C-t>v :ToggleTerm size=50 direction=vertical<CR>
+inoremap <silent><C-t>v <Esc>:ToggleTerm size=50 direction=vertical<CR>
+nnoremap <silent><C-t>h :ToggleTerm size=20 direction=horizontal<CR>
+inoremap <silent><C-t>h <Esc>:ToggleTerm size=20 direction=horizontal<CR>
 nnoremap <silent><C-t>f :ToggleTerm direction=float<CR>
 inoremap <silent><C-t>f <Esc>:ToggleTerm direction=float<CR>
 
