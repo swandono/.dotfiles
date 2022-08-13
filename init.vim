@@ -90,6 +90,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'darrikonn/vim-gofmt'
 Plug 'tomlion/vim-solidity'
 Plug 'ray-x/go.nvim'
+Plug 'simrat39/rust-tools.nvim'
 
 " Git
 Plug 'tanvirtin/vgit.nvim'
@@ -355,7 +356,7 @@ lua <<EOF
   require("nvim-lsp-installer").setup {}
   local lspconfig = require('lspconfig')
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  local servers = { 'gopls', 'tsserver', 'eslint', 'volar', 'prismals' }
+  local servers = { 'gopls', 'tsserver', 'eslint', 'volar', 'prismals', 'rust_analyzer' }
   for _, lsp in pairs(servers) do
     lspconfig[lsp].setup {
         capabilities = capabilities,
@@ -623,6 +624,18 @@ lua <<EOF
   require('go').setup{
     gopls_cmd = {'/Users/swandono/.local/share/nvim/lsp_servers/gopls/gopls'}
   }
+
+  local rt = require("rust-tools")
+  rt.setup({
+    server = {
+      on_attach = function(_, bufnr)
+        -- Hover actions
+        vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+        -- Code action groups
+        vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+      end,
+    },
+  })
 EOF
 
 " Debug
