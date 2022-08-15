@@ -260,7 +260,7 @@ nnoremap <leader>gk :VGit hunk_up<CR>
 nnoremap <leader>gj :VGit hunk_down<CR>
 nnoremap <leader>gh :VGit buffer_hunk_preview<CR>
 nnoremap <leader>g. :VGit buffer_hunk_stage<CR>
-nnoremap <leader>g, :VGit buffer_hunk_reset<CR>
+nnoremap <leader>g,r :VGit buffer_hunk_reset<CR>
 nnoremap <leader>gg :!git<space>
 nnoremap <leader>gy :!git commit<space>
 nnoremap <leader>gq :!git branch<space>
