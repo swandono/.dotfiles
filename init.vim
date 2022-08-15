@@ -356,7 +356,7 @@ lua <<EOF
   require("nvim-lsp-installer").setup {}
   local lspconfig = require('lspconfig')
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  local servers = { 'gopls', 'tsserver', 'eslint', 'volar', 'prismals', 'rust_analyzer' }
+  local servers = { 'gopls', 'tsserver', 'eslint', 'volar', 'prismals', 'rust_analyzer', 'vimls' }
   for _, lsp in pairs(servers) do
     lspconfig[lsp].setup {
         capabilities = capabilities,
