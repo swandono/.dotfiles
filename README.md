@@ -5,7 +5,7 @@ Make NeoVim best IDE
 
 ## Customize
 
-## Bufferline
+### Bufferline
 
 Remove `force = true` to make unsaved buffer not force close.
 
