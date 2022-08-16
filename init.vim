@@ -9,8 +9,8 @@ set relativenumber
 set nohlsearch
 set hidden
 set noerrorbells
-set tabstop=4 softtabstop=4
-set shiftwidth=4
+set tabstop=2 softtabstop=2
+set shiftwidth=2
 set expandtab
 set smartindent
 set nu
@@ -90,12 +90,11 @@ Plug 'rust-lang/rust.vim'
 Plug 'darrikonn/vim-gofmt'
 Plug 'tomlion/vim-solidity'
 Plug 'ray-x/go.nvim'
-Plug 'ray-x/guihua.lua'
+Plug 'simrat39/rust-tools.nvim'
 
 " Git
 Plug 'tanvirtin/vgit.nvim'
 Plug 'TimUntersberger/neogit'
-Plug 'sindrets/diffview.nvim'
 
 " Undo
 Plug 'mbbill/undotree'
@@ -109,6 +108,7 @@ Plug 'vim-conf-live/vimconflive2021-colorscheme'
 Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/base16-vim'
 Plug 'kyazdani42/nvim-web-devicons'
+Plug 'stevearc/dressing.nvim'
 
 " Telescope
 Plug 'nvim-lua/popup.nvim'
@@ -246,8 +246,10 @@ nnoremap <C-l> :NvimTreeToggle<CR>
 " Toggle Terminal
 nnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 inoremap <silent><C-k> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
-nnoremap <silent><C-t>h :ToggleTerm size=15 direction=horizontal<CR>
-inoremap <silent><C-t>h <Esc>:ToggleTerm size=15 direction=horizontal<CR>
+nnoremap <silent><C-t>v :ToggleTerm size=50 direction=vertical<CR>
+inoremap <silent><C-t>v <Esc>:ToggleTerm size=50 direction=vertical<CR>
+nnoremap <silent><C-t>h :ToggleTerm size=20 direction=horizontal<CR>
+inoremap <silent><C-t>h <Esc>:ToggleTerm size=20 direction=horizontal<CR>
 nnoremap <silent><C-t>f :ToggleTerm direction=float<CR>
 inoremap <silent><C-t>f <Esc>:ToggleTerm direction=float<CR>
 
@@ -258,7 +260,7 @@ nnoremap <leader>gk :VGit hunk_up<CR>
 nnoremap <leader>gj :VGit hunk_down<CR>
 nnoremap <leader>gh :VGit buffer_hunk_preview<CR>
 nnoremap <leader>g. :VGit buffer_hunk_stage<CR>
-nnoremap <leader>g, :VGit buffer_hunk_reset<CR>
+nnoremap <leader>g,r :VGit buffer_hunk_reset<CR>
 nnoremap <leader>gg :!git<space>
 nnoremap <leader>gy :!git commit<space>
 nnoremap <leader>gq :!git branch<space>
@@ -283,12 +285,12 @@ nnoremap <leader>gpr :VGit project_reset_all<CR>
 
 " Others
 nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
-nnoremap <leader>3 :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 nnoremap <leader>x :silent !chmod +x %<CR>
 nnoremap <leader>1 :set nowrap!<CR>
+nnoremap <leader>2 :IndentBlanklineEnable<CR>
+nnoremap <leader>3 :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 nnoremap <leader>4 :LspRestart<CR>
 nnoremap <leader>5 :edit<CR>
-nnoremap <leader>2 :IndentBlanklineEnable<CR>
 
 " Close
 inoremap <C-c> <esc>
@@ -305,7 +307,7 @@ nnoremap <leader>m[ :lua require("harpoon.ui").nav_prev()<CR>
 nnoremap <leader>m] :lua require("harpoon.ui").nav_next()<CR>
 
 " Markdown
-nnoremap <leader>pm :Glow<CR>
+nnoremap <leader>mg :Glow<CR>
 
 " Template
 nnoremap <Leader>ee oif err != nil {<CR>return nil, err<CR>}<CR><esc>kkI<esc>
@@ -354,7 +356,7 @@ lua <<EOF
   require("nvim-lsp-installer").setup {}
   local lspconfig = require('lspconfig')
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  local servers = { 'gopls', 'tsserver' }
+  local servers = { 'gopls', 'tsserver', 'eslint', 'volar', 'prismals', 'rust_analyzer', 'vimls' }
   for _, lsp in pairs(servers) do
     lspconfig[lsp].setup {
         capabilities = capabilities,
@@ -622,6 +624,18 @@ lua <<EOF
   require('go').setup{
     gopls_cmd = {'/Users/swandono/.local/share/nvim/lsp_servers/gopls/gopls'}
   }
+
+  local rt = require("rust-tools")
+  rt.setup({
+    server = {
+      on_attach = function(_, bufnr)
+        -- Hover actions
+        vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+        -- Code action groups
+        vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+      end,
+    },
+  })
 EOF
 
 " Debug
@@ -635,6 +649,7 @@ lua <<EOF
   -- vim.opt.termguicolors = true
   require('Comment').setup()
   require("nvim-autopairs").setup {}
+  require('dressing').setup()
 EOF
 
 " Formatter
