@@ -608,7 +608,9 @@ lua <<EOF
       },
       project = {
         base_dirs = {
-          {path = '~/Work', max_depth = 3},
+          {path = '~/Work/cl', max_depth = 3},
+          {path = '~/Work/learn', max_depth = 3},
+          {path = '~/Work/swandono', max_depth = 3},
         },
         hidden_files = true, -- default: false
         theme = "dropdown"
