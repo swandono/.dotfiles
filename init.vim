@@ -112,11 +112,13 @@ Plug 'stevearc/dressing.nvim'
 
 " Telescope
 Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope-project.nvim/'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
+
+" Plenary
+Plug 'nvim-lua/plenary.nvim'
 
 " vim-rfc!!
 Plug 'mhinz/vim-rfc'
@@ -356,7 +358,7 @@ lua <<EOF
   require("nvim-lsp-installer").setup {}
   local lspconfig = require('lspconfig')
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  local servers = { 'gopls', 'tsserver', 'eslint', 'volar', 'prismals', 'rust_analyzer', 'vimls' }
+  local servers = { 'gopls', 'tsserver', 'eslint', 'volar', 'prismals', 'rust_analyzer', 'vimls', 'dockerls' }
   for _, lsp in pairs(servers) do
     lspconfig[lsp].setup {
         capabilities = capabilities,
@@ -670,6 +672,12 @@ lua <<EOF
       stdin = true,
     }
   end
+  function rust ()
+    return {
+      exe = "rustfmt",
+      stdin = true,
+    }
+  end
   require("formatter").setup {
     logging = true,
     filetype = {
@@ -682,7 +690,8 @@ lua <<EOF
       json = { prettier },
       markdown = { prettier },
       html = { prettier },
-      go = { go }
+      go = { go },
+      rust = { rust }
     }
   }
 EOF
