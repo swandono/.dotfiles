@@ -57,7 +57,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'neovim/nvim-lspconfig'
 Plug 'onsails/lspkind-nvim'
 Plug 'simrat39/symbols-outline.nvim'
-Plug 'williamboman/nvim-lsp-installer'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
 
 " Completion
 Plug 'hrsh7th/nvim-cmp'
@@ -352,13 +353,13 @@ autocmd BufReadPost,FileReadPost * normal zR
 " LSP
 lua <<EOF
   -- Add additional capabilities supported by nvim-cmp
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   -- Setup lspconfig.
-  require("nvim-lsp-installer").setup {}
+  require("mason").setup()
+  require("mason-lspconfig").setup()
   local lspconfig = require('lspconfig')
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  local servers = { 'gopls', 'tsserver', 'eslint', 'volar', 'prismals', 'rust_analyzer', 'vimls', 'dockerls', 'tailwindcss' }
+  local servers = require("mason-lspconfig").get_installed_servers()
   for _, lsp in pairs(servers) do
     lspconfig[lsp].setup {
         capabilities = capabilities,
