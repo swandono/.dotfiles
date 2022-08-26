@@ -222,10 +222,10 @@ nnoremap <leader>bj :b<space>
 " Copy Paste Delete
 nnoremap <leader>y "*y
 vnoremap <leader>y "*y
-nnoremap <leader>p[ "*p
-vnoremap <leader>p[ "*p
-nnoremap <leader>p] "*P
-vnoremap <leader>p] "*P
+nnoremap <leader>p[ "*P
+vnoremap <leader>p[ "*P
+nnoremap <leader>p] "*p
+vnoremap <leader>p] "*p
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
