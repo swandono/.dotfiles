@@ -2,6 +2,17 @@
 
 Make NeoVim best IDE
 
+![Neovim](https://i.postimg.cc/DZBc5SJY/Screen-Shot-2022-08-29-at-15-04-16.png)
+
+## Installation
+
+You need to install `vim-plug` first before using this config.
+
+Read and follow the instructions here: https://github.com/junegunn/vim-plug
+
+After that you can create `nvim` folder in `~/.config`, then git clone this repo!
+
+Later you can run `:PlugInstall` to install all the dependencies.
 
 ## Customize
 
