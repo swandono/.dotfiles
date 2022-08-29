@@ -180,6 +180,7 @@ nnoremap <leader>ps :lua require('telescope.builtin').live_grep()<CR>
 nnoremap <leader>fs :lua require('telescope.builtin').find_files()<CR>
 nnoremap <leader>os :lua require('telescope.builtin').oldfiles()<CR>
 nnoremap <leader>ms :lua require('telescope.builtin').marks()<CR>
+nnoremap <leader>bs :lua require('telescope.builtin').git_branches()<CR>
 nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-r><C-w>})<CR>
 nnoremap <leader>pw :lua require'telescope'.extensions.project.project{}<CR>
 nnoremap <leader>fb :Telescope file_browser<CR>
@@ -230,10 +231,11 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 " LSP
-nnoremap <leader>vd :lua vim.lsp.buf.definition()<CR>
-nnoremap <leader>vi :lua vim.lsp.buf.implementation()<CR>
+nnoremap <leader>vd :lua require('telescope.builtin').lsp_definitions()<CR>
+nnoremap <leader>vt :lua require('telescope.builtin').lsp_type_definitions()<CR>
+nnoremap <leader>vi :lua require('telescope.builtin').lsp_implementations()<CR>
 nnoremap <leader>vs :lua vim.lsp.buf.signature_help()<CR>
-nnoremap <leader>vr :lua vim.lsp.buf.references() <CR>
+nnoremap <leader>vr :lua require('telescope.builtin').lsp_references()<CR>
 nnoremap <leader>vn :lua vim.lsp.buf.rename() <CR>
 nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
 nnoremap <leader>vf :lua vim.lsp.buf.formatting()<CR>
