@@ -57,7 +57,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'neovim/nvim-lspconfig'
 Plug 'onsails/lspkind-nvim'
 Plug 'simrat39/symbols-outline.nvim'
-Plug 'williamboman/nvim-lsp-installer'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
 
 " Completion
 Plug 'hrsh7th/nvim-cmp'
@@ -112,11 +113,13 @@ Plug 'stevearc/dressing.nvim'
 
 " Telescope
 Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope-project.nvim/'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
+
+" Plenary
+Plug 'nvim-lua/plenary.nvim'
 
 " vim-rfc!!
 Plug 'mhinz/vim-rfc'
@@ -219,10 +222,10 @@ nnoremap <leader>bj :b<space>
 " Copy Paste Delete
 nnoremap <leader>y "*y
 vnoremap <leader>y "*y
-nnoremap <leader>p[ "*p
-vnoremap <leader>p[ "*p
-nnoremap <leader>p] "*P
-vnoremap <leader>p] "*P
+nnoremap <leader>p[ "*P
+vnoremap <leader>p[ "*P
+nnoremap <leader>p] "*p
+vnoremap <leader>p] "*p
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
@@ -350,13 +353,13 @@ autocmd BufReadPost,FileReadPost * normal zR
 " LSP
 lua <<EOF
   -- Add additional capabilities supported by nvim-cmp
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   -- Setup lspconfig.
-  require("nvim-lsp-installer").setup {}
+  require("mason").setup()
+  require("mason-lspconfig").setup()
   local lspconfig = require('lspconfig')
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  local servers = { 'gopls', 'tsserver', 'eslint', 'volar', 'prismals', 'rust_analyzer', 'vimls' }
+  local servers = require("mason-lspconfig").get_installed_servers()
   for _, lsp in pairs(servers) do
     lspconfig[lsp].setup {
         capabilities = capabilities,
@@ -606,7 +609,9 @@ lua <<EOF
       },
       project = {
         base_dirs = {
-          {path = '~/Work', max_depth = 3},
+          {path = '~/Work/cl', max_depth = 3},
+          {path = '~/Work/learn', max_depth = 3},
+          {path = '~/Work/swandono', max_depth = 3},
         },
         hidden_files = true, -- default: false
         theme = "dropdown"
@@ -670,6 +675,12 @@ lua <<EOF
       stdin = true,
     }
   end
+  function rust ()
+    return {
+      exe = "rustfmt",
+      stdin = true,
+    }
+  end
   require("formatter").setup {
     logging = true,
     filetype = {
@@ -682,7 +693,8 @@ lua <<EOF
       json = { prettier },
       markdown = { prettier },
       html = { prettier },
-      go = { go }
+      go = { go },
+      rust = { rust }
     }
   }
 EOF
