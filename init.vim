@@ -250,9 +250,9 @@ nnoremap <C-n>l :NvimTreeRefresh<CR>
 nnoremap <C-l> :NvimTreeToggle<CR>
 
 " Trouble
-nnoremap <leader>xx <cmd>TroubleToggle<cr>
-nnoremap <leader>xw <cmd>TroubleToggle workspace_diagnostics<cr>
-nnoremap <leader>xd <cmd>TroubleToggle document_diagnostics<cr>
+nnoremap <leader>ll <cmd>TroubleToggle<cr>
+nnoremap <leader>lw <cmd>TroubleToggle workspace_diagnostics<cr>
+nnoremap <leader>ld <cmd>TroubleToggle document_diagnostics<cr>
 
 " Toggle Terminal
 nnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
@@ -296,7 +296,7 @@ nnoremap <leader>gpr :VGit project_reset_all<CR>
 
 " Others
 nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
-nnoremap <leader>xsc :silent !chmod +x %<CR>
+nnoremap <leader>x :silent !chmod +x %<CR>
 nnoremap <leader>1 :set nowrap!<CR>
 nnoremap <leader>2 :IndentBlanklineEnable<CR>
 nnoremap <leader>3 :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
