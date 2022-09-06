@@ -80,6 +80,7 @@ Plug 'Pocco81/DAPInstall.nvim'
 Plug 'szw/vim-maximizer'
 Plug 'theHamsta/nvim-dap-virtual-text'
 Plug 'rcarriga/nvim-dap-ui'
+Plug 'folke/trouble.nvim'
 
 " Snippets
 Plug 'L3MON4D3/LuaSnip'
@@ -124,7 +125,7 @@ Plug 'nvim-lua/plenary.nvim'
 " vim-rfc!!
 Plug 'mhinz/vim-rfc'
 
-" Prettier
+" Formatter
 Plug 'mhartington/formatter.nvim'
 
 " Status Bar
@@ -248,6 +249,11 @@ nnoremap <leader>ve :lua vim.diagnostic.open_float()<CR>
 nnoremap <C-n>l :NvimTreeRefresh<CR>
 nnoremap <C-l> :NvimTreeToggle<CR>
 
+" Trouble
+nnoremap <leader>xx <cmd>TroubleToggle<cr>
+nnoremap <leader>xw <cmd>TroubleToggle workspace_diagnostics<cr>
+nnoremap <leader>xd <cmd>TroubleToggle document_diagnostics<cr>
+
 " Toggle Terminal
 nnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 inoremap <silent><C-k> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
@@ -290,7 +296,7 @@ nnoremap <leader>gpr :VGit project_reset_all<CR>
 
 " Others
 nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
-nnoremap <leader>x :silent !chmod +x %<CR>
+nnoremap <leader>xsc :silent !chmod +x %<CR>
 nnoremap <leader>1 :set nowrap!<CR>
 nnoremap <leader>2 :IndentBlanklineEnable<CR>
 nnoremap <leader>3 :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
@@ -649,6 +655,7 @@ EOF
 lua <<EOF
   require("nvim-dap-virtual-text").setup()
   require("dapui").setup()
+  require("trouble").setup {}
 EOF
 
 " Other
@@ -697,6 +704,9 @@ lua <<EOF
       html = { prettier },
       go = { go },
       rust = { rust }
+    },
+    ["*"] = {
+      require("formatter.filetypes.any").remove_trailing_whitespace
     }
   }
 EOF
