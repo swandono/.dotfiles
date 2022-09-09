@@ -2,7 +2,7 @@
 
 Make NeoVim better IDE
 
-![Neovim](https://i.postimg.cc/DZBc5SJY/Screen-Shot-2022-08-29-at-15-04-16.png)
+![Neovim](https://i.postimg.cc/qR22QZSt/Screen-Shot-2022-09-09-at-16-04-15.png)
 
 ## Installation
 
