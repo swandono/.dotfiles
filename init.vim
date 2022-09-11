@@ -228,6 +228,7 @@ nnoremap <leader>p[ "*P
 vnoremap <leader>p[ "*P
 nnoremap <leader>p] "*p
 vnoremap <leader>p] "*p
+xnoremap <leader>pp "_dP
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
