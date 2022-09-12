@@ -29,7 +29,7 @@ set signcolumn=yes
 set encoding=UTF-8
 
 " Other
-set cmdheight=1
+set cmdheight=2
 set updatetime=50
 set shortmess+=c
 set path+=**
