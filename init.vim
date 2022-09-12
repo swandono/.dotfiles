@@ -151,9 +151,6 @@ Plug 'yamatsum/nvim-cursorline'
 Plug 'windwp/nvim-autopairs'
 Plug 'windwp/nvim-ts-autotag'
 
-" Stratup
-Plug 'goolord/alpha-nvim'
-
 " Mark
 Plug 'ThePrimeagen/harpoon'
 
@@ -549,11 +546,6 @@ lua <<EOF
     persist_size = true,
     direction = 'vertical'
   }
-EOF
-
-" Dashboard
-lua <<EOF
-  require'alpha'.setup(require'alpha.themes.startify'.config)
 EOF
 
 " Git
