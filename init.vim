@@ -4,7 +4,7 @@
 
 " Base
 set exrc
-set guicursor=
+set guicursor=""
 set relativenumber
 set nohlsearch
 set hidden
@@ -29,7 +29,7 @@ set signcolumn=yes
 set encoding=UTF-8
 
 " Other
-set cmdheight=2
+set cmdheight=1
 set updatetime=50
 set shortmess+=c
 set path+=**
