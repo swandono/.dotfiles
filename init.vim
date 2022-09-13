@@ -164,7 +164,6 @@ call plug#end()
 """"""""""""""""""""""""
 
 colorscheme gruvbox
-highlight normal
 let g:vim_be_good_log_file = 1
 let g:vim_apm_log = 1
 if executable('rg')
@@ -317,13 +316,6 @@ nnoremap <leader>m] :lua require("harpoon.ui").nav_next()<CR>
 
 " Markdown
 nnoremap <leader>mg :Glow<CR>
-
-" Template
-nnoremap <Leader>ee oif err != nil {<CR>return nil, err<CR>}<CR><esc>kkI<esc>
-nnoremap <Leader>ww ofunction wait(ms: number): Promise<void> {<CR>return new Promise(res => setTimeout(res, ms));<CR>}<esc>k=i{<CR>
-nmap <leader>ii :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " Function
 fun! EmptyRegisters()
