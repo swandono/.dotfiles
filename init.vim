@@ -465,10 +465,10 @@ lua <<EOF
     incremental_selection = {
       enable = true,
       keymaps = {
-        init_selection = "gnn",
-        node_incremental = "grn",
-        scope_incremental = "grc",
-        node_decremental = "grm",
+        init_selection = "gni",
+        node_incremental = "gnn",
+        scope_incremental = "gns",
+        node_decremental = "gnd",
       },
     },
     textobjects = {
