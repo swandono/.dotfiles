@@ -29,10 +29,15 @@ alias cdw='cd ~/Work'
 
 alias pvim='pipenv run nvim'
 alias tmx='tmux a'
+alias tmn='tmux new'
+alias tmm='tmux new -sMe'
+alias tms='tmux new tmux-sessionizer'
+bindkey -s '^k' 'tmux a^M'
+
 
 alias ctags="`brew --prefix`/bin/ctags"
 
-#source /Users/username/.bash_profile
+#source /Users/swandono/.bash_profile
 export NVM_DIR="$HOME/.nvm"
   [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
@@ -41,8 +46,8 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 
 # bun completions
-[ -s "/Users/username/.bun/_bun" ] && source "/Users/username/.bun/_bun"
+[ -s "/Users/swandono/.bun/_bun" ] && source "/Users/swandono/.bun/_bun"
 
 # Bun
-export BUN_INSTALL="/Users/username/.bun"
+export BUN_INSTALL="/Users/swandono/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"

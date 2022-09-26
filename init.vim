@@ -4,7 +4,7 @@
 
 " Base
 set exrc
-set guicursor=
+set guicursor=""
 set relativenumber
 set nohlsearch
 set hidden
@@ -29,7 +29,7 @@ set signcolumn=yes
 set encoding=UTF-8
 
 " Other
-set cmdheight=2
+set cmdheight=1
 set updatetime=50
 set shortmess+=c
 set path+=**
@@ -151,9 +151,6 @@ Plug 'yamatsum/nvim-cursorline'
 Plug 'windwp/nvim-autopairs'
 Plug 'windwp/nvim-ts-autotag'
 
-" Stratup
-Plug 'goolord/alpha-nvim'
-
 " Mark
 Plug 'ThePrimeagen/harpoon'
 
@@ -167,7 +164,6 @@ call plug#end()
 """"""""""""""""""""""""
 
 colorscheme gruvbox
-highlight normal
 let g:vim_be_good_log_file = 1
 let g:vim_apm_log = 1
 if executable('rg')
@@ -228,6 +224,7 @@ nnoremap <leader>p[ "*P
 vnoremap <leader>p[ "*P
 nnoremap <leader>p] "*p
 vnoremap <leader>p] "*p
+xnoremap <leader>pp "_dP
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
@@ -296,12 +293,13 @@ nnoremap <leader>gpr :VGit project_reset_all<CR>
 
 " Others
 nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
-nnoremap <leader>x :silent !chmod +x %<CR>
 nnoremap <leader>1 :set nowrap!<CR>
 nnoremap <leader>2 zR:IndentBlanklineEnable<CR>
 nnoremap <leader>3 :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
-nnoremap <leader>4 :LspRestart<CR>
-nnoremap <leader>5 :edit<CR>
+nnoremap <leader>4 :IndentBlanklineEnable<CR>
+nnoremap <leader>5 :silent !chmod +x %<CR>
+nnoremap <leader>9 :LspRestart<CR>
+nnoremap <leader>0 :edit<CR>
 
 " Close
 inoremap <C-c> <esc>
@@ -316,16 +314,14 @@ nnoremap <leader>mm :lua require("harpoon.ui").toggle_quick_menu()<CR>
 nnoremap <leader>ma :lua require("harpoon.mark").add_file()<CR>
 nnoremap <leader>m[ :lua require("harpoon.ui").nav_prev()<CR>
 nnoremap <leader>m] :lua require("harpoon.ui").nav_next()<CR>
+nnoremap <leader>m1 :lua require("harpoon.ui").nav_file(1)<CR>
+nnoremap <leader>m2 :lua require("harpoon.ui").nav_file(2)<CR>
+nnoremap <leader>m3 :lua require("harpoon.ui").nav_file(3)<CR>
+nnoremap <leader>m4 :lua require("harpoon.ui").nav_file(4)<CR>
+nnoremap <leader>m5 :lua require("harpoon.ui").nav_file(5)<CR>
 
 " Markdown
 nnoremap <leader>mg :Glow<CR>
-
-" Template
-nnoremap <Leader>ee oif err != nil {<CR>return nil, err<CR>}<CR><esc>kkI<esc>
-nnoremap <Leader>ww ofunction wait(ms: number): Promise<void> {<CR>return new Promise(res => setTimeout(res, ms));<CR>}<esc>k=i{<CR>
-nmap <leader>ii :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " Function
 fun! EmptyRegisters()
@@ -474,10 +470,10 @@ lua <<EOF
     incremental_selection = {
       enable = true,
       keymaps = {
-        init_selection = "gnn",
-        node_incremental = "grn",
-        scope_incremental = "grc",
-        node_decremental = "grm",
+        init_selection = "gni",
+        node_incremental = "gnn",
+        scope_incremental = "gns",
+        node_decremental = "gnd",
       },
     },
     textobjects = {
@@ -548,11 +544,6 @@ lua <<EOF
     persist_size = true,
     direction = 'vertical'
   }
-EOF
-
-" Dashboard
-lua <<EOF
-  require'alpha'.setup(require'alpha.themes.startify'.config)
 EOF
 
 " Git
