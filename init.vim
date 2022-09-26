@@ -216,6 +216,7 @@ nnoremap <leader>bn :vertical rightbelow sb<space>
 nnoremap <leader>bk :BufferLineGoToBuffer<space>
 nnoremap <leader>bd :bd<CR>
 nnoremap <leader>bj :b<space>
+nnoremap <leader>oo :only<CR>
 
 " Copy Paste Delete
 nnoremap <leader>y "*y
@@ -234,6 +235,7 @@ nnoremap <leader>vt :lua require('telescope.builtin').lsp_type_definitions()<CR>
 nnoremap <leader>vi :lua require('telescope.builtin').lsp_implementations()<CR>
 nnoremap <leader>vs :lua vim.lsp.buf.signature_help()<CR>
 nnoremap <leader>vr :lua require('telescope.builtin').lsp_references()<CR>
+nnoremap <leader>vl :lua vim.lsp.buf.references() <CR>
 nnoremap <leader>vn :lua vim.lsp.buf.rename() <CR>
 nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
 nnoremap <leader>vf :lua vim.lsp.buf.formatting()<CR>
