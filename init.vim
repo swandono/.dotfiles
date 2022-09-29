@@ -111,6 +111,7 @@ Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/base16-vim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'stevearc/dressing.nvim'
+" Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 
 " Telescope
 Plug 'nvim-lua/popup.nvim'
@@ -164,6 +165,7 @@ call plug#end()
 """"""""""""""""""""""""
 
 colorscheme gruvbox
+" colorscheme tokyonight
 let g:vim_be_good_log_file = 1
 let g:vim_apm_log = 1
 if executable('rg')
@@ -474,8 +476,8 @@ lua <<EOF
       keymaps = {
         init_selection = "gni",
         node_incremental = "gnn",
-        scope_incremental = "gns",
-        node_decremental = "gnd",
+        scope_incremental = "gnb",
+        node_decremental = "gnm",
       },
     },
     textobjects = {
@@ -487,10 +489,10 @@ lua <<EOF
 
         keymaps = {
           -- You can use the capture groups defined in textobjects.scm
-          ["<leader>si"] = "@function.inner",
-          ["<leader>so"] = "@function.outer",
-          ["<leader>sk"] = "@class.inner",
-          ["<leader>sl"] = "@class.outer",
+          ["gnj"] = "@function.inner",
+          ["gnh"] = "@function.outer",
+          ["gnk"] = "@class.inner",
+          ["gnl"] = "@class.outer",
         },
       },
     },
