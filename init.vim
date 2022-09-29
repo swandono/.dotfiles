@@ -111,7 +111,7 @@ Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/base16-vim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'stevearc/dressing.nvim'
-" Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 
 " Telescope
 Plug 'nvim-lua/popup.nvim'
