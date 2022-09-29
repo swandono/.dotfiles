@@ -174,6 +174,10 @@ endif
 let loaded_matchparen = 1
 let mapleader = " "
 
+"Theme
+nnoremap <leader>cg :colorscheme gruvbox<CR>
+nnoremap <leader>ct :colorscheme tokyonight<CR>
+
 " Telescope
 nnoremap <leader>ps :lua require('telescope.builtin').live_grep()<CR>
 nnoremap <leader>fs :lua require('telescope.builtin').find_files()<CR>
