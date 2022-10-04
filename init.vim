@@ -244,7 +244,7 @@ nnoremap <leader>vr :lua require('telescope.builtin').lsp_references()<CR>
 nnoremap <leader>vl :lua vim.lsp.buf.references() <CR>
 nnoremap <leader>vn :lua vim.lsp.buf.rename() <CR>
 nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
-nnoremap <leader>vf :lua vim.lsp.buf.formatting()<CR>
+nnoremap <leader>vf :lua vim.lsp.buf.format{async = true}<CR>
 nnoremap <leader>va :lua vim.lsp.buf.code_action()<CR>
 nnoremap <leader>v[ :lua vim.diagnostic.goto_prev()<CR>
 nnoremap <leader>v] :lua vim.diagnostic.goto_next()<CR>
