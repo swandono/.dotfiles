@@ -689,6 +689,16 @@ lua <<EOF
       stdin = true,
     }
   end
+  function python ()
+    return {
+      exe = "black",
+      args = {
+        '-q',
+        '-',
+      },
+      stdin = true,
+    }
+  end
   require("formatter").setup {
     logging = true,
     filetype = {
@@ -702,7 +712,8 @@ lua <<EOF
       markdown = { prettier },
       html = { prettier },
       go = { go },
-      rust = { rust }
+      rust = { rust },
+      python = { python }
     },
     ["*"] = {
       require("formatter.filetypes.any").remove_trailing_whitespace
