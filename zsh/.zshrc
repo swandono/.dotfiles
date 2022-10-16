@@ -34,7 +34,7 @@ alias tmm='tmux new -sMe'
 alias tms='tmux new tmux-sessionizer'
 bindkey -s '^k' 'tmux a^M'
 
-
+alias python='python3'
 alias ctags="`brew --prefix`/bin/ctags"
 
 #source /Users/swandono/.bash_profile
