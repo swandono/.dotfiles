@@ -34,7 +34,6 @@ alias tmm='tmux new -sMe'
 alias tms='tmux new tmux-sessionizer'
 bindkey -s '^k' 'tmux a^M'
 
-alias python='python3'
 alias ctags="`brew --prefix`/bin/ctags"
 
 #source /Users/swandono/.bash_profile
@@ -51,3 +50,8 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # Bun
 export BUN_INSTALL="/Users/swandono/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# PyENV
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
