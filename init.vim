@@ -271,6 +271,7 @@ inoremap <silent><C-t>f <Esc>:ToggleTerm direction=float<CR>
 
 " Git
 nnoremap <leader>gn :Neogit<CR>
+nnoremap <leader>gg :VGit<space>
 nnoremap <leader>gk :VGit hunk_up<CR>
 nnoremap <leader>gj :VGit hunk_down<CR>
 nnoremap <leader>gh :VGit buffer_hunk_preview<CR>
