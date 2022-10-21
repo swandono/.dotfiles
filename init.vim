@@ -271,27 +271,21 @@ inoremap <silent><C-t>f <Esc>:ToggleTerm direction=float<CR>
 
 " Git
 nnoremap <leader>gn :Neogit<CR>
-nnoremap <leader>gc :VGit checkout<space>
 nnoremap <leader>gk :VGit hunk_up<CR>
 nnoremap <leader>gj :VGit hunk_down<CR>
 nnoremap <leader>gh :VGit buffer_hunk_preview<CR>
 nnoremap <leader>g. :VGit buffer_hunk_stage<CR>
 nnoremap <leader>g,r :VGit buffer_hunk_reset<CR>
-nnoremap <leader>gg :!git<space>
-nnoremap <leader>gy :!git commit<space>
-nnoremap <leader>gq :!git branch<space>
-nnoremap <leader>ga :!git add .<CR>
 nnoremap <leader>gs :!git status<CR>
 nnoremap <leader>g/ :!git branch<CR>
 nnoremap <leader>go :!git pull<CR>
 nnoremap <leader>gi :!git fetch<CR>
-nnoremap <leader>g0 :!git push<CR>
 nnoremap <leader>gd :VGit project_diff_preview<CR>
 nnoremap <leader>gl :VGit project_logs_preview<CR>
+nnoremap <leader>gc :VGit project_commits_preview<CR>
 nnoremap <leader>gtg :VGit toggle_live_gutter<CR>
 nnoremap <leader>gtb :VGit toggle_live_blame<CR>
 nnoremap <leader>gtp :VGit toggle_diff_preference<CR>
-nnoremap <leader>gbh :VGit buffer_hunk_preview<CR>
 nnoremap <leader>gbs :VGit buffer_stage<CR>
 nnoremap <leader>gbu :VGit buffer_unstage<CR>
 nnoremap <leader>gbr :VGit buffer_reset<CR>
