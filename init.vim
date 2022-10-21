@@ -282,7 +282,7 @@ nnoremap <leader>go :!git pull<CR>
 nnoremap <leader>gi :!git fetch<CR>
 nnoremap <leader>gd :VGit project_diff_preview<CR>
 nnoremap <leader>gl :VGit project_logs_preview<CR>
-nnoremap <leader>gc :VGit project_commits_preview<CR>
+nnoremap <leader>gc :VGit project_commits_preview<space>
 nnoremap <leader>gtg :VGit toggle_live_gutter<CR>
 nnoremap <leader>gtb :VGit toggle_live_blame<CR>
 nnoremap <leader>gtp :VGit toggle_diff_preference<CR>
