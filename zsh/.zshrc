@@ -28,6 +28,7 @@ alias dockerc='docker-compose'
 alias cdw='cd ~/Work'
 
 alias pvim='pipenv run nvim'
+alias pps='pipenv shell'
 alias tmx='tmux a'
 alias tmn='tmux new'
 alias tmm='tmux new -sMe'
