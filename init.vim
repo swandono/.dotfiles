@@ -303,6 +303,9 @@ nnoremap <leader>4 :IndentBlanklineEnable<CR>
 nnoremap <leader>5 :silent !chmod +x %<CR>
 nnoremap <leader>9 :LspRestart<CR>
 nnoremap <leader>0 :edit<CR>
+nnoremap <C-u> <C-u>zz
+nnoremap <C-d> <C-d>zz
+nnoremap n nzz
 
 " Close
 inoremap <C-c> <esc>
