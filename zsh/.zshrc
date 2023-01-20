@@ -28,12 +28,12 @@ alias dockerc='docker-compose'
 alias cdw='cd ~/Work'
 
 alias pvim='pipenv run nvim'
+alias pps='pipenv shell'
 alias tmx='tmux a'
 alias tmn='tmux new'
 alias tmm='tmux new -sMe'
 alias tms='tmux new tmux-sessionizer'
 bindkey -s '^k' 'tmux a^M'
-
 
 alias ctags="`brew --prefix`/bin/ctags"
 
@@ -51,3 +51,8 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # Bun
 export BUN_INSTALL="/Users/swandono/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# PyENV
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"

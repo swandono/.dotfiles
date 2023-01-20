@@ -111,6 +111,7 @@ Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/base16-vim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'stevearc/dressing.nvim'
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 
 " Telescope
 Plug 'nvim-lua/popup.nvim'
@@ -164,6 +165,7 @@ call plug#end()
 """"""""""""""""""""""""
 
 colorscheme gruvbox
+" colorscheme tokyonight
 let g:vim_be_good_log_file = 1
 let g:vim_apm_log = 1
 if executable('rg')
@@ -171,6 +173,10 @@ if executable('rg')
 endif
 let loaded_matchparen = 1
 let mapleader = " "
+
+"Theme
+nnoremap <leader>cg :colorscheme gruvbox<CR>
+nnoremap <leader>ct :colorscheme tokyonight<CR>
 
 " Telescope
 nnoremap <leader>ps :lua require('telescope.builtin').live_grep()<CR>
@@ -216,6 +222,7 @@ nnoremap <leader>bn :vertical rightbelow sb<space>
 nnoremap <leader>bk :BufferLineGoToBuffer<space>
 nnoremap <leader>bd :bd<CR>
 nnoremap <leader>bj :b<space>
+nnoremap <leader>oo :only<CR>
 
 " Copy Paste Delete
 nnoremap <leader>y "*y
@@ -234,12 +241,13 @@ nnoremap <leader>vt :lua require('telescope.builtin').lsp_type_definitions()<CR>
 nnoremap <leader>vi :lua require('telescope.builtin').lsp_implementations()<CR>
 nnoremap <leader>vs :lua vim.lsp.buf.signature_help()<CR>
 nnoremap <leader>vr :lua require('telescope.builtin').lsp_references()<CR>
+nnoremap <leader>vl :lua vim.lsp.buf.references() <CR>
 nnoremap <leader>vn :lua vim.lsp.buf.rename() <CR>
 nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
-nnoremap <leader>vf :lua vim.lsp.buf.formatting()<CR>
+nnoremap <leader>vf :lua vim.lsp.buf.format{async = true}<CR>
 nnoremap <leader>va :lua vim.lsp.buf.code_action()<CR>
-nnoremap <leader>v[ :lua vim.diagnostic.goto_prev()<CR>
-nnoremap <leader>v] :lua vim.diagnostic.goto_next()<CR>
+nnoremap <leader>vj :lua vim.diagnostic.goto_prev()<CR>
+nnoremap <leader>vk :lua vim.diagnostic.goto_next()<CR>
 nnoremap <leader>ve :lua vim.diagnostic.open_float()<CR>
 
 " Tree
@@ -263,27 +271,22 @@ inoremap <silent><C-t>f <Esc>:ToggleTerm direction=float<CR>
 
 " Git
 nnoremap <leader>gn :Neogit<CR>
-nnoremap <leader>gc :VGit checkout<space>
+nnoremap <leader>gg :VGit<space>
 nnoremap <leader>gk :VGit hunk_up<CR>
 nnoremap <leader>gj :VGit hunk_down<CR>
 nnoremap <leader>gh :VGit buffer_hunk_preview<CR>
 nnoremap <leader>g. :VGit buffer_hunk_stage<CR>
 nnoremap <leader>g,r :VGit buffer_hunk_reset<CR>
-nnoremap <leader>gg :!git<space>
-nnoremap <leader>gy :!git commit<space>
-nnoremap <leader>gq :!git branch<space>
-nnoremap <leader>ga :!git add .<CR>
 nnoremap <leader>gs :!git status<CR>
 nnoremap <leader>g/ :!git branch<CR>
 nnoremap <leader>go :!git pull<CR>
 nnoremap <leader>gi :!git fetch<CR>
-nnoremap <leader>g0 :!git push<CR>
 nnoremap <leader>gd :VGit project_diff_preview<CR>
 nnoremap <leader>gl :VGit project_logs_preview<CR>
+nnoremap <leader>gc :VGit project_commits_preview<space>
 nnoremap <leader>gtg :VGit toggle_live_gutter<CR>
 nnoremap <leader>gtb :VGit toggle_live_blame<CR>
 nnoremap <leader>gtp :VGit toggle_diff_preference<CR>
-nnoremap <leader>gbh :VGit buffer_hunk_preview<CR>
 nnoremap <leader>gbs :VGit buffer_stage<CR>
 nnoremap <leader>gbu :VGit buffer_unstage<CR>
 nnoremap <leader>gbr :VGit buffer_reset<CR>
@@ -300,6 +303,10 @@ nnoremap <leader>4 :IndentBlanklineEnable<CR>
 nnoremap <leader>5 :silent !chmod +x %<CR>
 nnoremap <leader>9 :LspRestart<CR>
 nnoremap <leader>0 :edit<CR>
+nnoremap <C-u> <C-u>zz
+nnoremap <C-d> <C-d>zz
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
 " Close
 inoremap <C-c> <esc>
@@ -357,7 +364,7 @@ autocmd BufReadPost,FileReadPost * normal zR
 " LSP
 lua <<EOF
   -- Add additional capabilities supported by nvim-cmp
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   -- Setup lspconfig.
   require("mason").setup()
   require("mason-lspconfig").setup()
@@ -472,8 +479,8 @@ lua <<EOF
       keymaps = {
         init_selection = "gni",
         node_incremental = "gnn",
-        scope_incremental = "gns",
-        node_decremental = "gnd",
+        scope_incremental = "gnb",
+        node_decremental = "gnm",
       },
     },
     textobjects = {
@@ -485,10 +492,10 @@ lua <<EOF
 
         keymaps = {
           -- You can use the capture groups defined in textobjects.scm
-          ["<leader>si"] = "@function.inner",
-          ["<leader>so"] = "@function.outer",
-          ["<leader>sk"] = "@class.inner",
-          ["<leader>sl"] = "@class.outer",
+          ["gnj"] = "@function.inner",
+          ["gnh"] = "@function.outer",
+          ["gnk"] = "@class.inner",
+          ["gnl"] = "@class.outer",
         },
       },
     },
@@ -681,6 +688,16 @@ lua <<EOF
       stdin = true,
     }
   end
+  function python ()
+    return {
+      exe = "black",
+      args = {
+        '-q',
+        '-',
+      },
+      stdin = true,
+    }
+  end
   require("formatter").setup {
     logging = true,
     filetype = {
@@ -694,7 +711,8 @@ lua <<EOF
       markdown = { prettier },
       html = { prettier },
       go = { go },
-      rust = { rust }
+      rust = { rust },
+      python = { python }
     },
     ["*"] = {
       require("formatter.filetypes.any").remove_trailing_whitespace
