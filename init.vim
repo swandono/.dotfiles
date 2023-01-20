@@ -246,8 +246,8 @@ nnoremap <leader>vn :lua vim.lsp.buf.rename() <CR>
 nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
 nnoremap <leader>vf :lua vim.lsp.buf.format{async = true}<CR>
 nnoremap <leader>va :lua vim.lsp.buf.code_action()<CR>
-nnoremap <leader>v[ :lua vim.diagnostic.goto_prev()<CR>
-nnoremap <leader>v] :lua vim.diagnostic.goto_next()<CR>
+nnoremap <leader>vj :lua vim.diagnostic.goto_prev()<CR>
+nnoremap <leader>vk :lua vim.diagnostic.goto_next()<CR>
 nnoremap <leader>ve :lua vim.diagnostic.open_float()<CR>
 
 " Tree
@@ -305,7 +305,8 @@ nnoremap <leader>9 :LspRestart<CR>
 nnoremap <leader>0 :edit<CR>
 nnoremap <C-u> <C-u>zz
 nnoremap <C-d> <C-d>zz
-nnoremap n nzz
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
 " Close
 inoremap <C-c> <esc>
