@@ -270,7 +270,7 @@ nnoremap <silent><C-t>f :ToggleTerm direction=float<CR>
 inoremap <silent><C-t>f <Esc>:ToggleTerm direction=float<CR>
 
 " Git
-nnoremap <leader>gn :Neogit<CR>
+nnoremap <leader>gn :Neogit kind=replace<CR>
 nnoremap <leader>gg :VGit<space>
 nnoremap <leader>gk :VGit hunk_up<CR>
 nnoremap <leader>gj :VGit hunk_down<CR>
@@ -615,7 +615,7 @@ lua <<EOF
       },
       project = {
         base_dirs = {
-          {path = '~/Work/cl', max_depth = 3},
+          {path = '~/Work/cs', max_depth = 3},
           {path = '~/Work/learn', max_depth = 3},
           {path = '~/Work/swandono', max_depth = 3},
         },
