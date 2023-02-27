@@ -27,6 +27,7 @@ set noshowmode
 set completeopt=menu,menuone,noselect
 set signcolumn=yes
 set encoding=UTF-8
+set colorcolumn=80
 
 " Other
 set cmdheight=1
@@ -315,6 +316,18 @@ inoremap <C-c> <esc>
 nnoremap <silent> <leader>fn :Format<CR>
 nnoremap <silent> <leader>fw :FormatWrite<CR>
 
+" Debugger
+nnoremap <silent> <leader>db :DapToggleBreakpoint<CR>
+nnoremap <silent> <leader>dc :DapContinue<CR>
+nnoremap <silent> <leader>ds :DapStop<CR>
+nnoremap <silent> <leader>dr :DapRerun<CR>
+nnoremap <silent> <leader>d[ :DapStepOver<CR>
+nnoremap <silent> <leader>d] :DapStepOut<CR>
+nnoremap <silent> <leader>di :DapStepInfo<CR>
+nnoremap <silent> <leader>do :DapToggleRpl<CR>
+nnoremap <silent> <leader>dl :DapShowLog<CR>
+nnoremap <silent> <leader>dt :DapUiToggle<CR>
+
 " Mark
 nnoremap <leader>mt :Telescope harpoon marks<CR>
 nnoremap <leader>mm :lua require("harpoon.ui").toggle_quick_menu()<CR>
@@ -530,7 +543,11 @@ EOF
 " Addon
 lua <<EOF
   require("indent_blankline").setup{}
-  require'nvim-tree'.setup{}
+  require'nvim-tree'.setup{
+    view = {
+      width = 50
+    }
+  }
   require('nvim-cursorline').setup {
     cursorline = {
       enable = true,
