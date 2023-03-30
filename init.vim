@@ -90,7 +90,6 @@ Plug 'saadparwaiz1/cmp_luasnip'
 
 " Language
 Plug 'rust-lang/rust.vim'
-Plug 'darrikonn/vim-gofmt'
 Plug 'tomlion/vim-solidity'
 Plug 'ray-x/go.nvim'
 Plug 'simrat39/rust-tools.nvim'
