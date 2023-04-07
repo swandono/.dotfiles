@@ -27,6 +27,7 @@ set noshowmode
 set completeopt=menu,menuone,noselect
 set signcolumn=yes
 set encoding=UTF-8
+set colorcolumn=80
 
 " Other
 set cmdheight=1
@@ -89,7 +90,6 @@ Plug 'saadparwaiz1/cmp_luasnip'
 
 " Language
 Plug 'rust-lang/rust.vim'
-Plug 'darrikonn/vim-gofmt'
 Plug 'tomlion/vim-solidity'
 Plug 'ray-x/go.nvim'
 Plug 'simrat39/rust-tools.nvim'
@@ -97,6 +97,7 @@ Plug 'simrat39/rust-tools.nvim'
 " Git
 Plug 'tanvirtin/vgit.nvim'
 Plug 'TimUntersberger/neogit'
+Plug 'tpope/vim-fugitive'
 
 " Undo
 Plug 'mbbill/undotree'
@@ -270,7 +271,7 @@ nnoremap <silent><C-t>f :ToggleTerm direction=float<CR>
 inoremap <silent><C-t>f <Esc>:ToggleTerm direction=float<CR>
 
 " Git
-nnoremap <leader>gn :Neogit<CR>
+nnoremap <leader>gn :Neogit kind=replace<CR>
 nnoremap <leader>gg :VGit<space>
 nnoremap <leader>gk :VGit hunk_up<CR>
 nnoremap <leader>gj :VGit hunk_down<CR>
@@ -314,6 +315,18 @@ inoremap <C-c> <esc>
 " Formatter
 nnoremap <silent> <leader>fn :Format<CR>
 nnoremap <silent> <leader>fw :FormatWrite<CR>
+
+" Debugger
+nnoremap <silent> <leader>db :DapToggleBreakpoint<CR>
+nnoremap <silent> <leader>dc :DapContinue<CR>
+nnoremap <silent> <leader>ds :DapStop<CR>
+nnoremap <silent> <leader>dr :DapRerun<CR>
+nnoremap <silent> <leader>d[ :DapStepOver<CR>
+nnoremap <silent> <leader>d] :DapStepOut<CR>
+nnoremap <silent> <leader>di :DapStepInfo<CR>
+nnoremap <silent> <leader>do :DapToggleRpl<CR>
+nnoremap <silent> <leader>dl :DapShowLog<CR>
+nnoremap <silent> <leader>dt :DapUiToggle<CR>
 
 " Mark
 nnoremap <leader>mt :Telescope harpoon marks<CR>
@@ -530,7 +543,11 @@ EOF
 " Addon
 lua <<EOF
   require("indent_blankline").setup{}
-  require'nvim-tree'.setup{}
+  require'nvim-tree'.setup{
+    view = {
+      width = 50
+    }
+  }
   require('nvim-cursorline').setup {
     cursorline = {
       enable = true,
@@ -542,6 +559,10 @@ lua <<EOF
     }
   }
   require("bufferline").setup{}
+EOF
+
+" Terminal
+lua <<EOF
   require("toggleterm").setup{
     size = 50,
     shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
@@ -551,6 +572,16 @@ lua <<EOF
     persist_size = true,
     direction = 'vertical'
   }
+local Terminal  = require('toggleterm.terminal').Terminal
+local gitui = Terminal:new({
+  cmd = "gitui",
+  hidden = true,
+  direction = "float",
+})
+function _gitui_toggle()
+  gitui:toggle()
+end
+vim.api.nvim_set_keymap("n", "<leader>gm", "<cmd>lua _gitui_toggle()<CR>", {noremap = true, silent = true})
 EOF
 
 " Git
@@ -615,7 +646,7 @@ lua <<EOF
       },
       project = {
         base_dirs = {
-          {path = '~/Work/cl', max_depth = 3},
+          {path = '~/Work/cs', max_depth = 3},
           {path = '~/Work/learn', max_depth = 3},
           {path = '~/Work/swandono', max_depth = 3},
         },
