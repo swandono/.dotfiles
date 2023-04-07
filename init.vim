@@ -97,6 +97,7 @@ Plug 'simrat39/rust-tools.nvim'
 " Git
 Plug 'tanvirtin/vgit.nvim'
 Plug 'TimUntersberger/neogit'
+Plug 'tpope/vim-fugitive'
 
 " Undo
 Plug 'mbbill/undotree'
