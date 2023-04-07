@@ -559,6 +559,10 @@ lua <<EOF
     }
   }
   require("bufferline").setup{}
+EOF
+
+" Terminal
+lua <<EOF
   require("toggleterm").setup{
     size = 50,
     shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
@@ -568,6 +572,16 @@ lua <<EOF
     persist_size = true,
     direction = 'vertical'
   }
+local Terminal  = require('toggleterm.terminal').Terminal
+local gitui = Terminal:new({
+  cmd = "gitui",
+  hidden = true,
+  direction = "float",
+})
+function _gitui_toggle()
+  gitui:toggle()
+end
+vim.api.nvim_set_keymap("n", "<leader>gm", "<cmd>lua _gitui_toggle()<CR>", {noremap = true, silent = true})
 EOF
 
 " Git
