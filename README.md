@@ -1,6 +1,6 @@
 # NeoVim Config
 
-Make NeoVim better IDE
+Make NeoVim better IDE!!!
 
 ![Neovim](https://i.postimg.cc/jd6tKQ0z/Screen-Shot-2022-09-09-at-16-07-29.png)
 
