@@ -188,6 +188,7 @@ nnoremap <leader>bs :lua require('telescope.builtin').git_branches()<CR>
 nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-r><C-w>})<CR>
 nnoremap <leader>pw :lua require'telescope'.extensions.project.project{}<CR>
 nnoremap <leader>fb :Telescope file_browser<CR>
+nnoremap <leader>ks :Telescope current_buffer_fuzzy_find<CR>
 nnoremap <C-j> :lua require('telescope.builtin').buffers()<CR>
 
 " Undo
