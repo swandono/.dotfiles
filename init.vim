@@ -189,6 +189,7 @@ nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-
 nnoremap <leader>pw :lua require'telescope'.extensions.project.project{}<CR>
 nnoremap <leader>fb :Telescope file_browser<CR>
 nnoremap <leader>ks :Telescope current_buffer_fuzzy_find<CR>
+nnoremap <C-k> :lua require('telescope.builtin').find_files()<CR>
 nnoremap <C-j> :lua require('telescope.builtin').buffers()<CR>
 nnoremap <C-k> :lua require('telescope.builtin').find_files()<CR>
 nnoremap <C-l> :lua require('telescope.builtin').live_grep()<CR>
@@ -205,6 +206,7 @@ nnoremap <leader>ws' :resize +5<CR>
 " Tab/Buffer Navigation
 " Little tweak, for preventing unsaved buffer to be closed
 " Edit api.nvim_buf_delete(id, { force = true }) to api.nvim_buf_delete(id, {})
+
 nnoremap <silent><leader>bp :BufferLineCyclePrev<CR>
 nnoremap <silent><leader>bn :BufferLineCycleNext<CR>
 nnoremap <silent><leader>be :BufferLineSortByExtension<CR>
@@ -246,6 +248,7 @@ nnoremap <leader>ve :lua vim.diagnostic.open_float()<CR>
 nnoremap <leader>rt :NvimTreeRefresh<CR>
 nnoremap <C-h> :NvimTreeToggle<CR>
 
+" Trouble
 nnoremap <leader>ll <cmd>TroubleToggle<cr>
 nnoremap <leader>lw <cmd>TroubleToggle workspace_diagnostics<cr>
 nnoremap <leader>ld <cmd>TroubleToggle document_diagnostics<cr>
