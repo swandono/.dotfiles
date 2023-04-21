@@ -191,6 +191,8 @@ nnoremap <leader>fb :Telescope file_browser<CR>
 nnoremap <leader>ks :Telescope current_buffer_fuzzy_find<CR>
 nnoremap <C-k> :lua require('telescope.builtin').find_files()<CR>
 nnoremap <C-j> :lua require('telescope.builtin').buffers()<CR>
+nnoremap <C-k> :lua require('telescope.builtin').find_files()<CR>
+nnoremap <C-l> :lua require('telescope.builtin').live_grep()<CR>
 
 " Undo
 nnoremap <leader>u :UndotreeShow<CR>
@@ -204,8 +206,8 @@ nnoremap <leader>ws' :resize +5<CR>
 " Tab/Buffer Navigation
 " Little tweak, for preventing unsaved buffer to be closed
 " Edit api.nvim_buf_delete(id, { force = true }) to api.nvim_buf_delete(id, {})
-nnoremap <silent><leader>bp :BufferLinePick<CR>
-nnoremap <silent><leader>bb :BufferLineCyclePrev<CR>
+
+nnoremap <silent><leader>bp :BufferLineCyclePrev<CR>
 nnoremap <silent><leader>bn :BufferLineCycleNext<CR>
 nnoremap <silent><leader>be :BufferLineSortByExtension<CR>
 nnoremap <silent><leader>bf :BufferLineSortByDirectory<CR>
@@ -243,8 +245,8 @@ nnoremap <leader>vk :lua vim.diagnostic.goto_next()<CR>
 nnoremap <leader>ve :lua vim.diagnostic.open_float()<CR>
 
 " Tree
-nnoremap <leader>rl :NvimTreeRefresh<CR>
-nnoremap <C-l> :NvimTreeToggle<CR>
+nnoremap <leader>rt :NvimTreeRefresh<CR>
+nnoremap <C-h> :NvimTreeToggle<CR>
 
 " Trouble
 nnoremap <leader>ll <cmd>TroubleToggle<cr>
@@ -392,7 +394,7 @@ lua <<EOF
        documentation = cmp.config.window.bordered(),
     },
     mapping = {
-        ["<C-j>"] = cmp.mapping(function(fallback)
+        ["<C-n>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()
           elseif luasnip.expand_or_jumpable() then
@@ -404,7 +406,7 @@ lua <<EOF
           end
         end, { "i", "s" }),
 
-        ["<C-k>"] = cmp.mapping(function(fallback)
+        ["<C-p>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_prev_item()
           elseif luasnip.jumpable(-1) then
