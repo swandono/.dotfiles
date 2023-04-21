@@ -133,13 +133,13 @@ Plug 'mhartington/formatter.nvim'
 Plug 'nvim-lualine/lualine.nvim'
 
 " Tab Buffer
-Plug 'akinsho/bufferline.nvim', { 'tag': 'v3.*' }
+Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 
 " Tree
 Plug 'kyazdani42/nvim-tree.lua'
 
 " Toggle Terminal
-Plug 'akinsho/toggleterm.nvim', { 'tag': 'v2.*' }
+Plug 'akinsho/toggleterm.nvim', { 'tag': '*' }
 
 " Comment
 Plug 'numToStr/Comment.nvim'
