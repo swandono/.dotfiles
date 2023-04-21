@@ -188,6 +188,8 @@ nnoremap <leader>bs :lua require('telescope.builtin').git_branches()<CR>
 nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-r><C-w>})<CR>
 nnoremap <leader>pw :lua require'telescope'.extensions.project.project{}<CR>
 nnoremap <leader>fb :Telescope file_browser<CR>
+nnoremap <leader>ks :Telescope current_buffer_fuzzy_find<CR>
+nnoremap <C-k> :lua require('telescope.builtin').find_files()<CR>
 nnoremap <C-j> :lua require('telescope.builtin').buffers()<CR>
 
 " Undo
@@ -203,26 +205,15 @@ nnoremap <leader>ws' :resize +5<CR>
 " Little tweak, for preventing unsaved buffer to be closed
 " Edit api.nvim_buf_delete(id, { force = true }) to api.nvim_buf_delete(id, {})
 nnoremap <silent><leader>bp :BufferLinePick<CR>
-nnoremap <silent><leader>b[ :BufferLineCyclePrev<CR>
-nnoremap <silent><leader>b] :BufferLineCycleNext<CR>
-nnoremap <silent><leader>b, :BufferLineMovePrev<CR>
-nnoremap <silent><leader>b. :BufferLineMoveNext<CR>
+nnoremap <silent><leader>bb :BufferLineCyclePrev<CR>
+nnoremap <silent><leader>bn :BufferLineCycleNext<CR>
 nnoremap <silent><leader>be :BufferLineSortByExtension<CR>
 nnoremap <silent><leader>bf :BufferLineSortByDirectory<CR>
-nnoremap <silent><leader>bc[ :BufferLineCloseLeft<CR>
-nnoremap <silent><leader>bc] :BufferLineCloseRight<CR>
-nnoremap <silent><leader>bcp :BufferLinePickClose<CR>
-nnoremap <silent><leader>b1 :BufferLineGoToBuffer 1<CR>
-nnoremap <silent><leader>b2 :BufferLineGoToBuffer 2<CR>
-nnoremap <silent><leader>b3 :BufferLineGoToBuffer 3<CR>
-nnoremap <silent><leader>b4 :BufferLineGoToBuffer 4<CR>
-nnoremap <silent><leader>b5 :BufferLineGoToBuffer 5<CR>
+nnoremap <silent><leader>bcb :BufferLineCloseLeft<CR>
+nnoremap <silent><leader>bcn :BufferLineCloseRight<CR>
 nnoremap <silent><leader>bh :split<CR>
 nnoremap <silent><leader>bv :vsplit<CR>
-nnoremap <leader>bn :vertical rightbelow sb<space>
-nnoremap <leader>bk :BufferLineGoToBuffer<space>
 nnoremap <leader>bd :bd<CR>
-nnoremap <leader>bj :b<space>
 nnoremap <leader>oo :only<CR>
 
 " Copy Paste Delete
@@ -252,7 +243,7 @@ nnoremap <leader>vk :lua vim.diagnostic.goto_next()<CR>
 nnoremap <leader>ve :lua vim.diagnostic.open_float()<CR>
 
 " Tree
-nnoremap <C-n>l :NvimTreeRefresh<CR>
+nnoremap <leader>rl :NvimTreeRefresh<CR>
 nnoremap <C-l> :NvimTreeToggle<CR>
 
 " Trouble
@@ -261,14 +252,8 @@ nnoremap <leader>lw <cmd>TroubleToggle workspace_diagnostics<cr>
 nnoremap <leader>ld <cmd>TroubleToggle document_diagnostics<cr>
 
 " Toggle Terminal
-nnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
-inoremap <silent><C-k> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
-nnoremap <silent><C-t>v :ToggleTerm size=50 direction=vertical<CR>
-inoremap <silent><C-t>v <Esc>:ToggleTerm size=50 direction=vertical<CR>
-nnoremap <silent><C-t>h :ToggleTerm size=20 direction=horizontal<CR>
-inoremap <silent><C-t>h <Esc>:ToggleTerm size=20 direction=horizontal<CR>
-nnoremap <silent><C-t>f :ToggleTerm direction=float<CR>
-inoremap <silent><C-t>f <Esc>:ToggleTerm direction=float<CR>
+nnoremap <silent><C-]> <Cmd>exe v:count1 . "ToggleTerm"<CR>
+inoremap <silent><C-]> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 " Git
 nnoremap <leader>gn :Neogit kind=replace<CR>
@@ -276,24 +261,13 @@ nnoremap <leader>gg :VGit<space>
 nnoremap <leader>gk :VGit hunk_up<CR>
 nnoremap <leader>gj :VGit hunk_down<CR>
 nnoremap <leader>gh :VGit buffer_hunk_preview<CR>
-nnoremap <leader>g. :VGit buffer_hunk_stage<CR>
-nnoremap <leader>g,r :VGit buffer_hunk_reset<CR>
 nnoremap <leader>gs :!git status<CR>
-nnoremap <leader>g/ :!git branch<CR>
-nnoremap <leader>go :!git pull<CR>
-nnoremap <leader>gi :!git fetch<CR>
-nnoremap <leader>gd :VGit project_diff_preview<CR>
 nnoremap <leader>gl :VGit project_logs_preview<CR>
-nnoremap <leader>gc :VGit project_commits_preview<space>
+nnoremap <leader>grg :VGit buffer_hunk_reset<CR>
+nnoremap <leader>grb :VGit buffer_reset<CR>
 nnoremap <leader>gtg :VGit toggle_live_gutter<CR>
 nnoremap <leader>gtb :VGit toggle_live_blame<CR>
 nnoremap <leader>gtp :VGit toggle_diff_preference<CR>
-nnoremap <leader>gbs :VGit buffer_stage<CR>
-nnoremap <leader>gbu :VGit buffer_unstage<CR>
-nnoremap <leader>gbr :VGit buffer_reset<CR>
-nnoremap <leader>gps :VGit project_stage_all<CR>
-nnoremap <leader>gpu :VGit project_unstage_all<CR>
-nnoremap <leader>gpr :VGit project_reset_all<CR>
 
 " Others
 nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
@@ -332,13 +306,15 @@ nnoremap <silent> <leader>dt :DapUiToggle<CR>
 nnoremap <leader>mt :Telescope harpoon marks<CR>
 nnoremap <leader>mm :lua require("harpoon.ui").toggle_quick_menu()<CR>
 nnoremap <leader>ma :lua require("harpoon.mark").add_file()<CR>
-nnoremap <leader>m[ :lua require("harpoon.ui").nav_prev()<CR>
-nnoremap <leader>m] :lua require("harpoon.ui").nav_next()<CR>
+nnoremap <leader>mb :lua require("harpoon.ui").nav_prev()<CR>
+nnoremap <leader>mn :lua require("harpoon.ui").nav_next()<CR>
 nnoremap <leader>m1 :lua require("harpoon.ui").nav_file(1)<CR>
 nnoremap <leader>m2 :lua require("harpoon.ui").nav_file(2)<CR>
 nnoremap <leader>m3 :lua require("harpoon.ui").nav_file(3)<CR>
 nnoremap <leader>m4 :lua require("harpoon.ui").nav_file(4)<CR>
 nnoremap <leader>m5 :lua require("harpoon.ui").nav_file(5)<CR>
+nnoremap <C-p> :lua require("harpoon.ui").nav_prev()<CR>
+nnoremap <C-n> :lua require("harpoon.ui").nav_next()<CR>
 
 " Markdown
 nnoremap <leader>mg :Glow<CR>
@@ -366,7 +342,7 @@ augroup END
 
 " Auto Command
 autocmd TermEnter term://*toggleterm#*
-      \ tnoremap <silent><C-k> <Cmd>exe v:count1 . "ToggleTerm"<CR>
+      \ tnoremap <silent><C-]> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 autocmd BufReadPost,FileReadPost * normal zR
 
@@ -416,7 +392,7 @@ lua <<EOF
        documentation = cmp.config.window.bordered(),
     },
     mapping = {
-        ["<Tab>"] = cmp.mapping(function(fallback)
+        ["<C-j>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()
           elseif luasnip.expand_or_jumpable() then
@@ -428,7 +404,7 @@ lua <<EOF
           end
         end, { "i", "s" }),
 
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
+        ["<C-k>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_prev_item()
           elseif luasnip.jumpable(-1) then
@@ -438,7 +414,7 @@ lua <<EOF
           end
         end, { "i", "s" }),
 
-        ['<C-e>'] = cmp.mapping.abort(),
+        ['<C-c>'] = cmp.mapping.abort(),
         ['<CR>'] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
             select = true
@@ -581,7 +557,16 @@ local gitui = Terminal:new({
 function _gitui_toggle()
   gitui:toggle()
 end
+local lazygit = Terminal:new({
+  cmd = "lazygit",
+  hidden = true,
+  direction = "float",
+})
+function _lazygit_toggle()
+  lazygit:toggle()
+end
 vim.api.nvim_set_keymap("n", "<leader>gm", "<cmd>lua _gitui_toggle()<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap("n", "<leader>g,", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
 EOF
 
 " Git
