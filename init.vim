@@ -118,7 +118,6 @@ Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-Plug 'nvim-telescope/telescope-project.nvim/'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
 
 " Plenary
@@ -180,15 +179,9 @@ nnoremap <leader>cg :colorscheme gruvbox<CR>
 nnoremap <leader>ct :colorscheme tokyonight<CR>
 
 " Telescope
-nnoremap <leader>ps :lua require('telescope.builtin').live_grep()<CR>
-nnoremap <leader>fs :lua require('telescope.builtin').find_files()<CR>
-nnoremap <leader>os :lua require('telescope.builtin').oldfiles()<CR>
-nnoremap <leader>ms :lua require('telescope.builtin').marks()<CR>
-nnoremap <leader>bs :lua require('telescope.builtin').git_branches()<CR>
-nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-r><C-w>})<CR>
-nnoremap <leader>pw :lua require'telescope'.extensions.project.project{}<CR>
-nnoremap <leader>fb :Telescope file_browser<CR>
+nnoremap <leader>js :lua require('telescope.builtin').marks()<CR>
 nnoremap <leader>ks :Telescope current_buffer_fuzzy_find<CR>
+nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-r><C-w>})<CR>
 nnoremap <C-j> :lua require('telescope.builtin').buffers()<CR>
 nnoremap <C-k> :lua require('telescope.builtin').find_files()<CR>
 nnoremap <C-l> :lua require('telescope.builtin').live_grep()<CR>
@@ -206,16 +199,16 @@ nnoremap <leader>ws' :resize +5<CR>
 " Little tweak, for preventing unsaved buffer to be closed
 " Edit api.nvim_buf_delete(id, { force = true }) to api.nvim_buf_delete(id, {})
 
-nnoremap <silent><leader>bp :BufferLineCyclePrev<CR>
-nnoremap <silent><leader>bn :BufferLineCycleNext<CR>
-nnoremap <silent><leader>be :BufferLineSortByExtension<CR>
-nnoremap <silent><leader>bf :BufferLineSortByDirectory<CR>
-nnoremap <silent><leader>bcb :BufferLineCloseLeft<CR>
-nnoremap <silent><leader>bcn :BufferLineCloseRight<CR>
-nnoremap <silent><leader>bh :split<CR>
-nnoremap <silent><leader>bv :vsplit<CR>
 nnoremap <leader>bd :bd<CR>
 nnoremap <leader>oo :only<CR>
+nnoremap <silent><leader>bcb :BufferLineCloseLeft<CR>
+nnoremap <silent><leader>bcn :BufferLineCloseRight<CR>
+nnoremap <silent><leader>be :BufferLineSortByExtension<CR>
+nnoremap <silent><leader>bf :BufferLineSortByDirectory<CR>
+nnoremap <silent><leader>bn :BufferLineCycleNext<CR>
+nnoremap <silent><leader>bp :BufferLineCyclePrev<CR>
+nnoremap <silent><leader>bh :split<CR>
+nnoremap <silent><leader>bv :vsplit<CR>
 
 " Copy Paste Delete
 nnoremap <leader>y "*y
@@ -229,19 +222,18 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 " LSP
-nnoremap <leader>vd :lua require('telescope.builtin').lsp_definitions()<CR>
-nnoremap <leader>vt :lua require('telescope.builtin').lsp_type_definitions()<CR>
-nnoremap <leader>vi :lua require('telescope.builtin').lsp_implementations()<CR>
-nnoremap <leader>vs :lua vim.lsp.buf.signature_help()<CR>
-nnoremap <leader>vr :lua require('telescope.builtin').lsp_references()<CR>
-nnoremap <leader>vl :lua vim.lsp.buf.references() <CR>
-nnoremap <leader>vn :lua vim.lsp.buf.rename() <CR>
-nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
-nnoremap <leader>vf :lua vim.lsp.buf.format{async = true}<CR>
+nnoremap <leader>ff :lua vim.lsp.buf.format{async = true}<CR>
 nnoremap <leader>va :lua vim.lsp.buf.code_action()<CR>
-nnoremap <leader>vk :lua vim.diagnostic.goto_prev()<CR>
-nnoremap <leader>vj :lua vim.diagnostic.goto_next()<CR>
-nnoremap <leader>ve :lua vim.diagnostic.open_float()<CR>
+nnoremap <leader>vd :lua require('telescope.builtin').lsp_definitions()<CR>
+nnoremap <leader>vf :lua vim.diagnostic.open_float()<CR>
+nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
+nnoremap <leader>vj :lua require('telescope.builtin').lsp_implementations()<CR>
+nnoremap <leader>vk :lua require('telescope.builtin').lsp_type_definitions()<CR>
+nnoremap <leader>vl :lua require('telescope.builtin').lsp_references()<CR>
+nnoremap <leader>vn :lua vim.diagnostic.goto_next()<CR>
+nnoremap <leader>vp :lua vim.diagnostic.goto_prev()<CR>
+nnoremap <leader>vr :lua vim.lsp.buf.rename() <CR>
+nnoremap <leader>vs :lua vim.lsp.buf.signature_help()<CR>
 
 " Tree
 nnoremap <leader>rt :NvimTreeRefresh<CR>
@@ -257,32 +249,32 @@ nnoremap <silent><C-]> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 inoremap <silent><C-]> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 " Git
-nnoremap <leader>gn :Neogit kind=replace<CR>
 nnoremap <leader>gg :VGit<space>
-nnoremap <leader>gk :VGit hunk_up<CR>
-nnoremap <leader>gj :VGit hunk_down<CR>
 nnoremap <leader>gh :VGit buffer_hunk_preview<CR>
-nnoremap <leader>gs :!git status<CR>
+nnoremap <leader>gj :VGit hunk_down<CR>
+nnoremap <leader>gk :VGit hunk_up<CR>
 nnoremap <leader>gl :VGit project_logs_preview<CR>
-nnoremap <leader>grg :VGit buffer_hunk_reset<CR>
+nnoremap <leader>gn :Neogit kind=replace<CR>
 nnoremap <leader>grb :VGit buffer_reset<CR>
-nnoremap <leader>gtg :VGit toggle_live_gutter<CR>
+nnoremap <leader>grg :VGit buffer_hunk_reset<CR>
+nnoremap <leader>gs :!git status<CR>
 nnoremap <leader>gtb :VGit toggle_live_blame<CR>
+nnoremap <leader>gtg :VGit toggle_live_gutter<CR>
 nnoremap <leader>gtp :VGit toggle_diff_preference<CR>
 
 " Others
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
 nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
+nnoremap <leader>0 :edit<CR>
 nnoremap <leader>1 :set nowrap!<CR>
 nnoremap <leader>2 zR:IndentBlanklineEnable<CR>
 nnoremap <leader>3 :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 nnoremap <leader>4 :IndentBlanklineEnable<CR>
 nnoremap <leader>5 :silent !chmod +x %<CR>
 nnoremap <leader>9 :LspRestart<CR>
-nnoremap <leader>0 :edit<CR>
-nnoremap <C-u> <C-u>zz
-nnoremap <C-d> <C-d>zz
-nnoremap n nzzzv
 nnoremap N Nzzzv
+nnoremap n nzzzv
 
 " Close
 inoremap <C-c> <esc>
@@ -292,30 +284,30 @@ nnoremap <silent> <leader>fn :Format<CR>
 nnoremap <silent> <leader>fw :FormatWrite<CR>
 
 " Debugger
-nnoremap <silent> <leader>db :DapToggleBreakpoint<CR>
-nnoremap <silent> <leader>dc :DapContinue<CR>
-nnoremap <silent> <leader>ds :DapStop<CR>
-nnoremap <silent> <leader>dr :DapRerun<CR>
 nnoremap <silent> <leader>d[ :DapStepOver<CR>
 nnoremap <silent> <leader>d] :DapStepOut<CR>
+nnoremap <silent> <leader>db :DapToggleBreakpoint<CR>
+nnoremap <silent> <leader>dc :DapContinue<CR>
 nnoremap <silent> <leader>di :DapStepInfo<CR>
-nnoremap <silent> <leader>do :DapToggleRpl<CR>
 nnoremap <silent> <leader>dl :DapShowLog<CR>
+nnoremap <silent> <leader>do :DapToggleRpl<CR>
+nnoremap <silent> <leader>dr :DapRerun<CR>
+nnoremap <silent> <leader>ds :DapStop<CR>
 nnoremap <silent> <leader>dt :DapUiToggle<CR>
 
 " Mark
-nnoremap <leader>mt :Telescope harpoon marks<CR>
-nnoremap <leader>mm :lua require("harpoon.ui").toggle_quick_menu()<CR>
-nnoremap <leader>ma :lua require("harpoon.mark").add_file()<CR>
-nnoremap <leader>mb :lua require("harpoon.ui").nav_prev()<CR>
-nnoremap <leader>mn :lua require("harpoon.ui").nav_next()<CR>
+nnoremap <C-n> :lua require("harpoon.ui").nav_next()<CR>
+nnoremap <C-p> :lua require("harpoon.ui").nav_prev()<CR>
 nnoremap <leader>m1 :lua require("harpoon.ui").nav_file(1)<CR>
 nnoremap <leader>m2 :lua require("harpoon.ui").nav_file(2)<CR>
 nnoremap <leader>m3 :lua require("harpoon.ui").nav_file(3)<CR>
 nnoremap <leader>m4 :lua require("harpoon.ui").nav_file(4)<CR>
 nnoremap <leader>m5 :lua require("harpoon.ui").nav_file(5)<CR>
-nnoremap <C-p> :lua require("harpoon.ui").nav_prev()<CR>
-nnoremap <C-n> :lua require("harpoon.ui").nav_next()<CR>
+nnoremap <leader>ma :lua require("harpoon.mark").add_file()<CR>
+nnoremap <leader>mb :lua require("harpoon.ui").nav_prev()<CR>
+nnoremap <leader>mm :lua require("harpoon.ui").toggle_quick_menu()<CR>
+nnoremap <leader>mn :lua require("harpoon.ui").nav_next()<CR>
+nnoremap <leader>mt :Telescope harpoon marks<CR>
 
 " Markdown
 nnoremap <leader>mg :Glow<CR>
@@ -629,21 +621,11 @@ lua <<EOF
         theme = "ivy",
         hijack_netrw = true,
         mappings = {},
-      },
-      project = {
-        base_dirs = {
-          {path = '~/Work/cs', max_depth = 3},
-          {path = '~/Work/learn', max_depth = 3},
-          {path = '~/Work/swandono', max_depth = 3},
-        },
-        hidden_files = true, -- default: false
-        theme = "dropdown"
       }
     }
   }
   require('telescope').load_extension('fzf')
   require('telescope').load_extension('harpoon')
-  require('telescope').load_extension('project')
   require("telescope").load_extension('file_browser')
 EOF
 
