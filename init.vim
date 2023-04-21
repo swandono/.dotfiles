@@ -133,13 +133,13 @@ Plug 'mhartington/formatter.nvim'
 Plug 'nvim-lualine/lualine.nvim'
 
 " Tab Buffer
-Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
+Plug 'akinsho/bufferline.nvim', { 'tag': 'v3.*' }
 
 " Tree
 Plug 'kyazdani42/nvim-tree.lua'
 
 " Toggle Terminal
-Plug 'akinsho/toggleterm.nvim', { 'tag': 'v1.*' }
+Plug 'akinsho/toggleterm.nvim', { 'tag': 'v2.*' }
 
 " Comment
 Plug 'numToStr/Comment.nvim'
@@ -156,7 +156,7 @@ Plug 'windwp/nvim-ts-autotag'
 Plug 'ThePrimeagen/harpoon'
 
 " Markdown
-Plug 'ellisonleao/glow.nvim', {'branch': 'main'}
+Plug 'ellisonleao/glow.nvim', { 'branch': 'main'}
 
 call plug#end()
 
@@ -249,12 +249,13 @@ nnoremap <silent><C-]> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 inoremap <silent><C-]> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 " Git
+nnoremap <leader>gb :VGit buffer_gutter_blame_preview<CR>
+nnoremap <leader>gd :VGit buffer_diff_preview<CR>
 nnoremap <leader>gg :VGit<space>
-nnoremap <leader>gh :VGit buffer_hunk_preview<CR>
-nnoremap <leader>gj :VGit hunk_down<CR>
-nnoremap <leader>gk :VGit hunk_up<CR>
+nnoremap <leader>gj :Neogit kind=replace<CR>
 nnoremap <leader>gl :VGit project_logs_preview<CR>
-nnoremap <leader>gn :Neogit kind=replace<CR>
+nnoremap <leader>gn :VGit hunk_down<CR>
+nnoremap <leader>gp :VGit hunk_up<CR>
 nnoremap <leader>grb :VGit buffer_reset<CR>
 nnoremap <leader>grg :VGit buffer_hunk_reset<CR>
 nnoremap <leader>gs :!git status<CR>
@@ -542,14 +543,6 @@ lua <<EOF
     direction = 'vertical'
   }
 local Terminal  = require('toggleterm.terminal').Terminal
-local gitui = Terminal:new({
-  cmd = "gitui",
-  hidden = true,
-  direction = "float",
-})
-function _gitui_toggle()
-  gitui:toggle()
-end
 local lazygit = Terminal:new({
   cmd = "lazygit",
   hidden = true,
@@ -558,8 +551,7 @@ local lazygit = Terminal:new({
 function _lazygit_toggle()
   lazygit:toggle()
 end
-vim.api.nvim_set_keymap("n", "<leader>g,", "<cmd>lua _gitui_toggle()<CR>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap("n", "<leader>gm", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap("n", "<leader>gk", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
 EOF
 
 " Git
