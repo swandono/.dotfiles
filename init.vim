@@ -189,7 +189,6 @@ nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-
 nnoremap <leader>pw :lua require'telescope'.extensions.project.project{}<CR>
 nnoremap <leader>fb :Telescope file_browser<CR>
 nnoremap <leader>ks :Telescope current_buffer_fuzzy_find<CR>
-nnoremap <C-k> :lua require('telescope.builtin').find_files()<CR>
 nnoremap <C-j> :lua require('telescope.builtin').buffers()<CR>
 nnoremap <C-k> :lua require('telescope.builtin').find_files()<CR>
 nnoremap <C-l> :lua require('telescope.builtin').live_grep()<CR>
@@ -240,8 +239,8 @@ nnoremap <leader>vn :lua vim.lsp.buf.rename() <CR>
 nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
 nnoremap <leader>vf :lua vim.lsp.buf.format{async = true}<CR>
 nnoremap <leader>va :lua vim.lsp.buf.code_action()<CR>
-nnoremap <leader>vj :lua vim.diagnostic.goto_prev()<CR>
-nnoremap <leader>vk :lua vim.diagnostic.goto_next()<CR>
+nnoremap <leader>vk :lua vim.diagnostic.goto_prev()<CR>
+nnoremap <leader>vj :lua vim.diagnostic.goto_next()<CR>
 nnoremap <leader>ve :lua vim.diagnostic.open_float()<CR>
 
 " Tree
