@@ -201,8 +201,8 @@ nnoremap <leader>ws' :resize +5<CR>
 
 nnoremap <leader>bd :bd<CR>
 nnoremap <leader>oo :only<CR>
-nnoremap <silent><leader>bcb :BufferLineCloseLeft<CR>
-nnoremap <silent><leader>bcn :BufferLineCloseRight<CR>
+nnoremap <silent><leader>b[[ :BufferLineCloseLeft<CR>
+nnoremap <silent><leader>b]] :BufferLineCloseRight<CR>
 nnoremap <silent><leader>be :BufferLineSortByExtension<CR>
 nnoremap <silent><leader>bf :BufferLineSortByDirectory<CR>
 nnoremap <silent><leader>bn :BufferLineCycleNext<CR>
@@ -213,10 +213,10 @@ nnoremap <silent><leader>bv :vsplit<CR>
 " Copy Paste Delete
 nnoremap <leader>y "*y
 vnoremap <leader>y "*y
-nnoremap <leader>p[ "*P
-vnoremap <leader>p[ "*P
-nnoremap <leader>p] "*p
-vnoremap <leader>p] "*p
+nnoremap <leader>pP "*P
+vnoremap <leader>pP "*P
+nnoremap <leader>pp "*p
+vnoremap <leader>pp "*p
 xnoremap <leader>pp "_dP
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
