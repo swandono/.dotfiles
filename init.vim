@@ -257,7 +257,7 @@ nnoremap <leader>gl :VGit project_logs_preview<CR>
 nnoremap <leader>gn :VGit hunk_down<CR>
 nnoremap <leader>gp :VGit hunk_up<CR>
 nnoremap <leader>grb :VGit buffer_reset<CR>
-nnoremap <leader>grg :VGit buffer_hunk_reset<CR>
+nnoremap <leader>grh :VGit buffer_hunk_reset<CR>
 nnoremap <leader>gs :!git status<CR>
 nnoremap <leader>gtb :VGit toggle_live_blame<CR>
 nnoremap <leader>gtg :VGit toggle_live_gutter<CR>
