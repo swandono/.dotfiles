@@ -239,8 +239,7 @@ nnoremap <silent><C-]> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 inoremap <silent><C-]> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 " Git
-nnoremap <leader>gd :Gitsigns diffthis<CR>
-nnoremap <leader>gx :close<CR>:bd<CR> zR:IndentBlanklineEnable<CR>
+nnoremap <leader>gd :Gdif<CR>
 nnoremap <leader>gs :Git<CR>
 nnoremap <leader>gj :Neogit kind=replace<CR>
 nnoremap <leader>gn :Gitsigns next_hunk<CR>
