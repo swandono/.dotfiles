@@ -687,18 +687,18 @@ lua <<EOF
     require("formatter").setup {
         logging = true,
         filetype = {
-        javascript = { prettier },
-        javascriptreact = { prettier },
-        typescript = { prettier },
-        typescriptreact = { prettier },
-        css = { prettier },
-        vue = { prettier },
-        json = { prettier },
-        markdown = { prettier },
-        html = { prettier },
-        go = { go },
-        rust = { rust },
-        python = { python }
+            javascript = { prettier },
+            javascriptreact = { prettier },
+            typescript = { prettier },
+            typescriptreact = { prettier },
+            css = { prettier },
+            vue = { prettier },
+            json = { prettier },
+            markdown = { prettier },
+            html = { prettier },
+            go = { go },
+            rust = { rust },
+            python = { python }
         },
         ["*"] = {
             require("formatter.filetypes.any").remove_trailing_whitespace
