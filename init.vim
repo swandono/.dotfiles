@@ -220,6 +220,8 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 " LSP
+nnoremap <leader>ff :lua vim.lsp.buf.format{async = true}<CR>
+nnoremap <leader>va :lua vim.lsp.buf.code_action()<CR>
 nnoremap <leader>vd :lua require('telescope.builtin').lsp_definitions()<CR>
 nnoremap <leader>vj :lua require('telescope.builtin').lsp_implementations()<CR>
 nnoremap <leader>vk :lua require('telescope.builtin').lsp_type_definitions()<CR>
