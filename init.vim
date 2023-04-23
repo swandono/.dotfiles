@@ -9,8 +9,9 @@ set relativenumber
 set nohlsearch
 set hidden
 set noerrorbells
-set tabstop=2 softtabstop=2
-set shiftwidth=2
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set expandtab
 set smartindent
 set nu
@@ -118,7 +119,6 @@ Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-Plug 'nvim-telescope/telescope-project.nvim/'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
 
 " Plenary
@@ -134,13 +134,13 @@ Plug 'mhartington/formatter.nvim'
 Plug 'nvim-lualine/lualine.nvim'
 
 " Tab Buffer
-Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
+Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 
 " Tree
 Plug 'kyazdani42/nvim-tree.lua'
 
 " Toggle Terminal
-Plug 'akinsho/toggleterm.nvim', { 'tag': 'v1.*' }
+Plug 'akinsho/toggleterm.nvim', { 'tag': '*' }
 
 " Comment
 Plug 'numToStr/Comment.nvim'
@@ -157,7 +157,7 @@ Plug 'windwp/nvim-ts-autotag'
 Plug 'ThePrimeagen/harpoon'
 
 " Markdown
-Plug 'ellisonleao/glow.nvim', {'branch': 'main'}
+Plug 'ellisonleao/glow.nvim', { 'branch': 'main'}
 
 call plug#end()
 
@@ -180,16 +180,10 @@ nnoremap <leader>cg :colorscheme gruvbox<CR>
 nnoremap <leader>ct :colorscheme tokyonight<CR>
 
 " Telescope
-nnoremap <leader>ps :lua require('telescope.builtin').live_grep()<CR>
-nnoremap <leader>fs :lua require('telescope.builtin').find_files()<CR>
-nnoremap <leader>os :lua require('telescope.builtin').oldfiles()<CR>
-nnoremap <leader>ms :lua require('telescope.builtin').marks()<CR>
-nnoremap <leader>bs :lua require('telescope.builtin').git_branches()<CR>
-nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-r><C-w>})<CR>
-nnoremap <leader>pw :lua require'telescope'.extensions.project.project{}<CR>
-nnoremap <leader>fb :Telescope file_browser<CR>
+nnoremap <leader>fs :Ex<CR>
+nnoremap <leader>js :lua require('telescope.builtin').marks()<CR>
 nnoremap <leader>ks :Telescope current_buffer_fuzzy_find<CR>
-nnoremap <C-k> :lua require('telescope.builtin').find_files()<CR>
+nnoremap <leader>ls :lua require('telescope.builtin').grep_string({ search = <C-r><C-w>})<CR>
 nnoremap <C-j> :lua require('telescope.builtin').buffers()<CR>
 nnoremap <C-k> :lua require('telescope.builtin').find_files()<CR>
 nnoremap <C-l> :lua require('telescope.builtin').live_grep()<CR>
@@ -207,42 +201,37 @@ nnoremap <leader>ws' :resize +5<CR>
 " Little tweak, for preventing unsaved buffer to be closed
 " Edit api.nvim_buf_delete(id, { force = true }) to api.nvim_buf_delete(id, {})
 
-nnoremap <silent><leader>bp :BufferLineCyclePrev<CR>
-nnoremap <silent><leader>bn :BufferLineCycleNext<CR>
-nnoremap <silent><leader>be :BufferLineSortByExtension<CR>
-nnoremap <silent><leader>bf :BufferLineSortByDirectory<CR>
-nnoremap <silent><leader>bcb :BufferLineCloseLeft<CR>
-nnoremap <silent><leader>bcn :BufferLineCloseRight<CR>
-nnoremap <silent><leader>bh :split<CR>
-nnoremap <silent><leader>bv :vsplit<CR>
 nnoremap <leader>bd :bd<CR>
 nnoremap <leader>oo :only<CR>
+nnoremap <silent><leader>b[[ :BufferLineCloseLeft<CR>
+nnoremap <silent><leader>b]] :BufferLineCloseRight<CR>
+nnoremap <silent><leader>be :BufferLineSortByExtension<CR>
+nnoremap <silent><leader>bf :BufferLineSortByDirectory<CR>
+nnoremap <silent><leader>bn :BufferLineCycleNext<CR>
+nnoremap <silent><leader>bp :BufferLineCyclePrev<CR>
+nnoremap <silent><leader>bh :split<CR>
+nnoremap <silent><leader>bv :vsplit<CR>
 
 " Copy Paste Delete
 nnoremap <leader>y "*y
 vnoremap <leader>y "*y
-nnoremap <leader>p[ "*P
-vnoremap <leader>p[ "*P
-nnoremap <leader>p] "*p
-vnoremap <leader>p] "*p
-xnoremap <leader>pp "_dP
+xnoremap <leader>p "_dP
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 " LSP
-nnoremap <leader>vd :lua require('telescope.builtin').lsp_definitions()<CR>
-nnoremap <leader>vt :lua require('telescope.builtin').lsp_type_definitions()<CR>
-nnoremap <leader>vi :lua require('telescope.builtin').lsp_implementations()<CR>
-nnoremap <leader>vs :lua vim.lsp.buf.signature_help()<CR>
-nnoremap <leader>vr :lua require('telescope.builtin').lsp_references()<CR>
-nnoremap <leader>vl :lua vim.lsp.buf.references() <CR>
-nnoremap <leader>vn :lua vim.lsp.buf.rename() <CR>
-nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
-nnoremap <leader>vf :lua vim.lsp.buf.format{async = true}<CR>
+nnoremap <leader>ff :lua vim.lsp.buf.format{async = true}<CR>
 nnoremap <leader>va :lua vim.lsp.buf.code_action()<CR>
-nnoremap <leader>vj :lua vim.diagnostic.goto_prev()<CR>
-nnoremap <leader>vk :lua vim.diagnostic.goto_next()<CR>
-nnoremap <leader>ve :lua vim.diagnostic.open_float()<CR>
+nnoremap <leader>vd :lua require('telescope.builtin').lsp_definitions()<CR>
+nnoremap <leader>vf :lua vim.diagnostic.open_float()<CR>
+nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
+nnoremap <leader>vj :lua require('telescope.builtin').lsp_implementations()<CR>
+nnoremap <leader>vk :lua require('telescope.builtin').lsp_type_definitions()<CR>
+nnoremap <leader>vl :lua require('telescope.builtin').lsp_references()<CR>
+nnoremap <leader>vn :lua vim.diagnostic.goto_next()<CR>
+nnoremap <leader>vp :lua vim.diagnostic.goto_prev()<CR>
+nnoremap <leader>vr :lua vim.lsp.buf.rename() <CR>
+nnoremap <leader>vs :lua vim.lsp.buf.signature_help()<CR>
 
 " Tree
 nnoremap <leader>rt :NvimTreeRefresh<CR>
@@ -258,32 +247,33 @@ nnoremap <silent><C-]> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 inoremap <silent><C-]> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 " Git
-nnoremap <leader>gn :Neogit kind=replace<CR>
+nnoremap <leader>gb :VGit buffer_gutter_blame_preview<CR>
+nnoremap <leader>gd :VGit buffer_diff_preview<CR>
 nnoremap <leader>gg :VGit<space>
-nnoremap <leader>gk :VGit hunk_up<CR>
-nnoremap <leader>gj :VGit hunk_down<CR>
-nnoremap <leader>gh :VGit buffer_hunk_preview<CR>
-nnoremap <leader>gs :!git status<CR>
+nnoremap <leader>gj :Neogit kind=replace<CR>
 nnoremap <leader>gl :VGit project_logs_preview<CR>
-nnoremap <leader>grg :VGit buffer_hunk_reset<CR>
+nnoremap <leader>gn :VGit hunk_down<CR>
+nnoremap <leader>gp :VGit hunk_up<CR>
 nnoremap <leader>grb :VGit buffer_reset<CR>
-nnoremap <leader>gtg :VGit toggle_live_gutter<CR>
+nnoremap <leader>grh :VGit buffer_hunk_reset<CR>
+nnoremap <leader>gs :!git status<CR>
 nnoremap <leader>gtb :VGit toggle_live_blame<CR>
+nnoremap <leader>gtg :VGit toggle_live_gutter<CR>
 nnoremap <leader>gtp :VGit toggle_diff_preference<CR>
 
 " Others
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
 nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
+nnoremap <leader>0 :edit<CR>
 nnoremap <leader>1 :set nowrap!<CR>
 nnoremap <leader>2 zR:IndentBlanklineEnable<CR>
 nnoremap <leader>3 :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 nnoremap <leader>4 :IndentBlanklineEnable<CR>
 nnoremap <leader>5 :silent !chmod +x %<CR>
 nnoremap <leader>9 :LspRestart<CR>
-nnoremap <leader>0 :edit<CR>
-nnoremap <C-u> <C-u>zz
-nnoremap <C-d> <C-d>zz
-nnoremap n nzzzv
 nnoremap N Nzzzv
+nnoremap n nzzzv
 
 " Close
 inoremap <C-c> <esc>
@@ -293,30 +283,30 @@ nnoremap <silent> <leader>fn :Format<CR>
 nnoremap <silent> <leader>fw :FormatWrite<CR>
 
 " Debugger
-nnoremap <silent> <leader>db :DapToggleBreakpoint<CR>
-nnoremap <silent> <leader>dc :DapContinue<CR>
-nnoremap <silent> <leader>ds :DapStop<CR>
-nnoremap <silent> <leader>dr :DapRerun<CR>
 nnoremap <silent> <leader>d[ :DapStepOver<CR>
 nnoremap <silent> <leader>d] :DapStepOut<CR>
+nnoremap <silent> <leader>db :DapToggleBreakpoint<CR>
+nnoremap <silent> <leader>dc :DapContinue<CR>
 nnoremap <silent> <leader>di :DapStepInfo<CR>
-nnoremap <silent> <leader>do :DapToggleRpl<CR>
 nnoremap <silent> <leader>dl :DapShowLog<CR>
+nnoremap <silent> <leader>do :DapToggleRpl<CR>
+nnoremap <silent> <leader>dr :DapRerun<CR>
+nnoremap <silent> <leader>ds :DapStop<CR>
 nnoremap <silent> <leader>dt :DapUiToggle<CR>
 
 " Mark
-nnoremap <leader>mt :Telescope harpoon marks<CR>
-nnoremap <leader>mm :lua require("harpoon.ui").toggle_quick_menu()<CR>
-nnoremap <leader>ma :lua require("harpoon.mark").add_file()<CR>
-nnoremap <leader>mb :lua require("harpoon.ui").nav_prev()<CR>
-nnoremap <leader>mn :lua require("harpoon.ui").nav_next()<CR>
+nnoremap <C-n> :lua require("harpoon.ui").nav_next()<CR>
+nnoremap <C-p> :lua require("harpoon.ui").nav_prev()<CR>
 nnoremap <leader>m1 :lua require("harpoon.ui").nav_file(1)<CR>
 nnoremap <leader>m2 :lua require("harpoon.ui").nav_file(2)<CR>
 nnoremap <leader>m3 :lua require("harpoon.ui").nav_file(3)<CR>
 nnoremap <leader>m4 :lua require("harpoon.ui").nav_file(4)<CR>
 nnoremap <leader>m5 :lua require("harpoon.ui").nav_file(5)<CR>
-nnoremap <C-p> :lua require("harpoon.ui").nav_prev()<CR>
-nnoremap <C-n> :lua require("harpoon.ui").nav_next()<CR>
+nnoremap <leader>ma :lua require("harpoon.mark").add_file()<CR>
+nnoremap <leader>mb :lua require("harpoon.ui").nav_prev()<CR>
+nnoremap <leader>mm :lua require("harpoon.ui").toggle_quick_menu()<CR>
+nnoremap <leader>mn :lua require("harpoon.ui").nav_next()<CR>
+nnoremap <leader>mt :Telescope harpoon marks<CR>
 
 " Markdown
 nnoremap <leader>mg :Glow<CR>
@@ -354,388 +344,368 @@ autocmd BufReadPost,FileReadPost * normal zR
 
 " LSP
 lua <<EOF
-  -- Add additional capabilities supported by nvim-cmp
-  local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- Setup lspconfig.
-  require("mason").setup()
-  require("mason-lspconfig").setup()
-  local lspconfig = require('lspconfig')
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  local servers = require("mason-lspconfig").get_installed_servers()
-  for _, lsp in pairs(servers) do
-    lspconfig[lsp].setup {
-        capabilities = capabilities,
-        -- on_attach = on_attach,
-        -- flags = lsp_flags,
-    }
-  end
+    -- Add additional capabilities supported by nvim-cmp
+    local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+    -- Setup lspconfig.
+    require("mason").setup()
+    require("mason-lspconfig").setup()
+    local lspconfig = require('lspconfig')
+    -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+    local servers = require("mason-lspconfig").get_installed_servers()
+    for _, lsp in pairs(servers) do
+        lspconfig[lsp].setup {
+            capabilities = capabilities,
+            -- on_attach = on_attach,
+            -- flags = lsp_flags,
+        }
+    end
 EOF
 
 " CMP
 lua <<EOF
-  local cmp = require'cmp'
-  local lspkind = require('lspkind')
-  local luasnip = require("luasnip")
-  local has_words_before = function()
-    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-  end
-  cmp.setup({
-    snippet = {
-      -- REQUIRED - you must specify a snippet engine
-      expand = function(args)
-        luasnip.lsp_expand(args.body) -- For `luasnip` users.
-        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-      end,
-    },
-    window = {
-       completion = cmp.config.window.bordered(),
-       documentation = cmp.config.window.bordered(),
-    },
-    mapping = {
-        ["<C-n>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_next_item()
-          elseif luasnip.expand_or_jumpable() then
-            luasnip.expand_or_jump()
-          elseif has_words_before() then
-            cmp.complete()
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
+    local cmp = require'cmp'
+    local lspkind = require('lspkind')
+    local luasnip = require("luasnip")
+    local has_words_before = function()
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+    end
+    cmp.setup({
+        snippet = {
+        -- REQUIRED - you must specify a snippet engine
+        expand = function(args)
+            luasnip.lsp_expand(args.body) -- For `luasnip` users.
+            -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+            -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+        end,
+        },
+        window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+        },
+        mapping = {
+            ["<C-n>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_next_item()
+            elseif luasnip.expand_or_jumpable() then
+                luasnip.expand_or_jump()
+            elseif has_words_before() then
+                cmp.complete()
+            else
+                fallback()
+            end
+            end, { "i", "s" }),
 
-        ["<C-p>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_prev_item()
-          elseif luasnip.jumpable(-1) then
-            luasnip.jump(-1)
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
+            ["<C-p>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_prev_item()
+            elseif luasnip.jumpable(-1) then
+                luasnip.jump(-1)
+            else
+                fallback()
+            end
+            end, { "i", "s" }),
 
-        ['<C-c>'] = cmp.mapping.abort(),
-        ['<CR>'] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true
-        }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-    },
-    sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'luasnip' }, -- For luasnip users.
-      { name = 'buffer' },
-      { name = 'nvim_lsp_signature_help' },
-      { name = 'path' }
-    }),
-    formatting = {
-        format = lspkind.cmp_format({with_text = true, maxwidth = 50})
-    },
-  })
-  -- Set configuration for specific filetype.
-  cmp.setup.filetype('gitcommit', {
-    sources = cmp.config.sources({
-      -- { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
-      { name = 'buffer' }
+            ['<C-c>'] = cmp.mapping.abort(),
+            ['<CR>'] = cmp.mapping.confirm({
+                behavior = cmp.ConfirmBehavior.Replace,
+                select = true
+            }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        },
+        sources = cmp.config.sources({
+            { name = 'nvim_lsp' },
+            { name = 'luasnip' }, -- For luasnip users.
+            { name = 'buffer' },
+            { name = 'nvim_lsp_signature_help' },
+            { name = 'path' }
+        }),
+        formatting = {
+            format = lspkind.cmp_format({with_text = true, maxwidth = 50})
+        },
     })
-  })
-  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline('/', {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = {
-      { name = 'buffer' }
-    }
-  })
-  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline(':', {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = cmp.config.sources({
-      { name = 'path' },
-      { name = 'cmdline' }
+    -- Set configuration for specific filetype.
+    cmp.setup.filetype('gitcommit', {
+        sources = cmp.config.sources({
+            -- { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+            { name = 'buffer' }
+        })
     })
-  })
+    -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+    cmp.setup.cmdline('/', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+            { name = 'buffer' }
+        }
+    })
+    -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+    cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+            { name = 'path' },
+            { name = 'cmdline' }
+        })
+    })
 
-  require("luasnip.loaders.from_vscode").lazy_load({paths = "/Users/swandono/.config/nvim/my_snips"})
+    require("luasnip.loaders.from_vscode").lazy_load({paths = "/Users/swandono/.config/nvim/my_snips"})
 EOF
 
 " Treesitter
 lua <<EOF
-  require'nvim-treesitter.configs'.setup {
-    highlight = {
-      enable = true,
-    },
-    incremental_selection = {
-      enable = true,
-      keymaps = {
-        init_selection = "gni",
-        node_incremental = "gnn",
-        scope_incremental = "gnb",
-        node_decremental = "gnm",
-      },
-    },
-    textobjects = {
-      select = {
+    require'nvim-treesitter.configs'.setup {
+        highlight = {
+            enable = true,
+        },
+        incremental_selection = {
         enable = true,
-
-        -- Automatically jump forward to textobj, similar to targets.vim
-        lookahead = true,
-
         keymaps = {
-          -- You can use the capture groups defined in textobjects.scm
-          ["gnj"] = "@function.inner",
-          ["gnh"] = "@function.outer",
-          ["gnk"] = "@class.inner",
-          ["gnl"] = "@class.outer",
+            init_selection = "gni",
+            node_incremental = "gnn",
+            scope_incremental = "gnb",
+            node_decremental = "gnm",
         },
-      },
-    },
-    rainbow = {
-      enable = true,
-      extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-      max_file_lines = nil, -- Do not enable for files with more than n lines, int
-    },
-    autotag = {
-      enable = true,
+        },
+        textobjects = {
+        select = {
+            enable = true,
+
+            -- Automatically jump forward to textobj, similar to targets.vim
+            lookahead = true,
+
+            keymaps = {
+                -- You can use the capture groups defined in textobjects.scm
+                ["gnj"] = "@function.inner",
+                ["gnh"] = "@function.outer",
+                ["gnk"] = "@class.inner",
+                ["gnl"] = "@class.outer",
+            },
+        },
+        },
+        rainbow = {
+        enable = true,
+        extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+        max_file_lines = nil, -- Do not enable for files with more than n lines, int
+        },
+        autotag = {
+        enable = true,
+        },
+        sync_install = false,
+        auto_install = true,
     }
-  }
-  require'treesitter-context'.setup{
-    enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-    max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
-    patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
-        default = {
-            'class',
-            'function',
-            'method',
-            'for', -- These won't appear in the context
-            'while',
-            'if',
-            'switch',
-            'case',
+    require'treesitter-context'.setup{
+        enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+        max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+        patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
+            default = {
+                'class',
+                'function',
+                'method',
+                'for', -- These won't appear in the context
+                'while',
+                'if',
+                'switch',
+                'case',
+            },
         },
-    },
-    zindex = 20, -- The Z-index of the context window
-  }
+        zindex = 20, -- The Z-index of the context window
+    }
 EOF
 
 " Addon
 lua <<EOF
-  require("indent_blankline").setup{}
-  require'nvim-tree'.setup{
-    view = {
-      width = 50
+    require("indent_blankline").setup{}
+    require'nvim-tree'.setup{
+        view = {
+            width = 50
+        }
     }
-  }
-  require('nvim-cursorline').setup {
-    cursorline = {
-      enable = true,
-      timeout = 0,
-      number = false,
-    },
-    cursorword = {
-      enable = false
+    require('nvim-cursorline').setup {
+        cursorline = {
+            enable = true,
+            timeout = 0,
+            number = false,
+        },
+        cursorword = {
+            enable = false
+        }
     }
-  }
-  require("bufferline").setup{}
+    require("bufferline").setup{}
 EOF
 
 " Terminal
 lua <<EOF
-  require("toggleterm").setup{
-    size = 50,
-    shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
-    start_in_insert = true,
-    insert_mappings = true, -- whether or not the open mapping applies in insert mode
-    terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
-    persist_size = true,
-    direction = 'vertical'
-  }
-local Terminal  = require('toggleterm.terminal').Terminal
-local gitui = Terminal:new({
-  cmd = "gitui",
-  hidden = true,
-  direction = "float",
-})
-function _gitui_toggle()
-  gitui:toggle()
-end
-local lazygit = Terminal:new({
-  cmd = "lazygit",
-  hidden = true,
-  direction = "float",
-})
-function _lazygit_toggle()
-  lazygit:toggle()
-end
-vim.api.nvim_set_keymap("n", "<leader>g,", "<cmd>lua _gitui_toggle()<CR>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap("n", "<leader>gm", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
+    require("toggleterm").setup{
+        size = 50,
+        shade_terminals = true, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
+        start_in_insert = true,
+        insert_mappings = true, -- whether or not the open mapping applies in insert mode
+        terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
+        persist_size = true,
+        direction = 'vertical'
+    }
+    local Terminal  = require('toggleterm.terminal').Terminal
+    local lazygit = Terminal:new({
+        cmd = "lazygit",
+        hidden = true,
+        direction = "float",
+    })
+    function _lazygit_toggle()
+        lazygit:toggle()
+    end
+    vim.api.nvim_set_keymap("n", "<leader>gk", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
 EOF
 
 " Git
 lua <<EOF
-  vim.o.updatetime = 300
-  vim.o.incsearch = false
-  vim.wo.signcolumn = 'yes'
-  -- vgit
-  require('vgit').setup()
-  -- neogit
-  local neogit = require('neogit')
-  neogit.setup {}
+    -- vgit
+    require('vgit').setup()
+    -- neogit
+    local neogit = require('neogit')
+    neogit.setup {}
 EOF
 
 " Lualine
 lua <<EOF
-   require('lualine').setup {
-    options = {
-      icons_enabled = true,
-      theme = 'auto',
-      component_separators = { left = '', right = ''},
-      section_separators = { left = '', right = ''},
-      disabled_filetypes = {},
-      always_divide_middle = true,
-      globalstatus = true,
-    },
-    sections = {
-      lualine_a = {'mode'},
-      lualine_b = {'branch', 'diff', 'diagnostics'},
-      lualine_c = {{'filename', path = 1}},
-      lualine_x = {'encoding', 'fileformat', 'filetype'},
-      lualine_y = {'progress'},
-      lualine_z = {'location'}
-    },
-    inactive_sections = {
-      lualine_a = {},
-      lualine_b = {},
-      lualine_c = {'filename'},
-      lualine_x = {'location'},
-      lualine_y = {},
-      lualine_z = {}
-    },
-    tabline = {},
-    extensions = {}
-  }
+    require('lualine').setup {
+        options = {
+            icons_enabled = true,
+            theme = 'auto',
+            component_separators = { left = '', right = ''},
+            section_separators = { left = '', right = ''},
+            disabled_filetypes = {},
+            always_divide_middle = true,
+            globalstatus = true,
+        },
+        sections = {
+            lualine_a = {'mode'},
+            lualine_b = {'branch', 'diff', 'diagnostics'},
+            lualine_c = {{'filename', path = 1}},
+            lualine_x = {'encoding', 'fileformat', 'filetype'},
+            lualine_y = {'progress'},
+            lualine_z = {'location'}
+        },
+        inactive_sections = {
+            lualine_a = {},
+            lualine_b = {},
+            lualine_c = {'filename'},
+            lualine_x = {'location'},
+            lualine_y = {},
+            lualine_z = {}
+        },
+        tabline = {},
+        extensions = {}
+    }
 EOF
 
 " Telescope
 lua <<EOF
-  require('telescope').setup {
-    extensions = {
-      fzf = {
-        fuzzy = true,                    -- false will only do exact matching
-        override_generic_sorter = true,  -- override the generic sorter
-        override_file_sorter = true,     -- override the file sorter
-        case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-      },
-      file_browser = {
-        theme = "ivy",
-        hijack_netrw = true,
-        mappings = {},
-      },
-      project = {
-        base_dirs = {
-          {path = '~/Work/cs', max_depth = 3},
-          {path = '~/Work/learn', max_depth = 3},
-          {path = '~/Work/swandono', max_depth = 3},
+    require('telescope').setup {
+        extensions = {
+        fzf = {
+            fuzzy = true,                    -- false will only do exact matching
+            override_generic_sorter = true,  -- override the generic sorter
+            override_file_sorter = true,     -- override the file sorter
+            case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
         },
-        hidden_files = true, -- default: false
-        theme = "dropdown"
-      }
+        file_browser = {
+            theme = "ivy",
+            hijack_netrw = true,
+            mappings = {},
+        }
+        }
     }
-  }
-  require('telescope').load_extension('fzf')
-  require('telescope').load_extension('harpoon')
-  require('telescope').load_extension('project')
-  require("telescope").load_extension('file_browser')
+    require('telescope').load_extension('fzf')
+    require('telescope').load_extension('harpoon')
+    require("telescope").load_extension('file_browser')
 EOF
 
 " Language
 lua <<EOF
-  require('go').setup{
-    gopls_cmd = {'/Users/swandono/.local/share/nvim/lsp_servers/gopls/gopls'}
-  }
+    require('go').setup{
+        gopls_cmd = {'/Users/swandono/.local/share/nvim/lsp_servers/gopls/gopls'}
+    }
 
-  local rt = require("rust-tools")
-  rt.setup({
-    server = {
-      on_attach = function(_, bufnr)
-        -- Hover actions
-        vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-        -- Code action groups
-        vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-      end,
-    },
-  })
+    local rt = require("rust-tools")
+    rt.setup({
+        server = {
+        on_attach = function(_, bufnr)
+            -- Hover actions
+            vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+            -- Code action groups
+            vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+        end,
+        },
+    })
 EOF
 
 " Debug
 lua <<EOF
-  require("nvim-dap-virtual-text").setup()
-  require("dapui").setup()
-  require("trouble").setup {}
+    require("nvim-dap-virtual-text").setup()
+    require("dapui").setup()
+    require("trouble").setup {}
 EOF
 
 " Other
 lua <<EOF
-  -- vim.opt.termguicolors = true
-  require('Comment').setup()
-  require("nvim-autopairs").setup {}
-  require('dressing').setup()
+    -- vim.opt.termguicolors = true
+    require('Comment').setup()
+    require("nvim-autopairs").setup {}
+    require('dressing').setup()
 EOF
 
 " Formatter
 lua <<EOF
-  -- Utilities for creating configurations
-  local util = require "formatter.util"
-  -- Provides the Format and FormatWrite commands
-  function prettier ()
-    return {
-      exe = "prettierd",
-      args = {vim.api.nvim_buf_get_name(0)},
-      stdin = true
+    -- Utilities for creating configurations
+    local util = require "formatter.util"
+    -- Provides the Format and FormatWrite commands
+    function prettier ()
+        return {
+            exe = "prettierd",
+            args = {vim.api.nvim_buf_get_name(0)},
+            stdin = true
+        }
+    end
+    function go ()
+        return {
+            exe = "gofmt",
+            stdin = true,
+        }
+    end
+    function rust ()
+        return {
+            exe = "rustfmt",
+            stdin = true,
+        }
+    end
+    function python ()
+        return {
+            exe = "black",
+            args = {
+                    '-q',
+                    '-',
+                },
+            stdin = true,
+        }
+    end
+    require("formatter").setup {
+        logging = true,
+        filetype = {
+        javascript = { prettier },
+        javascriptreact = { prettier },
+        typescript = { prettier },
+        typescriptreact = { prettier },
+        css = { prettier },
+        vue = { prettier },
+        json = { prettier },
+        markdown = { prettier },
+        html = { prettier },
+        go = { go },
+        rust = { rust },
+        python = { python }
+        },
+        ["*"] = {
+            require("formatter.filetypes.any").remove_trailing_whitespace
+        }
     }
-  end
-  function go ()
-    return {
-      exe = "gofmt",
-      stdin = true,
-    }
-  end
-  function rust ()
-    return {
-      exe = "rustfmt",
-      stdin = true,
-    }
-  end
-  function python ()
-    return {
-      exe = "black",
-      args = {
-        '-q',
-        '-',
-      },
-      stdin = true,
-    }
-  end
-  require("formatter").setup {
-    logging = true,
-    filetype = {
-      javascript = { prettier },
-      javascriptreact = { prettier },
-      typescript = { prettier },
-      typescriptreact = { prettier },
-      css = { prettier },
-      vue = { prettier },
-      json = { prettier },
-      markdown = { prettier },
-      html = { prettier },
-      go = { go },
-      rust = { rust },
-      python = { python }
-    },
-    ["*"] = {
-      require("formatter.filetypes.any").remove_trailing_whitespace
-    }
-  }
 EOF
 """"""""""""""""""""""""
 "" END
