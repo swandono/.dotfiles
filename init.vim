@@ -303,9 +303,7 @@ nnoremap <leader>m3 :lua require("harpoon.ui").nav_file(3)<CR>
 nnoremap <leader>m4 :lua require("harpoon.ui").nav_file(4)<CR>
 nnoremap <leader>m5 :lua require("harpoon.ui").nav_file(5)<CR>
 nnoremap <leader>ma :lua require("harpoon.mark").add_file()<CR>
-nnoremap <leader>mb :lua require("harpoon.ui").nav_prev()<CR>
 nnoremap <leader>mm :lua require("harpoon.ui").toggle_quick_menu()<CR>
-nnoremap <leader>mn :lua require("harpoon.ui").nav_next()<CR>
 nnoremap <leader>mt :Telescope harpoon marks<CR>
 
 " Markdown
