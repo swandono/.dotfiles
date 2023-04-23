@@ -96,7 +96,7 @@ Plug 'ray-x/go.nvim'
 Plug 'simrat39/rust-tools.nvim'
 
 " Git
-Plug 'tanvirtin/vgit.nvim'
+Plug 'lewis6991/gitsigns.nvim'
 Plug 'TimUntersberger/neogit'
 Plug 'tpope/vim-fugitive'
 
@@ -239,19 +239,17 @@ nnoremap <silent><C-]> <Cmd>exe v:count1 . "ToggleTerm"<CR>
 inoremap <silent><C-]> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
 
 " Git
-nnoremap <leader>gb :VGit buffer_gutter_blame_preview<CR>
-nnoremap <leader>gd :VGit buffer_diff_preview<CR>
-nnoremap <leader>gg :VGit<space>
+nnoremap <leader>gd :Gitsigns diffthis<CR>
+nnoremap <leader>gx :close<CR>:bd<CR>
+nnoremap <leader>gs :Git<CR>
 nnoremap <leader>gj :Neogit kind=replace<CR>
-nnoremap <leader>gl :VGit project_logs_preview<CR>
-nnoremap <leader>gn :VGit hunk_down<CR>
-nnoremap <leader>gp :VGit hunk_up<CR>
-nnoremap <leader>grb :VGit buffer_reset<CR>
-nnoremap <leader>grh :VGit buffer_hunk_reset<CR>
-nnoremap <leader>gs :!git status<CR>
-nnoremap <leader>gtb :VGit toggle_live_blame<CR>
-nnoremap <leader>gtg :VGit toggle_live_gutter<CR>
-nnoremap <leader>gtp :VGit toggle_diff_preference<CR>
+nnoremap <leader>gn :Gitsigns next_hunk<CR>
+nnoremap <leader>gp :Gitsigns prev_hunk<CR>
+nnoremap <leader>grb :Gitsigns reset_buffer<CR>
+nnoremap <leader>grh :Gitsigns reset_hunk<CR>
+nnoremap <leader>gi :Gitsigns toggle_current_line_blame<CR>
+nnoremap <leader>go :Gitsigns toggle_signs<CR>
+nnoremap <leader>gm :Gitsigns toggle_deleted<CR>
 
 " Others
 nnoremap <C-d> <C-d>zz
@@ -562,8 +560,17 @@ EOF
 
 " Git
 lua <<EOF
-    -- vgit
-    require('vgit').setup()
+    -- gitsigns
+    require('gitsigns').setup {
+        current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+        current_line_blame_opts = {
+            virt_text = true,
+            virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
+            delay = 50,
+            ignore_whitespace = false,
+        },
+        update_debounce = 100,
+    }
     -- neogit
     local neogit = require('neogit')
     neogit.setup {}
