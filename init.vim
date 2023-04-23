@@ -220,18 +220,10 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 " LSP
-nnoremap <leader>ff :lua vim.lsp.buf.format{async = true}<CR>
-nnoremap <leader>va :lua vim.lsp.buf.code_action()<CR>
 nnoremap <leader>vd :lua require('telescope.builtin').lsp_definitions()<CR>
-nnoremap <leader>vf :lua vim.diagnostic.open_float()<CR>
-nnoremap <leader>vh :lua vim.lsp.buf.hover()<CR>
 nnoremap <leader>vj :lua require('telescope.builtin').lsp_implementations()<CR>
 nnoremap <leader>vk :lua require('telescope.builtin').lsp_type_definitions()<CR>
 nnoremap <leader>vl :lua require('telescope.builtin').lsp_references()<CR>
-nnoremap <leader>vn :lua vim.diagnostic.goto_next()<CR>
-nnoremap <leader>vp :lua vim.diagnostic.goto_prev()<CR>
-nnoremap <leader>vr :lua vim.lsp.buf.rename() <CR>
-nnoremap <leader>vs :lua vim.lsp.buf.signature_help()<CR>
 
 " Tree
 nnoremap <leader>rt :NvimTreeRefresh<CR>
@@ -350,10 +342,26 @@ lua <<EOF
     local lspconfig = require('lspconfig')
     -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
     local servers = require("mason-lspconfig").get_installed_servers()
+
+    local on_attach = function(client, bufnr)
+        local opts = {buffer = bufnr, remap = false}
+
+        vim.keymap.set("n", "gd", function() vim.lsp.buf.definition{} end, opts)
+        vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.hover() end, opts)
+        vim.keymap.set("n", "<leader>ff", function() vim.lsp.buf.format{async = true} end, opts)
+        vim.keymap.set("n", "<leader>va", function() vim.lsp.buf.code_action() end, opts)
+        vim.keymap.set("n", "<leader>vf", function() vim.diagnostic.open_float() end, opts)
+        vim.keymap.set("n", "<leader>vh", function() vim.lsp.buf.hover() end, opts)
+        vim.keymap.set("n", "<leader>vn", function() vim.diagnostic.goto_next() end, opts)
+        vim.keymap.set("n", "<leader>vp", function() vim.diagnostic.goto_prev() end, opts)
+        vim.keymap.set("n", "<leader>vr", function() vim.lsp.buf.rename()  end, opts)
+        vim.keymap.set("n", "<leader>vs", function() vim.lsp.buf.signature_help() end, opts)
+    end
+
     for _, lsp in pairs(servers) do
         lspconfig[lsp].setup {
             capabilities = capabilities,
-            -- on_attach = on_attach,
+            on_attach = on_attach,
             -- flags = lsp_flags,
         }
     end
