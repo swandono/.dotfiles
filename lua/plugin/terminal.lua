@@ -1,1 +1,1 @@
-return {'akinsho/toggleterm.nvim', lazy = true}
+return { 'akinsho/toggleterm.nvim', lazy = true }

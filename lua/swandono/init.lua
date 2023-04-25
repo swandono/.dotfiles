@@ -23,7 +23,7 @@ autocmd('TextYankPost', {
     end,
 })
 
-autocmd({"BufWritePre"}, {
+autocmd({ "BufWritePre" }, {
     group = Swandono,
     pattern = "*",
     command = [[%s/\s\+$//e]],

@@ -1,10 +1,10 @@
 require('telescope').setup {
     extensions = {
         fzf = {
-            fuzzy = true,                    -- false will only do exact matching
-            override_generic_sorter = true,  -- override the generic sorter
-            override_file_sorter = true,     -- override the file sorter
-            case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+            fuzzy = true,                   -- false will only do exact matching
+            override_generic_sorter = true, -- override the generic sorter
+            override_file_sorter = true,    -- override the file sorter
+            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
         },
         file_browser = {
             theme = "ivy",
@@ -18,7 +18,8 @@ require('telescope').load_extension('harpoon')
 local tele = require('telescope.builtin')
 vim.keymap.set("n", "<leader>js", tele.marks, {})
 vim.keymap.set("n", "<leader>ks", tele.current_buffer_fuzzy_find, {})
-vim.keymap.set('n', '<leader>ls', [[<CMD>lua require('telescope.builtin').grep_string()<CR>]], { silent = true, noremap = true })
+vim.keymap.set('n', '<leader>ls', [[<CMD>lua require('telescope.builtin').grep_string()<CR>]],
+{ silent = true, noremap = true })
 vim.keymap.set("n", "<C-j>", tele.buffers, {})
 vim.keymap.set("n", "<C-k>", tele.find_files, {})
 vim.keymap.set("n", "<C-l>", tele.live_grep, {})
@@ -39,5 +40,3 @@ vim.keymap.set("n", "<leader>m5", function() harp_ui.nav_file(5) end)
 vim.keymap.set("n", "<leader>ma", harp_mark.add_file, {})
 vim.keymap.set("n", "<leader>mm", harp_ui.toggle_quick_menu, {})
 vim.keymap.set("n", "<leader>mt", [[<CMD> Telescope harpoon marks<CR>]])
-
-

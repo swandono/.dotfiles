@@ -11,7 +11,7 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 
-vim.opt.nu = true	
+vim.opt.nu = true
 vim.opt.wrap = false
 vim.opt.smartcase = true
 vim.opt.swapfile = false
@@ -30,6 +30,6 @@ vim.opt.colorcolumn = "80"
 
 vim.opt.cmdheight = 1
 vim.opt.updatetime = 50
-vim.opt.wildmode = "longest,list,full" 
+vim.opt.wildmode = "longest,list,full"
 vim.opt.wildmenu = true
 vim.opt.foldmethod = "expr"

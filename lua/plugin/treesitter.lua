@@ -4,6 +4,6 @@ local A = {
         require("nvim-treesitter.install").update({ with_sync = true })
     end,
 }
-local B = {'nvim-treesitter/nvim-treesitter-textobjects'}
+local B = { 'nvim-treesitter/nvim-treesitter-textobjects' }
 
 return { A, B }
