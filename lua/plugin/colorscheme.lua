@@ -1,5 +1,5 @@
 return {
-    "gruvbox-community/gruvbox",
+    "ellisonleao/gruvbox.nvim",
     lazy = false,
     priority = 1000,
     config = function()

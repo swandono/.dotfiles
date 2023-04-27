@@ -11,20 +11,6 @@ require 'nvim-treesitter.configs'.setup {
             node_decremental = "gnm",
         },
     },
-    textobjects = {
-        select = {
-            enable = true,
-            -- Automatically jump forward to textobj, similar to targets.vim
-            lookahead = true,
-            keymaps = {
-                -- You can use the capture groups defined in textobjects.scm
-                ["gnj"] = "@function.inner",
-                ["gnh"] = "@function.outer",
-                ["gnk"] = "@class.inner",
-                ["gnl"] = "@class.outer",
-            },
-        },
-    },
     rainbow = {
         enable = true,
         extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean

@@ -4,9 +4,8 @@ return {
     dependencies = {
         { 'neovim/nvim-lspconfig' }, -- Required
         { 'onsails/lspkind-nvim' },
-        { 'simrat39/symbols-outline.nvim' },
         {
-          -- Optional
+            -- Optional
             'williamboman/mason.nvim',
             build = function()
                 pcall(vim.cmd, 'MasonUpdate')
@@ -17,16 +16,14 @@ return {
         -- Autocompletion
         { 'hrsh7th/nvim-cmp' },
         { 'hrsh7th/cmp-buffer' },
-        { 'hrsh7th/cmp-path' },
-        { 'hrsh7th/cmp-nvim-lsp' },
+        { 'hrsh7th/cmp-path',                 lazy = true },
+        { 'hrsh7th/cmp-nvim-lsp',             lazy = true },
         { 'hrsh7th/cmp-nvim-lua' },
-        { 'hrsh7th/cmp-cmdline' },
-        { 'hrsh7th/cmp-nvim-lsp-signature-help' },
+        { 'hrsh7th/cmp-cmdline',              lazy = true },
 
         -- Snippets
         { 'L3MON4D3/LuaSnip' },
-        { 'rafamadriz/friendly-snippets' },
-        { 'rafamadriz/friendly-snippets' },
-        { 'saadparwaiz1/cmp_luasnip' },
+        { 'rafamadriz/friendly-snippets',     lazy = true },
+        { 'saadparwaiz1/cmp_luasnip',         lazy = true },
     }
 }

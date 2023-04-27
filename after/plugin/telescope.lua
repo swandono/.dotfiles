@@ -5,11 +5,6 @@ require('telescope').setup {
             override_generic_sorter = true, -- override the generic sorter
             override_file_sorter = true,    -- override the file sorter
             case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
-        },
-        file_browser = {
-            theme = "ivy",
-            hijack_netrw = true,
-            mappings = {},
         }
     }
 }
@@ -19,7 +14,7 @@ local tele = require('telescope.builtin')
 vim.keymap.set("n", "<leader>js", tele.marks, {})
 vim.keymap.set("n", "<leader>ks", tele.current_buffer_fuzzy_find, {})
 vim.keymap.set('n', '<leader>ls', [[<CMD>lua require('telescope.builtin').grep_string()<CR>]],
-{ silent = true, noremap = true })
+    { silent = true, noremap = true })
 vim.keymap.set("n", "<C-j>", tele.buffers, {})
 vim.keymap.set("n", "<C-k>", tele.find_files, {})
 vim.keymap.set("n", "<C-l>", tele.live_grep, {})
