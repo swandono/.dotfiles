@@ -16,6 +16,6 @@ local A = {
     end
 }
 local B = { 'TimUntersberger/neogit', lazy = true, cmd = "Neogit", dependencies = { 'nvim-lua/plenary.nvim' } }
-local C = { 'tpope/vim-fugitive' }
+local C = { 'tpope/vim-fugitive', event = "VeryLazy" }
 
 return { A, B, C }
