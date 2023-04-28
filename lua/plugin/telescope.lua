@@ -1,5 +1,14 @@
 return {
     'nvim-telescope/telescope.nvim',
+    dependencies = {
+        {
+            "ThePrimeagen/harpoon",
+            event = "VeryLazy",
+            build = function()
+                require('telescope').load_extension('harpoon')
+            end,
+        }
+    },
     version = false,
     opts = {
         extensions = {

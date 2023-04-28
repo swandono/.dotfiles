@@ -85,10 +85,10 @@ local E = {
 }
 local F = { 'kyazdani42/nvim-web-devicons', lazy = true }
 local G = { 'nvim-lua/plenary.nvim' }
-local H = { 'nvim-lua/popup.nvim' }
-local I = {
+local H = {
     'stevearc/dressing.nvim',
     lazy = true
 }
+local I = { 'nvim-lua/popup.nvim' }
 
 return { A, B, C, D, E, F, G, H, I }

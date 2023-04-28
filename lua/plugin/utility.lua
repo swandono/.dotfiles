@@ -6,17 +6,10 @@ local B = {
     'windwp/nvim-ts-autotag',
     event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 }
-local C = {
-    'ThePrimeagen/harpoon',
-    lazy = true,
-    build = function()
-        require('telescope').load_extension('harpoon')
-    end,
-}
-local D = { 'dstein64/vim-startuptime', lazy = true, cmd = "StartupTime" }
-local E = {
+local C = { 'dstein64/vim-startuptime', event = "VeryLazy", cmd = "StartupTime" }
+local D = {
     'numToStr/Comment.nvim',
     event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 }
 
-return { A, B, C, D, E }
+return { A, B, C, D }
