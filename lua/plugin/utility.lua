@@ -22,6 +22,22 @@ local E = {
         { "<leader>qd", function() require("persistence").stop() end,                desc = "Don't Save Current Session" },
     },
 }
+local F = { 'nvim-lua/plenary.nvim', lazy = true }
+local G = {
+    'stevearc/dressing.nvim',
+    lazy = true,
+    init = function()
+        ---@diagnostic disable-next-line: duplicate-set-field
+        vim.ui.select = function(...)
+            require("lazy").load({ plugins = { "dressing.nvim" } })
+            return vim.ui.select(...)
+        end
+        ---@diagnostic disable-next-line: duplicate-set-field
+        vim.ui.input = function(...)
+            require("lazy").load({ plugins = { "dressing.nvim" } })
+            return vim.ui.input(...)
+        end
+    end,
+}
 
-
-return { A, B, C, D, E }
+return { A, B, C, D, E, F, G }
