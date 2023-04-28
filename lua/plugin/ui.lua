@@ -95,8 +95,8 @@ local I = {
     event = "VimEnter",
     opts = function()
         local logo = table.concat({
-            "          █▀ █░█░█ ▄▀█ █▄░█ █▀█ █▀▄ █▄░█ █▀█",
-            "          ▄█ ▀▄▀▄▀ █▀█ █░▀█ █▄█ █▄▀ █░▀█ █▄█",
+            "          █▀ █░█░█ ▄▀█ █▄░█ █▀▄ █▀█ █▄░█ █▀█",
+            "          ▄█ ▀▄▀▄▀ █▀█ █░▀█ █▄▀ █▄█ █░▀█ █▄█",
         }, "\n")
         local pad = string.rep(" ", 22)
         local new_section = function(name, action, section)
