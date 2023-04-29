@@ -7,7 +7,7 @@ Make NeoVim better IDE!!!
 
 ## Installation
 
-You need to install `fzf, ripgrep, fd` first before using this config.
+You need to install `fzf, ripgrep, fd, lazygit` first before using this config.
 
 After that you can create `nvim` folder in `~/.config`, then git clone this repo!
 
