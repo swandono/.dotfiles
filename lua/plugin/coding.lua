@@ -1,22 +1,22 @@
 return {
     {
-        'hrsh7th/nvim-cmp',
+        "hrsh7th/nvim-cmp",
         version = false, -- last release is way too old
         event = { "BufReadPre", "BufNewFile", "InsertEnter" },
         dependencies = {
-            'hrsh7th/cmp-buffer',
-            'hrsh7th/cmp-path',
-            'hrsh7th/cmp-nvim-lsp',
-            'hrsh7th/cmp-nvim-lua',
-            'hrsh7th/cmp-cmdline',
-            'saadparwaiz1/cmp_luasnip',
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-nvim-lua",
+            "hrsh7th/cmp-cmdline",
+            "saadparwaiz1/cmp_luasnip",
         },
         config = function(_, opts)
-            local cmp = require('cmp')
+            local cmp = require("cmp")
             local has_words_before = function()
                 local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-                return col ~= 0 and
-                    vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+                return col ~= 0
+                    and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
             end
 
             cmp.setup({
@@ -51,46 +51,46 @@ return {
                             fallback()
                         end
                     end, { "i", "s" }),
-                    ['<C-c>'] = cmp.mapping.abort(),
-                    ['<CR>'] = cmp.mapping.confirm({
+                    ["<C-c>"] = cmp.mapping.abort(),
+                    ["<CR>"] = cmp.mapping.confirm({
                         behavior = cmp.ConfirmBehavior.Replace,
-                        select = true
+                        select = true,
                     }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
                 },
                 sources = cmp.config.sources({
-                    { name = 'nvim_lsp' },
-                    { name = 'luasnip' }, -- For luasnip users.
-                    { name = 'buffer' },
-                    { name = 'path' }
+                    { name = "nvim_lsp" },
+                    { name = "luasnip" }, -- For luasnip users.
+                    { name = "buffer" },
+                    { name = "path" },
                 }),
             })
 
-            cmp.setup.cmdline({ '/', '?' }, {
+            cmp.setup.cmdline({ "/", "?" }, {
                 mapping = cmp.mapping.preset.cmdline(),
                 sources = {
-                    { name = 'buffer' }
+                    { name = "buffer" },
                 },
             })
-            cmp.setup.cmdline(':', {
+            cmp.setup.cmdline(":", {
                 mapping = cmp.mapping.preset.cmdline(),
                 sources = cmp.config.sources({
-                    { name = 'path' },
-                    { name = 'cmdline' },
-                    { name = 'buffer' }
+                    { name = "path" },
+                    { name = "cmdline" },
+                    { name = "buffer" },
                 }),
             })
-        end
+        end,
     },
 
     -- Snippets
     {
-        'L3MON4D3/LuaSnip',
+        "L3MON4D3/LuaSnip",
         event = { "BufReadPre", "BufNewFile", "InsertEnter" },
         dependencies = {
             "rafamadriz/friendly-snippets",
             config = function()
                 require("luasnip.loaders.from_vscode").lazy_load()
             end,
-        }
+        },
     },
 }

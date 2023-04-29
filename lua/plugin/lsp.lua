@@ -2,7 +2,7 @@ return {
     {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v2.x',
-        event = { "BufReadPre", "BufNewFile" },
+        event = { "BufReadPre", "BufNewFile", "InsertEnter" },
         dependencies = {
             { 'neovim/nvim-lspconfig' }, -- Required
             {
@@ -63,7 +63,7 @@ return {
     -- formatters
     {
         "jose-elias-alvarez/null-ls.nvim",
-        event = { "BufReadPre", "BufNewFile" },
+        event = { "BufReadPre", "BufNewFile", "InsertEnter" },
         dependencies = { "mason.nvim" },
         opts = function()
             local nls = require("null-ls")

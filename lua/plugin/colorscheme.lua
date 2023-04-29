@@ -1,7 +1,7 @@
 return {
     {
         "ellisonleao/gruvbox.nvim",
-        lazy = false,
+        event = "VimEnter",
         priority = 1000,
         config = function()
             vim.cmd([[colorscheme gruvbox]])
@@ -12,12 +12,21 @@ return {
         lazy = true,
         opts = { style = "moon" },
     },
-
-    -- catppuccin
     {
         "catppuccin/nvim",
         lazy = true,
         name = "catppuccin",
     },
-
+    {
+        "rmehri01/onenord.nvim",
+        lazy = true,
+    },
+    {
+        "shaunsingh/moonlight.nvim",
+        lazy = true,
+    },
+    {
+        "glepnir/zephyr-nvim",
+        lazy = true,
+    },
 }
