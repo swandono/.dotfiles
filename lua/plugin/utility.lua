@@ -39,5 +39,11 @@ local G = {
         end
     end,
 }
+local H = {
+    "echasnovski/mini.bufremove",
+    lazy = true,
+    version = false
+}
 
-return { A, B, C, D, E, F, G }
+
+return { A, B, C, D, E, F, G, H }
