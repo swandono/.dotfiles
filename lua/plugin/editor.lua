@@ -10,7 +10,7 @@ local A = {
             { "<leader>lc", "<cmd>TroubleToggle loclist<cr>",               desc = "Location List (Trouble)" },
             { "<leader>lq", "<cmd>TroubleToggle quickfix<cr>",              desc = "Quickfix List (Trouble)" },
             {
-                "lp",
+                "<leader>lp",
                 function()
                     if require("trouble").is_open() then
                         require("trouble").previous({ skip_groups = true, jump = true })
@@ -19,7 +19,7 @@ local A = {
                 desc = "Previous trouble/quickfix item",
             },
             {
-                "ln",
+                "<leader>ln",
                 function()
                     if require("trouble").is_open() then
                         require("trouble").next({ skip_groups = true, jump = true })
