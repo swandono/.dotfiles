@@ -1,7 +1,7 @@
 local A = {
     "nvim-treesitter/nvim-treesitter",
     version = false,
-    event = { "BufReadPre", "BufNewFile", "InsertEnter" },
+    event = { "BufReadPre", "BufNewFile" },
     build = ":TSUpdate",
     opts = {
         highlight = {
