@@ -1,6 +1,7 @@
 return {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
+    event = { "BufReadPre", "BufNewFile", "InsertEnter" },
     dependencies = {
         {
             "ThePrimeagen/harpoon",

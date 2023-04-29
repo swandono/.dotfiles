@@ -48,10 +48,5 @@ local G = {
         end
     end,
 }
-local H = {
-    "echasnovski/mini.bufremove",
-    event = { "BufReadPre", "BufNewFile", "InsertEnter" },
-    version = false,
-}
 
-return { A, B, C, D, E, F, G, H }
+return { A, B, C, D, E, F, G }
