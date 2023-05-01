@@ -28,10 +28,10 @@ return {
             hidden = true,
             direction = "float",
         })
-        function _lazygit_toggle()
+        function LazyGitToggle()
             lazygit:toggle()
         end
 
-        vim.api.nvim_set_keymap("n", "<leader>gk", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
+        vim.api.nvim_set_keymap("n", "<leader>gk", "<cmd>lua LazyGitToggle()<CR>", { noremap = true, silent = true })
     end,
 }
