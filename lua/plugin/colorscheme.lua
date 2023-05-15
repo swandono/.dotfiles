@@ -52,29 +52,5 @@ return {
                 end,
             },
         },
-    },
-    {
-        "shaunsingh/moonlight.nvim",
-        lazy = true,
-        keys = {
-            {
-                "<leader>cm",
-                function()
-                    vim.cmd([[colorscheme moonlight]])
-                end,
-            },
-        },
-    },
-    {
-        "glepnir/zephyr-nvim",
-        lazy = true,
-        keys = {
-            {
-                "<leader>cz",
-                function()
-                    vim.cmd([[colorscheme zephyr]])
-                end,
-            },
-        },
-    },
+    }
 }
