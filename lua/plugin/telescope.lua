@@ -15,10 +15,10 @@ return {
     opts = {
         extensions = {
             fzf = {
-                fuzzy = true,       -- false will only do exact matching
+                fuzzy = true,                   -- false will only do exact matching
                 override_generic_sorter = true, -- override the generic sorter
-                override_file_sorter = true, -- override the file sorter
-                case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+                override_file_sorter = true,    -- override the file sorter
+                case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
             },
         },
     },
@@ -33,6 +33,7 @@ return {
             { silent = true, noremap = true }
         )
         vim.keymap.set("n", "<leader>ss", tele.git_status, {})
+        vim.keymap.set("n", "<leader>bs", tele.git_branches, {})
         vim.keymap.set("n", "<C-j>", tele.buffers, {})
         vim.keymap.set("n", "<C-k>", tele.find_files, {})
         vim.keymap.set("n", "<C-l>", tele.live_grep, {})
