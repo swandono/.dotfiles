@@ -121,4 +121,10 @@ local D = {
     },
 }
 
-return { A, B, C, D }
+local E = {
+    {
+        "github/copilot.vim"
+    }
+}
+
+return { A, B, C, D, E }
