@@ -123,7 +123,8 @@ local D = {
 
 local E = {
     {
-        "github/copilot.vim"
+        "github/copilot.vim",
+        event = { "BufReadPre", "BufNewFile", "InsertEnter" },
     }
 }
 
