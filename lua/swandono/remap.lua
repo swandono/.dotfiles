@@ -48,3 +48,5 @@ vim.keymap.set("n", "<leader>grh", [[<CMD> Gitsigns reset_hunk<CR>]], { silent =
 vim.keymap.set("n", "<leader>gi", [[<CMD> Gitsigns toggle_current_line_blame<CR>]], { silent = true, noremap = true })
 vim.keymap.set("n", "<leader>go", [[<CMD> Gitsigns toggle_signs<CR>]], { silent = true, noremap = true })
 vim.keymap.set("n", "<leader>gm", [[<CMD> Gitsigns toggle_deleted<CR>]], { silent = true, noremap = true })
+
+vim.api.nvim_set_keymap("i", "<C-j>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
