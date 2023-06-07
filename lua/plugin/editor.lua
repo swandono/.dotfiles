@@ -121,4 +121,11 @@ local D = {
     },
 }
 
-return { A, B, C, D }
+local E = {
+    {
+        "github/copilot.vim",
+        event = { "BufReadPre", "BufNewFile", "InsertEnter" },
+    }
+}
+
+return { A, B, C, D, E }
