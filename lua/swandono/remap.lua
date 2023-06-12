@@ -37,7 +37,6 @@ vim.keymap.set("n", "<leader>ws]", [[<CMD>vertical resize +5<CR>]])
 vim.keymap.set("n", "<leader>ws;", [[<CMD>resize -5<CR>]])
 vim.keymap.set("n", "<leader>ws'", [[<CMD>resize +5<CR>]])
 
-vim.keymap.set("n", "<leader>gd", vim.cmd.Gdif)
 vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
 vim.keymap.set("n", "<leader>gb", [[<CMD> Git blame<CR>]], { silent = true, noremap = true })
 vim.keymap.set("n", "<leader>gj", [[<CMD> Neogit kind=replace<CR>]], { silent = true, noremap = true })
