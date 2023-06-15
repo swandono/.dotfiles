@@ -3,6 +3,9 @@ local A = {
     version = false,
     event = { "BufReadPre", "BufNewFile", "InsertEnter" },
     build = ":TSUpdate",
+    dependencies = {
+        { "nvim-treesitter/nvim-treesitter-context", lazy = true },
+    },
     opts = {
         highlight = {
             enable = true,
@@ -40,6 +43,7 @@ local A = {
             end, opts.ensure_installed)
         end
         require("nvim-treesitter.configs").setup(opts)
+        require 'treesitter-context'.setup {}
     end,
 }
 
