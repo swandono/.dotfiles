@@ -38,7 +38,7 @@ return {
                 },
             })
 
-            lsp.on_attach(function(client, bufnr)
+            lsp.on_attach(function(_, bufnr)
                 local opts = { buffer = bufnr, remap = false }
 
                 vim.keymap.set("n", "gd", function()
@@ -83,7 +83,7 @@ return {
     {
         "mhartington/formatter.nvim",
         event = { "BufReadPre", "BufNewFile", "InsertEnter" },
-        config = function(_, opts)
+        config = function()
             local function prettier()
                 return {
                     exe = "prettierd",
