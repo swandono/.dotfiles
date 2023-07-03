@@ -38,9 +38,9 @@ return {
         vim.keymap.set("n", "<C-k>", tele.find_files, {})
         vim.keymap.set("n", "<C-l>", tele.live_grep, {})
         vim.keymap.set("n", "<leader>vd", tele.lsp_definitions, {})
-        vim.keymap.set("n", "<leader>vj", tele.lsp_implementations, {})
-        vim.keymap.set("n", "<leader>vk", tele.lsp_type_definitions, {})
-        vim.keymap.set("n", "<leader>vl", tele.lsp_references, {})
+        vim.keymap.set("n", "<leader>vi", tele.lsp_implementations, {})
+        vim.keymap.set("n", "<leader>vt", tele.lsp_type_definitions, {})
+        vim.keymap.set("n", "<leader>vr", tele.lsp_references, {})
 
         local harp_ui = require("harpoon.ui")
         local harp_mark = require("harpoon.mark")
