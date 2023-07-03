@@ -24,7 +24,7 @@ return {
     },
     config = function()
         local tele = require("telescope.builtin")
-        vim.keymap.set("n", "<leader>js", tele.marks, {})
+        vim.keymap.set("n", "<leader>js", tele.lsp_document_symbols, {})
         vim.keymap.set("n", "<leader>ks", tele.current_buffer_fuzzy_find, {})
         vim.keymap.set(
             "n",
