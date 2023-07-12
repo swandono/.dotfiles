@@ -9,6 +9,7 @@ local A = {
     opts = {
         highlight = {
             enable = true,
+            disable = { "dap-repl" },
         },
         incremental_selection = {
             enable = true,

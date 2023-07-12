@@ -32,5 +32,3 @@ vim.opt.cmdheight = 1
 vim.opt.updatetime = 50
 vim.opt.wildmode = "longest,list,full"
 vim.opt.wildmenu = true
-
-vim.g.copilot_assume_mapped = true
