@@ -29,3 +29,4 @@ config['init_options'] = {
 }
 require('jdtls').start_or_attach(config)
 vim.keymap.set("n", "<leader>dg", [[<CMD> JdtUpdateDebugConfig<CR>]], { silent = true, noremap = true })
+vim.keymap.set("n", "<leader>dG", [[<CMD> JdtUpdateConfig<CR>]], { silent = true, noremap = true })
