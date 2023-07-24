@@ -13,6 +13,10 @@ return {
                 end,
             },
             { "williamboman/mason-lspconfig.nvim" }, -- Optional
+            -- java
+            {
+                "mfussenegger/nvim-jdtls",
+            },
         },
         opts = function()
             local lsp = require("lsp-zero")
