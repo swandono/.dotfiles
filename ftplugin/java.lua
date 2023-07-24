@@ -1,3 +1,5 @@
+local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
+
 local config = {
     filetype = { 'java' },
     cmd = {
@@ -12,7 +14,7 @@ local config = {
         '-javaagent:/Users/gunawan/.local/share/jdtls/lombok.jar',
         '-jar', '/Users/gunawan/.local/share/jdtls/plugins/org.eclipse.equinox.launcher_1.6.500.v20230622-2056.jar',
         '-configuration', '/Users/gunawan/.local/share/jdtls/config_mac',
-        '-data', '/Users/gunawan/.local/share/jdtls/workspace',
+        '-data', '/Users/gunawan/.local/share/jdtls/workspace/' .. project_name,
         '--add-modules=ALL-SYSTEM',
         '--add-opens', 'java.base/java.util=ALL-UNNAMED',
         '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
