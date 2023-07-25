@@ -85,4 +85,4 @@ local D = {
 }
 local E = { "kyazdani42/nvim-web-devicons", lazy = true }
 
-return { A, B, C, D, E }
+return { A, C, D, E }
