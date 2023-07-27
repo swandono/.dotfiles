@@ -52,5 +52,20 @@ return {
                 end,
             },
         },
+    },
+    {
+        "navarasu/onedark.nvim",
+        event = "VimEnter",
+        priority = 1000,
+        lazy = true,
+        keys = {
+            {
+                "<leader>cd",
+                function()
+                    vim.cmd([[colorscheme onedark]])
+                end,
+            },
+        },
+        opts = { style = "cool" },
     }
 }
