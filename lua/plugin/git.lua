@@ -15,7 +15,13 @@ local A = {
         require("gitsigns").setup(opts)
     end,
 }
-local B = { "TimUntersberger/neogit", lazy = true, cmd = "Neogit", dependencies = { "nvim-lua/plenary.nvim" } }
+local B = {
+    "TimUntersberger/neogit",
+    lazy = true,
+    cmd = "Neogit",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = true
+}
 local C = { "tpope/vim-fugitive", event = { "BufReadPre", "BufNewFile" } }
 
 return { A, B, C }
