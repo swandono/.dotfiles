@@ -55,8 +55,6 @@ return {
     },
     {
         "navarasu/onedark.nvim",
-        event = "VimEnter",
-        priority = 1000,
         lazy = true,
         keys = {
             {
