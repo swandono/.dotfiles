@@ -54,6 +54,7 @@ return {
         -- golang debugger
         {
             "leoluz/nvim-dap-go",
+            ft = "go",
             dependencies = "nvim-dap",
             config = function()
                 require("dap-go").setup()
