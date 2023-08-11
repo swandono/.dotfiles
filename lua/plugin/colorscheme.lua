@@ -1,14 +1,10 @@
 return {
     {
         "ellisonleao/gruvbox.nvim",
-        event = "VimEnter",
-        priority = 1000,
-        config = function()
-            vim.cmd([[colorscheme gruvbox]])
-        end,
+        lazy = true,
         keys = {
             {
-                "<leader>cg",
+                "<leader>c1",
                 function()
                     vim.cmd([[colorscheme gruvbox]])
                 end,
@@ -20,7 +16,7 @@ return {
         lazy = true,
         keys = {
             {
-                "<leader>ct",
+                "<leader>c2",
                 function()
                     vim.cmd([[colorscheme tokyonight]])
                 end,
@@ -29,36 +25,18 @@ return {
         opts = { style = "moon" },
     },
     {
-        "catppuccin/nvim",
-        lazy = true,
-        keys = {
-            {
-                "<leader>cc",
-                function()
-                    vim.cmd([[colorscheme catppuccin]])
-                end,
-            },
-        },
-        name = "catppuccin",
-    },
-    {
-        "rmehri01/onenord.nvim",
-        lazy = true,
-        keys = {
-            {
-                "<leader>co",
-                function()
-                    vim.cmd([[colorscheme onenord]])
-                end,
-            },
-        },
-    },
-    {
         "navarasu/onedark.nvim",
-        lazy = true,
+        event = "VimEnter",
+        priority = 1000,
+        config = function()
+            require('onedark').setup {
+                style = 'cool'
+            }
+            require('onedark').load()
+        end,
         keys = {
             {
-                "<leader>cd",
+                "<leader>c3",
                 function()
                     vim.cmd([[colorscheme onedark]])
                 end,
