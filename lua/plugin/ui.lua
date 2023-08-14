@@ -5,8 +5,10 @@ local A = {
         options = {
             icons_enabled = true,
             theme = "auto",
-            component_separators = { left = "", right = "" },
-            section_separators = { left = "", right = "" },
+            -- component_separators = { left = "", right = "" },
+            -- section_separators = { left = "", right = "" },
+            component_separators = { left = "│", right = "│" },
+            section_separators = { left = "", right = "" },
             disabled_filetypes = {},
             always_divide_middle = true,
             globalstatus = true,
@@ -62,8 +64,8 @@ local C = {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPre", "BufNewFile", "InsertEnter" },
     opts = {
-        -- char = "▏",
-        char = "│",
+        char = "▏",
+        -- char = "│",
         filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
         show_trailing_blankline_indent = false,
         show_current_context = false,
