@@ -68,6 +68,9 @@ return {
                 vim.keymap.set("n", "<leader>vc", function()
                     vim.lsp.buf.rename()
                 end, opts)
+                vim.keymap.set("n", "<leader>vl", function()
+                    vim.lsp.buf.references()
+                end, opts)
             end)
 
             lsp.setup()
