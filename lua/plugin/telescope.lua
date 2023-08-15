@@ -32,7 +32,6 @@ return {
             [[<CMD>lua require('telescope.builtin').grep_string()<CR>]],
             { silent = true, noremap = true }
         )
-        vim.keymap.set("n", "<leader>ss", tele.git_status, {})
         vim.keymap.set("n", "<leader>bs", tele.git_branches, {})
         vim.keymap.set("n", "<C-j>", tele.buffers, {})
         vim.keymap.set("n", "<C-k>", tele.find_files, {})
