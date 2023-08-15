@@ -4,7 +4,8 @@ local A = {
     event = { "BufReadPre", "BufNewFile", "InsertEnter" },
     build = ":TSUpdate",
     dependencies = {
-        { "nvim-treesitter/nvim-treesitter-context", lazy = true },
+        { "nvim-treesitter/nvim-treesitter-context",     lazy = true },
+        { "nvim-treesitter/nvim-treesitter-textobjects", lazy = true },
     },
     opts = {
         highlight = {
@@ -14,10 +15,10 @@ local A = {
         incremental_selection = {
             enable = true,
             keymaps = {
-                init_selection = "gni",
-                node_incremental = "gnn",
-                scope_incremental = "gnb",
-                node_decremental = "gnm",
+                init_selection = "<leader>ss",
+                node_incremental = "<leader>ss",
+                scope_incremental = "<leader>sc",
+                node_decremental = "<leader>sd",
             },
         },
         rainbow = {
@@ -30,6 +31,37 @@ local A = {
         },
         sync_install = false,
         auto_install = true,
+        textobjects = {
+            move = {
+                enable = true,
+                set_jumps = true, -- whether to set jumps in the jumplist
+                goto_next_start = {
+                    ["<leader>fn"] = "@function.outer",
+                    ["<leader>sn"] = "@class.outer",
+                },
+                goto_next_end = {
+                    ["<leader>fN"] = "@function.outer",
+                    ["<leader>sN"] = "@class.outer",
+                },
+                goto_previous_start = {
+                    ["<leader>fp"] = "@function.outer",
+                    ["<leader>sp"] = "@class.outer",
+                },
+                goto_previous_end = {
+                    ["<leader>fP"] = "@function.outer",
+                    ["<leader>sP"] = "@class.outer",
+                },
+            },
+            swap = {
+                enable = true,
+                swap_next = {
+                    ["<leader>s,"] = "@parameter.inner",
+                },
+                swap_previous = {
+                    ["<leader>s."] = "@parameter.inner",
+                },
+            },
+        },
     },
     config = function(_, opts)
         if type(opts.ensure_installed) == "table" then
@@ -44,7 +76,7 @@ local A = {
             end, opts.ensure_installed)
         end
         require("nvim-treesitter.configs").setup(opts)
-        require 'treesitter-context'.setup {}
+        require "treesitter-context".setup {}
     end,
 }
 
