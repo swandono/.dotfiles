@@ -11,15 +11,6 @@ return {
         persist_size = true,
         direction = "vertical",
     },
-    keys = {
-        {
-            "<C-]>",
-            function()
-                vim.keymap.set("i", "<C-]>", [[<Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>]])
-            end,
-            mode = { "n", "i" },
-        },
-    },
     config = function(_, opts)
         require("toggleterm").setup(opts)
         local Terminal = require("toggleterm.terminal").Terminal
