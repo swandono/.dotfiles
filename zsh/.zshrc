@@ -53,14 +53,6 @@ export NVM_DIR="$HOME/.nvm"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-
-# bun completions
-[ -s "/Users/swandono/.bun/_bun" ] && source "/Users/swandono/.bun/_bun"
-
-# Bun
-export BUN_INSTALL="/Users/swandono/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
 # PyENV
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
