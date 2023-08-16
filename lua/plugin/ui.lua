@@ -32,35 +32,6 @@ local A = {
     },
 }
 local B = {
-    "akinsho/bufferline.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    opts = {
-        options = {
-            -- stylua: ignore
-            close_command = function(n) require("mini.bufremove").delete(n, false) end,
-            -- stylua: ignore
-            right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
-            diagnostics = "nvim_lsp",
-            always_show_bufferline = false,
-            offsets = {
-                {
-                    filetype = "neo-tree",
-                    text = "Neo-tree",
-                    highlight = "Directory",
-                    text_align = "left",
-                },
-            },
-        },
-    },
-    dependencies = {
-        {
-            "echasnovski/mini.bufremove",
-            event = { "BufReadPre", "BufNewFile", "InsertEnter" },
-            version = false,
-        },
-    },
-}
-local C = {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPre", "BufNewFile", "InsertEnter" },
     opts = {
@@ -71,7 +42,7 @@ local C = {
         show_current_context = false,
     },
 }
-local D = {
+local C = {
     "yamatsum/nvim-cursorline",
     event = { "BufReadPre", "BufNewFile", "InsertEnter" },
     opts = {
@@ -85,6 +56,6 @@ local D = {
         },
     },
 }
-local E = { "kyazdani42/nvim-web-devicons", lazy = true }
+local D = { "kyazdani42/nvim-web-devicons", lazy = true }
 
-return { A, C, D, E }
+return { A, B, C, D }
