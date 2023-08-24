@@ -113,6 +113,7 @@ local D = {
         keys = {
             { "<leader>tn", function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
             { "<leader>tp", function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
+            { "<leader>tl", "<cmd>TodoQuickFix<cr>",                             desc = "Todo (QuickFix)" },
             { "<leader>tt", "<cmd>TodoTrouble<cr>",                              desc = "Todo (Trouble)" },
             { "<leader>tT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",      desc = "Todo/Fix/Fixme (Trouble)" },
             { "<leader>ts", "<cmd>TodoTelescope<cr>",                            desc = "Todo" },
