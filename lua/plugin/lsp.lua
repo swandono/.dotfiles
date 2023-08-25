@@ -20,7 +20,7 @@ return {
             lsp.preset("recommended")
 
             lsp.ensure_installed({
-                "tsserver",
+                "vtsls",
                 "rust_analyzer",
                 "gopls",
             })
