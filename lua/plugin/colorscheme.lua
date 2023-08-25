@@ -30,7 +30,12 @@ return {
         priority = 1000,
         config = function()
             require('onedark').setup {
-                style = 'cool'
+                style = 'cool',
+                -- transparent = {
+                --     background = true,
+                --     tabline = true,
+                --     statusline = true,
+                -- }
             }
             require('onedark').load()
         end,

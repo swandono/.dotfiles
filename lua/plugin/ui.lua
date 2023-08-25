@@ -54,5 +54,17 @@ local C = {
     end,
 }
 local D = { "kyazdani42/nvim-web-devicons", lazy = true }
+local E = {
+    "rcarriga/nvim-notify",
+    event = "VeryLazy",
+    config = function()
+        vim.notify = require("notify")
+        vim.notify.setup({
+            render = "compact",
+            top_down = false,
+            background_colour = "#000000",
+        })
+    end,
+}
 
 return { A, B, C, D }
