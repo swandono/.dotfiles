@@ -43,18 +43,15 @@ local B = {
     },
 }
 local C = {
-    "yamatsum/nvim-cursorline",
+    'mawkler/modicator.nvim',
     event = { "BufReadPre", "BufNewFile", "InsertEnter" },
-    opts = {
-        cursorline = {
-            enable = true,
-            timeout = 0,
-            number = false,
-        },
-        cursorword = {
-            enable = false,
-        },
-    },
+    dependencies = 'navarasu/onedark.nvim',
+    init = function()
+        vim.o.cursorline = true
+    end,
+    config = function()
+        require('modicator').setup()
+    end,
 }
 local D = { "kyazdani42/nvim-web-devicons", lazy = true }
 
