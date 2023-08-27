@@ -48,5 +48,8 @@ return {
             },
         },
         opts = { style = "cool" },
+        -- Update on the onedark repo if you want to use trasparent
+        -- FloatBorder = { fg = c.grey, bg = cfg.transparent and c.none or c.bg0 },
+        -- NormalFloat = { fg = c.fg, bg = cfg.transparent and c.none or c.bg0 },
     }
 }
