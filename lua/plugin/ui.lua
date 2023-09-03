@@ -67,4 +67,4 @@ local E = {
     end,
 }
 
-return { A, B, C, D, E }
+return { A, B, C, D }
