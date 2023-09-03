@@ -1,8 +1,10 @@
 gui:
   theme:
-    optionsTextColor:
-      - "#3a445a"
+    # optionsTextColor:
+    #   - "#3a445a"
     selectedLineBgColor:
       - "#3a445a"
     selectedRangeBgColor:
       - "#3a445a"
+    defaultFgColor:
+      - "#8baed9"

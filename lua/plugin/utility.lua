@@ -47,6 +47,20 @@ local G = {
             return vim.ui.input(...)
         end
     end,
+    config = function()
+        require("dressing").setup({
+            input   = {
+                win_options = {
+                    winblend = 0,
+                },
+            },
+            builtin = {
+                win_options = {
+                    winblend = 0,
+                },
+            }
+        })
+    end,
 }
 
 return { A, B, C, D, E, F, G }
