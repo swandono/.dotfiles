@@ -35,22 +35,6 @@ local A = {
             move = {
                 enable = true,
                 set_jumps = true, -- whether to set jumps in the jumplist
-                -- goto_next_start = {
-                --     ["<leader>fn"] = "@function.outer",
-                --     ["<leader>sn"] = "@class.outer",
-                -- },
-                -- goto_next_end = {
-                --     ["<leader>fN"] = "@function.outer",
-                --     ["<leader>sN"] = "@class.outer",
-                -- },
-                -- goto_previous_start = {
-                --     ["<leader>fp"] = "@function.outer",
-                --     ["<leader>sp"] = "@class.outer",
-                -- },
-                -- goto_previous_end = {
-                --     ["<leader>fP"] = "@function.outer",
-                --     ["<leader>sP"] = "@class.outer",
-                -- },
             },
             swap = {
                 enable = true,
