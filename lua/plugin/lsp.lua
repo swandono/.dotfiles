@@ -27,6 +27,7 @@ return {
                 "vtsls",
                 "rust_analyzer",
                 "gopls",
+                "clangd",
             })
 
             -- Fix Undefined global 'vim'
