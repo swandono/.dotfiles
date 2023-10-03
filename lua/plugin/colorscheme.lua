@@ -31,11 +31,11 @@ return {
         config = function()
             require('onedark').setup {
                 style = 'cool',
-                -- transparent = {
-                --     background = true,
-                --     tabline = true,
-                --     statusline = true,
-                -- }
+                transparent = {
+                    background = true,
+                    tabline = true,
+                    statusline = true,
+                }
             }
             require('onedark').load()
         end,
