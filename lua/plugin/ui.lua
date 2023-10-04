@@ -34,12 +34,15 @@ local A = {
 local B = {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPre", "BufNewFile", "InsertEnter" },
+    main = "ibl",
     opts = {
-        char = "▏",
-        -- char = "│",
-        filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
-        show_trailing_blankline_indent = false,
-        show_current_context = false,
+        debounce = 100,
+        indent = { char = "▏" },
+        -- indent = { char = "│" },
+        whitespace = { highlight = { "Whitespace", "NonText" } },
+        scope = {
+            enabled = false,
+        },
     },
 }
 local C = {
