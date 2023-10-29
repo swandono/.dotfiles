@@ -14,9 +14,9 @@ return {
             },
             { "williamboman/mason-lspconfig.nvim" }, -- Optional
             -- java
-            {
-                "mfussenegger/nvim-jdtls",
-            },
+            -- {
+            --     "mfussenegger/nvim-jdtls",
+            -- },
         },
         opts = function()
             local lsp = require("lsp-zero")
