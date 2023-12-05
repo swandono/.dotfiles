@@ -61,6 +61,8 @@ return {
                             fallback()
                         end
                     end, { "i", "s" }),
+                    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
                     ["<C-c>"] = cmp.mapping.abort(),
                     ["<CR>"] = cmp.mapping.confirm({
                         behavior = cmp.ConfirmBehavior.Replace,
@@ -95,6 +97,7 @@ return {
     -- Snippets
     {
         "L3MON4D3/LuaSnip",
+        version = "v2.*",
         event = { "BufReadPre", "BufNewFile", "InsertEnter" },
         build = "make install_jsregexp",
         dependencies = {
