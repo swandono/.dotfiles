@@ -56,3 +56,5 @@ vim.keymap.set("n", "<leader>go", [[<CMD> Gitsigns toggle_signs<CR>]], { silent 
 vim.keymap.set("n", "<leader>gm", [[<CMD> Gitsigns toggle_deleted<CR>]], { silent = true, noremap = true })
 
 vim.keymap.set("n", "<leader>cf", ":e %:p:h/")
+vim.keymap.set("n", "<leader>t2", ":set tabstop=2 shiftwidth=2 softtabstop=2<CR>")
+vim.keymap.set("n", "<leader>t4", ":set tabstop=4 shiftwidth=4 softtabstop=4<CR>")
