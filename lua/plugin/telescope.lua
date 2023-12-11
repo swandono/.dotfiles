@@ -65,6 +65,5 @@ return {
         end)
         vim.keymap.set("n", "<leader>ma", harp_mark.add_file, {})
         vim.keymap.set("n", "<leader>mm", harp_ui.toggle_quick_menu, {})
-        vim.keymap.set("n", "<leader>mt", [[<CMD> Telescope harpoon marks<CR>]])
     end,
 }
