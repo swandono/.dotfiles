@@ -89,13 +89,6 @@ return {
         "mhartington/formatter.nvim",
         event = { "BufReadPre", "BufNewFile", "InsertEnter" },
         config = function()
-            local function prettier()
-                return {
-                    exe = "prettierd",
-                    args = { vim.api.nvim_buf_get_name(0) },
-                    stdin = true
-                }
-            end
             local function go()
                 return {
                     exe = "gofmt",
@@ -128,18 +121,16 @@ return {
             require("formatter").setup({
                 logging = true,
                 filetype = {
-                    javascript = { prettier },
-                    javascriptreact = { prettier },
-                    typescript = { prettier },
-                    typescriptreact = { prettier },
-                    css = { prettier },
-                    scss = { prettier },
-                    vue = { prettier },
-                    json = { prettier },
-                    jsonc = { prettier },
-                    yaml = { prettier },
-                    markdown = { prettier },
-                    html = { prettier },
+                    javascript = { require("formatter.filetypes.javascript").prettierd },
+                    javascriptreact = { require("formatter.filetypes.javascript").prettierd },
+                    typescript = { require("formatter.filetypes.javascript").prettierd },
+                    typescriptreact = { require("formatter.filetypes.javascript").prettierd },
+                    css = { require("formatter.filetypes.javascript").prettierd },
+                    vue = { require("formatter.filetypes.javascript").prettierd },
+                    json = { require("formatter.filetypes.javascript").prettierd },
+                    yaml = { require("formatter.filetypes.javascript").prettierd },
+                    markdown = { require("formatter.filetypes.javascript").prettierd },
+                    html = { require("formatter.filetypes.javascript").prettierd },
                     go = { go },
                     rust = { rust },
                     python = { python },
