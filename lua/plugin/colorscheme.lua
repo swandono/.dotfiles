@@ -25,7 +25,7 @@ return {
         opts = { style = "moon" },
     },
     {
-        "navarasu/onedark.nvim",
+        "swandono/onedark.nvim",
         event = "VimEnter",
         priority = 1000,
         config = function()
