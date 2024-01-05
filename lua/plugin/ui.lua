@@ -48,7 +48,7 @@ local B = {
 local C = {
     'mawkler/modicator.nvim',
     event = { "BufReadPre", "BufNewFile" },
-    dependencies = 'navarasu/onedark.nvim',
+    dependencies = 'swandono/onedark.nvim',
     init = function()
         vim.o.cursorline = true
     end,
