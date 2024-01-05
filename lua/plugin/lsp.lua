@@ -14,9 +14,10 @@ return {
             },
             { "williamboman/mason-lspconfig.nvim" }, -- Optional
             -- java
-            {
-                "mfussenegger/nvim-jdtls",
-            },
+            -- you need to uncomment this if you want to use java
+            -- {
+            --     "mfussenegger/nvim-jdtls",
+            -- },
         },
         opts = function()
             local lsp = require("lsp-zero")
@@ -44,38 +45,36 @@ return {
             })
 
             lsp.on_attach(function(_, bufnr)
-                local opts = { buffer = bufnr, remap = false }
-
                 vim.keymap.set("n", "gd", function()
                     vim.lsp.buf.definition({})
-                end, opts)
+                end, { buffer = bufnr, remap = false, desc = "Go to definition" })
                 vim.keymap.set("n", "K", function()
                     vim.lsp.buf.hover()
-                end, opts)
+                end, { buffer = bufnr, remap = false, desc = "Hover" })
                 vim.keymap.set("i", "<C-h>", function()
                     vim.lsp.buf.signature_help()
-                end, opts)
+                end, { buffer = bufnr, remap = false, desc = "Signature help" })
                 vim.keymap.set("n", "<leader>ff", function()
                     vim.lsp.buf.format({ async = true })
-                end, opts)
+                end, { buffer = bufnr, remap = false, desc = "Format" })
                 vim.keymap.set("n", "<leader>va", function()
                     vim.lsp.buf.code_action()
-                end, opts)
+                end, { buffer = bufnr, remap = false, desc = "Code action" })
                 vim.keymap.set("n", "<leader>vf", function()
                     vim.diagnostic.open_float()
-                end, opts)
+                end, { buffer = bufnr, remap = false, desc = "Open float" })
                 vim.keymap.set("n", "<leader>vn", function()
                     vim.diagnostic.goto_next()
-                end, opts)
+                end, { buffer = bufnr, remap = false, desc = "Go to next" })
                 vim.keymap.set("n", "<leader>vp", function()
                     vim.diagnostic.goto_prev()
-                end, opts)
+                end, { buffer = bufnr, remap = false, desc = "Go to previous" })
                 vim.keymap.set("n", "<leader>vc", function()
                     vim.lsp.buf.rename()
-                end, opts)
+                end, { buffer = bufnr, remap = false, desc = "Rename" })
                 vim.keymap.set("n", "<leader>vl", function()
                     vim.lsp.buf.references()
-                end, opts)
+                end, { buffer = bufnr, remap = false, desc = "References" })
             end)
 
             lsp.setup()
@@ -140,8 +139,9 @@ return {
                     require("formatter.filetypes.any").remove_trailing_whitespace
                 }
             })
-            vim.keymap.set("n", "<leader>fF", [[<CMD> Format<CR>]])
-            vim.keymap.set("n", "<leader>fw", [[<CMD> FormatWrite<CR>]])
+            vim.keymap.set("n", "<leader>fF", [[<CMD> Format<CR>]], { silent = true, desc = "Format using formatter" })
+            vim.keymap.set("n", "<leader>fw", [[<CMD> FormatWrite<CR>]],
+                { silent = true, desc = "Format using formatter and write" })
         end,
     },
 }
