@@ -122,21 +122,18 @@ local D = {
 
 local E = {
     {
-        "zbirenbaum/copilot.lua",
+        "github/copilot.vim",
         cmd = "Copilot",
         event = { "BufReadPre", "BufNewFile", "InsertEnter" },
         config = function()
-            require("copilot").setup({
-                suggestion = {
-                    auto_trigger = true,
-                    keymap = {
-                        accept = "<C-j>",
-                    },
-                },
-                filetypes = {
-                    ["dap-repl"] = false,
-                },
-            })
+            vim.g.copilot_no_tab_map = true
+            vim.b.copilot_enable = true
+            vim.g.copilot_filetypes = {
+                ['dap-repl'] = false,
+            }
+            vim.keymap.set('i', '<C-j>', 'copilot#Accept("<CR>")',
+                { expr = true, replace_keycodes = false, desc = "Accept Copilot Suggestion" })
+            vim.keymap.set('i', '<C-k>', '<Plug>(copilot-accept-word)', { desc = "Accept Copilot Word" })
         end,
     }
 }
