@@ -1,6 +1,9 @@
 return {
     "akinsho/toggleterm.nvim",
-    event = "VeryLazy",
+    keys = {
+        { "<leader>gk" },
+        { "<c-]>" },
+    },
     opts = {
         open_mapping = [[<c-]>]],
         size = 50,

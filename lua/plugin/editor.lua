@@ -33,7 +33,6 @@ local A = {
 local B = {
     {
         "nvim-neo-tree/neo-tree.nvim",
-        event = { "BufReadPre", "BufNewFile", "InsertEnter" },
         dependencies = {
             { "MunifTanjim/nui.nvim", lazy = true },
         },
