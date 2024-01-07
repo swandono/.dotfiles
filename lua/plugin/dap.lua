@@ -62,22 +62,38 @@ return {
         },
     },
     keys = {
-        { "<leader>da", function() require("dap").toggle_breakpoint() end,            desc = "Toggle Breakpoint" },
-        { "<leader>dc", function() require("dap").continue() end,                     desc = "Continue" },
-        { "<leader>df", function() require("dap").run_to_cursor() end,                desc = "Go to line (no execute)" },
-        { "<leader>dO", function() require("dap").step_over() end,                    desc = "Step Over" },
-        { "<leader>di", function() require("dap").step_into() end,                    desc = "Step Into" },
-        { "<leader>do", function() require("dap").step_out() end,                     desc = "Step Out" },
-        { "<leader>dh", function() require("dap.ui.widgets").hover() end,             desc = "Widgets" },
-        { "<leader>dd", function() require("dapui").eval() end,                       desc = "Debug Eval" },
-        { "<leader>dt", function() require("dapui").toggle({}) end,                   desc = "Toggle DAP UI" },
-        { "<leader>db", function() require("dapui").float_element("breakpoints") end, desc = "Debug Breakpoints" },
-        { "<leader>d;", function() require("dapui").float_element("watches") end,     desc = "Debug Watches" },
-        { "<leader>dj", function() require("dapui").float_element("scopes") end,      desc = "Debug Scopes" },
-        { "<leader>dk", function() require("dapui").float_element("repl", { height = 70, width = 200, position = "center" }) end,        desc = "Debug REPL" },
-        { "<leader>dl", function() require("dapui").float_element("console", { height = 70, width = 200, position = "center" }) end,     desc = "Debug Terminal" },
-        { "<leader>dm", function() require("dapui").float_element("stacks") end,      desc = "Debug Stacks" },
-        { "<leader>dn", function() require("dap").up() end,                           desc = "Up" },
-        { "<leader>dp", function() require("dap").down() end,                         desc = "Down" },
+        { "<leader>dc" },
     },
+    config = function()
+        local dap = require("dap")
+        vim.keymap.set("n", "<leader>da", dap.toggle_breakpoint,
+            { noremap = true, silent = true, desc = "Toggle Breakpoint" })
+        vim.keymap.set("n", "<leader>dc", dap.continue, { noremap = true, silent = true, desc = "Continue" })
+        vim.keymap.set("n", "<leader>df", dap.run_to_cursor,
+            { noremap = true, silent = true, desc = "Go to line (no execute)" })
+        vim.keymap.set("n", "<leader>dO", dap.step_over, { noremap = true, silent = true, desc = "Step Over" })
+        vim.keymap.set("n", "<leader>di", dap.step_into, { noremap = true, silent = true, desc = "Step Into" })
+        vim.keymap.set("n", "<leader>do", dap.step_out, { noremap = true, silent = true, desc = "Step Out" })
+        vim.keymap.set("n", "<leader>dh", require("dap.ui.widgets").hover,
+            { noremap = true, silent = true, desc = "Widgets" })
+        vim.keymap.set("n", "<leader>dd", require("dapui").eval, { noremap = true, silent = true, desc = "Debug Eval" })
+        vim.keymap.set("n", "<leader>dt", require("dapui").toggle,
+            { noremap = true, silent = true, desc = "Toggle DAP UI" })
+        vim.keymap.set("n", "<leader>db", function() require("dapui").float_element("breakpoints") end,
+            { noremap = true, silent = true, desc = "Debug Breakpoints" })
+        vim.keymap.set("n", "<leader>d;", function() require("dapui").float_element("watches") end,
+            { noremap = true, silent = true, desc = "Debug Watches" })
+        vim.keymap.set("n", "<leader>dj", function() require("dapui").float_element("scopes") end,
+            { noremap = true, silent = true, desc = "Debug Scopes" })
+        vim.keymap.set("n", "<leader>dk",
+            function() require("dapui").float_element("repl", { height = 70, width = 200, position = "center" }) end,
+            { noremap = true, silent = true, desc = "Debug REPL" })
+        vim.keymap.set("n", "<leader>dl",
+            function() require("dapui").float_element("console", { height = 70, width = 200, position = "center" }) end,
+            { noremap = true, silent = true, desc = "Debug Terminal" })
+        vim.keymap.set("n", "<leader>dm", function() require("dapui").float_element("stacks") end,
+            { noremap = true, silent = true, desc = "Debug Stacks" })
+        vim.keymap.set("n", "<leader>dn", dap.up, { noremap = true, silent = true, desc = "Up" })
+        vim.keymap.set("n", "<leader>dp", dap.down, { noremap = true, silent = true, desc = "Down" })
+    end
 }

@@ -4,28 +4,29 @@ local A = {
         cmd = { "TroubleToggle", "Trouble" },
         opts = { use_diagnostic_signs = true },
         keys = {
-            { "<leader>lf", "<cmd>TroubleToggle<cr>" },
-            { "<leader>ld", "<cmd>TroubleToggle document_diagnostics<cr>",  desc = "Document Diagnostics (Trouble)" },
-            { "<leader>lw", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
-            {
-                "<leader>lp",
-                function()
-                    if require("trouble").is_open() then
-                        require("trouble").previous({ skip_groups = true, jump = true })
-                    end
-                end,
-                desc = "Previous trouble/quickfix item",
-            },
-            {
-                "<leader>ln",
-                function()
-                    if require("trouble").is_open() then
-                        require("trouble").next({ skip_groups = true, jump = true })
-                    end
-                end,
-                desc = "Next trouble/quickfix item",
-            },
+            { "<leader>lf" },
+            { "<leader>ld" },
+            { "<leader>lw" },
         },
+        config = function(_, opts)
+            require("trouble").setup(opts)
+            vim.keymap.set("n", "<leader>lf", "<cmd>TroubleToggle<cr>",
+                { silent = true, noremap = true, desc = "Trouble" })
+            vim.keymap.set("n", "<leader>ld", "<cmd>TroubleToggle document_diagnostics<cr>",
+                { silent = true, noremap = true, desc = "Document Diagnostics (Trouble)" })
+            vim.keymap.set("n", "<leader>lw", "<cmd>TroubleToggle workspace_diagnostics<cr>",
+                { silent = true, noremap = true, desc = "Workspace Diagnostics (Trouble)" })
+            vim.keymap.set("n", "<leader>lp", function()
+                if require("trouble").is_open() then
+                    require("trouble").previous({ skip_groups = true, jump = true })
+                end
+            end, { silent = true, noremap = true, desc = "Previous trouble" })
+            vim.keymap.set("n", "<leader>ln", function()
+                if require("trouble").is_open() then
+                    require("trouble").next({ skip_groups = true, jump = true })
+                end
+            end, { silent = true, noremap = true, desc = "Next trouble" })
+        end,
     },
 }
 
@@ -37,14 +38,7 @@ local B = {
             { "MunifTanjim/nui.nvim", lazy = true },
         },
         keys = {
-            {
-                "<C-h>",
-                function()
-                    require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
-                end,
-                desc = "Explorer NeoTree (cwd)",
-            },
-            { "<leader>rt", "<C-h>", desc = "Explorer NeoTree (cwd)", remap = true },
+            { "<C-h>" },
         },
         deactivate = function()
             vim.cmd([[Neotree close]])
@@ -88,6 +82,9 @@ local B = {
                     end
                 end,
             })
+            vim.keymap.set("n", "<C-h>", function()
+                require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
+            end, { silent = true, noremap = true, desc = "Explorer NeoTree (cwd)" })
         end,
     },
 }
@@ -97,8 +94,13 @@ local C = {
         "nvim-pack/nvim-spectre",
         -- stylua: ignore
         keys = {
-            { "<leader>sp", function() require("spectre").open() end, desc = "Replace in files (Spectre)" },
+            { "<leader>sp" },
         },
+        config = function()
+            vim.keymap.set("n", "<leader>sp", function()
+                require("spectre").open()
+            end, { silent = true, noremap = true, desc = "Replace in files (Spectre)" })
+        end,
     },
 }
 
@@ -106,17 +108,29 @@ local D = {
     {
         "folke/todo-comments.nvim",
         cmd = { "TodoTrouble", "TodoTelescope" },
-        config = true,
-        -- stylua: ignore
         keys = {
-            { "<leader>tn", function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
-            { "<leader>tp", function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
-            { "<leader>tl", "<cmd>TodoQuickFix<cr>",                             desc = "Todo (QuickFix)" },
-            { "<leader>tt", "<cmd>TodoTrouble<cr>",                              desc = "Todo (Trouble)" },
-            { "<leader>tT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",      desc = "Todo/Fix/Fixme (Trouble)" },
-            { "<leader>ts", "<cmd>TodoTelescope<cr>",                            desc = "Todo" },
-            { "<leader>tS", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>",    desc = "Todo/Fix/Fixme" },
+            { "<leader>tl" },
+            { "<leader>tt" },
+            { "<leader>tT" },
+            { "<leader>ts" },
+            { "<leader>tS" },
         },
+        config = function()
+            vim.keymap.set("n", "<leader>tl", "<cmd>TodoQuickFix<cr>",
+                { silent = true, noremap = true, desc = "Todo (QuickFix)" })
+            vim.keymap.set("n", "<leader>tt", "<cmd>TodoTrouble<cr>",
+                { silent = true, noremap = true, desc = "Todo (Trouble)" })
+            vim.keymap.set("n", "<leader>tT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",
+                { silent = true, noremap = true, desc = "Todo/Fix/Fixme (Trouble)" })
+            vim.keymap.set("n", "<leader>ts", "<cmd>TodoTelescope<cr>",
+                { silent = true, noremap = true, desc = "Todo" })
+            vim.keymap.set("n", "<leader>tS", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>",
+                { silent = true, noremap = true, desc = "Todo/Fix/Fixme" })
+            vim.keymap.set("n", "<leader>tn", function() require("todo-comments").jump_next() end,
+                { silent = true, noremap = true, desc = "Next todo comment" })
+            vim.keymap.set("n", "<leader>tp", function() require("todo-comments").jump_prev() end,
+                { silent = true, noremap = true, desc = "Previous todo comment" })
+        end,
     },
 }
 
