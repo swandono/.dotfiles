@@ -2,15 +2,6 @@ return {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
     event = { "BufReadPre", "BufNewFile", "InsertEnter" },
-    dependencies = {
-        {
-            "ThePrimeagen/harpoon",
-            event = { "BufReadPre", "BufNewFile", "InsertEnter" },
-            build = function()
-                require("telescope").load_extension("harpoon")
-            end,
-        },
-    },
     version = false,
     opts = {
         extensions = {
@@ -53,30 +44,5 @@ return {
         vim.keymap.set("n", "<leader>vi", tele.lsp_implementations, { desc = "Telescope LSP implementations" })
         vim.keymap.set("n", "<leader>vt", tele.lsp_type_definitions, { desc = "Telescope LSP type definitions" })
         vim.keymap.set("n", "<leader>vr", tele.lsp_references, { desc = "Telescope LSP references" })
-
-        local harp_ui = require("harpoon.ui")
-        local harp_mark = require("harpoon.mark")
-        vim.keymap.set("n", "<C-n>", harp_ui.nav_next, { desc = "Harpoon nav next" })
-        vim.keymap.set("n", "<C-p>", harp_ui.nav_prev, { desc = "Harpoon nav prev" })
-        vim.keymap.set("n", "<M-j>", function()
-            harp_ui.nav_file(1)
-        end, { desc = "Harpoon nav file 1" })
-        vim.keymap.set("n", "<M-k>", function()
-            harp_ui.nav_file(2)
-        end, { desc = "Harpoon nav file 2" })
-        vim.keymap.set("n", "<M-l>", function()
-            harp_ui.nav_file(3)
-        end, { desc = "Harpoon nav file 3" })
-        vim.keymap.set("n", "<M-u>", function()
-            harp_ui.nav_file(4)
-        end, { desc = "Harpoon nav file 4" })
-        vim.keymap.set("n", "<M-i>", function()
-            harp_ui.nav_file(5)
-        end, { desc = "Harpoon nav file 5" })
-        vim.keymap.set("n", "<M-o>", function()
-            harp_ui.nav_file(6)
-        end, { desc = "Harpoon nav file 6" })
-        vim.keymap.set("n", "<leader>ma", harp_mark.add_file, { desc = "Harpoon mark add file" })
-        vim.keymap.set("n", "<leader>mm", harp_ui.toggle_quick_menu, { desc = "Harpoon toggle quick menu" })
     end,
 }
