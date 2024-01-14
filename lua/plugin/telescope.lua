@@ -40,9 +40,5 @@ return {
         vim.keymap.set("n", "<C-j>", tele.buffers, { desc = "Telescope buffers" })
         vim.keymap.set("n", "<C-k>", tele.find_files, { desc = "Telescope find files" })
         vim.keymap.set("n", "<C-l>", tele.live_grep, { desc = "Telescope live grep" })
-        vim.keymap.set("n", "<leader>vd", tele.lsp_definitions, { desc = "Telescope LSP definitions" })
-        vim.keymap.set("n", "<leader>vi", tele.lsp_implementations, { desc = "Telescope LSP implementations" })
-        vim.keymap.set("n", "<leader>vt", tele.lsp_type_definitions, { desc = "Telescope LSP type definitions" })
-        vim.keymap.set("n", "<leader>vr", tele.lsp_references, { desc = "Telescope LSP references" })
     end,
 }

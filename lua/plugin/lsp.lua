@@ -40,9 +40,6 @@ return {
             })
 
             lsp.on_attach(function(_, bufnr)
-                vim.keymap.set("n", "gd", function()
-                    vim.lsp.buf.definition({})
-                end, { buffer = bufnr, remap = false, desc = "Go to definition" })
                 vim.keymap.set("n", "K", function()
                     vim.lsp.buf.hover()
                 end, { buffer = bufnr, remap = false, desc = "Hover" })
@@ -67,9 +64,6 @@ return {
                 vim.keymap.set("n", "<leader>vc", function()
                     vim.lsp.buf.rename()
                 end, { buffer = bufnr, remap = false, desc = "Rename" })
-                vim.keymap.set("n", "<leader>vl", function()
-                    vim.lsp.buf.references()
-                end, { buffer = bufnr, remap = false, desc = "References" })
             end)
 
             lsp.setup()
