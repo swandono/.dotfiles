@@ -22,13 +22,8 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move Line Down" })
 vim.keymap.set("n", "<leader>u", [[<CMD>UndotreeShow<CR>]], { desc = "Open UndoTree" })
 
 vim.keymap.set("n", "<leader>bd", [[<CMD>bd<CR>]], { desc = "Delete Buffer" })
-vim.keymap.set("n", "<leader>oo", [[<CMD>only<CR>]], { desc = "Close Other Buffers" })
 vim.keymap.set("n", "<leader>bh", [[<CMD>split<CR>]], { desc = "Split Buffer" })
 vim.keymap.set("n", "<leader>bv", [[<CMD>vsplit<CR>]], { desc = "VSplit Buffer" })
-vim.keymap.set("n", "<leader>ws[", [[<CMD>vertical resize -5<CR>]], { desc = "Resize Window" })
-vim.keymap.set("n", "<leader>ws]", [[<CMD>vertical resize +5<CR>]], { desc = "Resize Window" })
-vim.keymap.set("n", "<leader>ws;", [[<CMD>resize -5<CR>]], { desc = "Resize Window" })
-vim.keymap.set("n", "<leader>ws'", [[<CMD>resize +5<CR>]], { desc = "Resize Window" })
 
 vim.keymap.set("n", "<leader>co", ":copen<CR>", { desc = "Open Quickfix" })
 vim.keymap.set("n", "<leader>cc", ":cclose<CR>", { desc = "Close Quickfix" })
