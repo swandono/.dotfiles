@@ -92,7 +92,10 @@
                                 },
                                 "to": [
                                     {
-                                        "shell_command": "open '/Applications/kitty.app'"
+                                        "key_code": "f16",
+                                        "modifiers": [
+                                            "command"
+                                        ]
                                     }
                                 ],
                                 "type": "basic"
@@ -116,7 +119,10 @@
                                 },
                                 "to": [
                                     {
-                                        "shell_command": "open '/Applications/kitty.app'"
+                                        "key_code": "f16",
+                                        "modifiers": [
+                                            "command"
+                                        ]
                                     }
                                 ],
                                 "type": "basic"
@@ -206,7 +212,10 @@
                                 },
                                 "to": [
                                     {
-                                        "shell_command": "open '/Applications/Obsidian.app'"
+                                        "key_code": "f17",
+                                        "modifiers": [
+                                            "command"
+                                        ]
                                     }
                                 ],
                                 "type": "basic"
@@ -231,7 +240,10 @@
                                 },
                                 "to": [
                                     {
-                                        "shell_command": "open '/Applications/Obsidian.app'"
+                                        "key_code": "f17",
+                                        "modifiers": [
+                                            "command"
+                                        ]
                                     }
                                 ],
                                 "type": "basic"
@@ -602,6 +614,46 @@
                                 "to": [
                                     {
                                         "key_code": "f12"
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "a",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "left_shift",
+                                            "left_command"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "f16",
+                                        "modifiers": [
+                                            "command"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "key_code": "x",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "left_shift",
+                                            "left_command"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "f17",
+                                        "modifiers": [
+                                            "command"
+                                        ]
                                     }
                                 ],
                                 "type": "basic"
