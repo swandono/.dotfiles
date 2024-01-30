@@ -45,19 +45,8 @@ local B = {
         },
     },
 }
-local C = {
-    'mawkler/modicator.nvim',
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = 'swandono/onedark.nvim',
-    init = function()
-        vim.o.cursorline = true
-    end,
-    config = function()
-        require('modicator').setup()
-    end,
-}
-local D = { "kyazdani42/nvim-web-devicons", lazy = true }
-local E = {
+local C = { "kyazdani42/nvim-web-devicons", lazy = true }
+local D = {
     "rcarriga/nvim-notify",
     event = "VeryLazy",
     config = function()
@@ -70,4 +59,4 @@ local E = {
     end,
 }
 
-return { A, B, C, D, E }
+return { A, B, C, D }

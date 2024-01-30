@@ -3,7 +3,7 @@
 -- local config = {
 --     filetype = { 'java' },
 --     cmd = {
---         '/Users/gunawan/.jenv/shims/java',
+--         '/Users/swandono/.jenv/shims/java',
 --         '-Declipse.application=org.eclipse.jdt.ls.core.id1',
 --         '-Dosgi.bundles.defaultStartLevel=4',
 --         '-Declipse.product=org.eclipse.jdt.ls.core.product',
@@ -11,10 +11,10 @@
 --         '-Dlog.level=ALL',
 --         '-Xms2G',
 --         '-Xmx2G',
---         '-javaagent:/Users/gunawan/.local/share/jdtls/lombok.jar',
---         '-jar', '/Users/gunawan/.local/share/jdtls/plugins/org.eclipse.equinox.launcher_1.6.500.v20230622-2056.jar',
---         '-configuration', '/Users/gunawan/.local/share/jdtls/config_mac',
---         '-data', '/Users/gunawan/.local/share/jdtls/workspace/' .. project_name,
+--         '-javaagent:/Users/swandono/.local/share/jdtls/lombok.jar',
+--         '-jar', '/Users/swandono/.local/share/jdtls/plugins/org.eclipse.equinox.launcher_1.6.500.v20230622-2056.jar',
+--         '-configuration', '/Users/swandono/.local/share/jdtls/config_mac',
+--         '-data', '/Users/swandono/.local/share/jdtls/workspace/' .. project_name,
 --         '--add-modules=ALL-SYSTEM',
 --         '--add-opens', 'java.base/java.util=ALL-UNNAMED',
 --         '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
@@ -25,7 +25,7 @@
 -- config['init_options'] = {
 --     bundles = {
 --         vim.fn.glob(
---             "/Users/gunawan/.local/share/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-0.47.0.jar",
+--             "/Users/swandono/.local/share/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-0.47.0.jar",
 --             1)
 --     },
 -- }
