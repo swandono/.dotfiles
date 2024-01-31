@@ -46,10 +46,9 @@ vim.keymap.set("n", "<leader>fP", [[:TSTextobjectGotoPreviousEnd @function.outer
 vim.keymap.set("n", "<leader>cvP", [[:TSTextobjectGotoPreviousEnd @class.outer<CR>zz]],
     { silent = true, noremap = true, desc = "Previous Class" })
 
-vim.keymap.set("n", "<leader>gs", vim.cmd.Git, { desc = "Open Fugitive" })
+vim.keymap.set("n", "<leader>gs", ":Git ", { desc = "Run Fugitive" })
+vim.keymap.set("n", "<leader>gj", vim.cmd.Git, { desc = "Open Fugitive" })
 vim.keymap.set("n", "<leader>gb", [[<CMD> Git blame<CR>]], { silent = true, noremap = true, desc = "Git Blame" })
-vim.keymap.set("n", "<leader>gj", [[<CMD> Neogit kind=replace<CR>]],
-    { silent = true, noremap = true, desc = "Open Neogit" })
 vim.keymap.set("n", "<leader>gn", [[<CMD> Gitsigns next_hunk<CR>]],
     { silent = true, noremap = true, desc = "Next Hunk" })
 vim.keymap.set("n", "<leader>gp", [[<CMD> Gitsigns prev_hunk<CR>]],
@@ -58,11 +57,9 @@ vim.keymap.set("n", "<leader>grb", [[<CMD> Gitsigns reset_buffer<CR>]],
     { silent = true, noremap = true, desc = "Reset Buffer" })
 vim.keymap.set("n", "<leader>grh", [[<CMD> Gitsigns reset_hunk<CR>]],
     { silent = true, noremap = true, desc = "Reset Hunk" })
-vim.keymap.set("n", "<leader>gi", [[<CMD> Gitsigns toggle_current_line_blame<CR>]],
-    { silent = true, noremap = true, desc = "Toggle Blame" })
-vim.keymap.set("n", "<leader>go", [[<CMD> Gitsigns toggle_signs<CR>]],
-    { silent = true, noremap = true, desc = "Toggle Signs" })
-vim.keymap.set("n", "<leader>gm", [[<CMD> Gitsigns toggle_deleted<CR>]],
+vim.keymap.set("n", "<leader>gh", [[<CMD> Gitsigns preview_hunk<CR>]],
+    { silent = true, noremap = true, desc = "Preview Hunk" })
+vim.keymap.set("n", "<leader>gd", [[<CMD> Gitsigns toggle_deleted<CR>]],
     { silent = true, noremap = true, desc = "Toggle Deleted" })
 
 vim.keymap.set("n", "<leader>cf", ":e %:p:h/", { desc = "Open File" })

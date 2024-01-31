@@ -15,17 +15,6 @@ local A = {
         require("gitsigns").setup(opts)
     end,
 }
-local B = {
-    "NeogitOrg/neogit",
-    lazy = true,
-    cmd = "Neogit",
-    dependencies = {
-        "nvim-lua/plenary.nvim",         -- required
-        "nvim-telescope/telescope.nvim", -- optional
-        "sindrets/diffview.nvim",        -- optional
-    },
-    config = true
-}
-local C = { "tpope/vim-fugitive", event = { "BufReadPre", "BufNewFile" } }
+local B = { "tpope/vim-fugitive", event = { "BufReadPre", "BufNewFile" } }
 
-return { A, B, C }
+return { A, B }
