@@ -27,7 +27,7 @@ vim.keymap.set("n", "<leader>bh", [[<CMD>split<CR>]], { desc = "Split Buffer" })
 vim.keymap.set("n", "<leader>bv", [[<CMD>vsplit<CR>]], { desc = "VSplit Buffer" })
 
 vim.keymap.set("n", "<leader>co", ":copen<CR>", { desc = "Open Quickfix" })
-vim.keymap.set("n", "<leader>cc", ":cclose<CR>", { desc = "Close Quickfix" })
+vim.keymap.set("n", "<leader>cl", ":cclose<CR>", { desc = "Close Quickfix" })
 
 vim.keymap.set("n", "<leader>fn", [[:TSTextobjectGotoNextStart @function.outer<CR>zz]],
     { silent = true, noremap = true, desc = "Next Function" })

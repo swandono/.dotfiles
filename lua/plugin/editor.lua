@@ -8,7 +8,7 @@ local A = {
             { silent = true, noremap = true, desc = "Document Diagnostics (Trouble)" })
         vim.keymap.set("n", "<leader>tw", "<cmd>TroubleToggle workspace_diagnostics<cr>",
             { silent = true, noremap = true, desc = "Workspace Diagnostics (Trouble)" })
-        vim.keymap.set("n", "<leader>cp", function()
+        vim.keymap.set("n", "<C-p>", function()
             if require("trouble").is_open() then
                 require("trouble").previous({ skip_groups = true, jump = true })
             else
@@ -18,7 +18,7 @@ local A = {
                 end
             end
         end, { desc = "Previous trouble/quickfix" })
-        vim.keymap.set("n", "<leader>cn", function()
+        vim.keymap.set("n", "<C-n>", function()
             if require("trouble").is_open() then
                 require("trouble").next({ skip_groups = true, jump = true })
             else
@@ -182,8 +182,8 @@ local G = {
     config = function()
         local harpoon = require("harpoon")
         harpoon:setup()
-        vim.keymap.set("n", "<C-n>", function() harpoon:list():next() end, { desc = "Harpoon nav next" })
-        vim.keymap.set("n", "<C-p>", function() harpoon:list():prev() end, { desc = "Harpoon nav prev" })
+        vim.keymap.set("n", "<leader>mn", function() harpoon:list():next() end, { desc = "Harpoon nav next" })
+        vim.keymap.set("n", "<leader>mp", function() harpoon:list():prev() end, { desc = "Harpoon nav prev" })
         vim.keymap.set("n", "<M-j>", function() harpoon:list():select(1) end, { desc = "Harpoon nav file 1" })
         vim.keymap.set("n", "<M-k>", function() harpoon:list():select(2) end, { desc = "Harpoon nav file 2" })
         vim.keymap.set("n", "<M-l>", function() harpoon:list():select(3) end, { desc = "Harpoon nav file 3" })
