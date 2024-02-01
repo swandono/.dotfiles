@@ -12,21 +12,23 @@ local A = {
             if require("trouble").is_open() then
                 require("trouble").previous({ skip_groups = true, jump = true })
             else
-                local ok, result = pcall(vim.cmd, [[cprev]])
+                local ok, _ = pcall(vim.cmd, "cprevious")
                 if not ok then
                     print("No previous trouble or quickfix item")
                 end
             end
+            vim.fn.feedkeys('zz<CR>')
         end, { desc = "Previous trouble/quickfix" })
         vim.keymap.set("n", "<C-n>", function()
             if require("trouble").is_open() then
                 require("trouble").next({ skip_groups = true, jump = true })
             else
-                local ok, result = pcall(vim.cmd, [[cnext]])
+                local ok, _ = pcall(vim.cmd, "cnext")
                 if not ok then
                     print("No next trouble or quickfix item")
                 end
             end
+            vim.fn.feedkeys('zz<CR>')
         end, { desc = "Next trouble/quickfix" })
         vim.keymap.set("n", "<leader>tr", function() require("trouble").toggle("lsp_references") end,
             { desc = "LSP References (Trouble)" })
@@ -182,8 +184,8 @@ local G = {
     config = function()
         local harpoon = require("harpoon")
         harpoon:setup()
-        vim.keymap.set("n", "<leader>mn", function() harpoon:list():next() end, { desc = "Harpoon nav next" })
-        vim.keymap.set("n", "<leader>mp", function() harpoon:list():prev() end, { desc = "Harpoon nav prev" })
+        vim.keymap.set("n", "<leader>[[", function() harpoon:list():prev() end, { desc = "Harpoon nav prev" })
+        vim.keymap.set("n", "<leader>]]", function() harpoon:list():next() end, { desc = "Harpoon nav next" })
         vim.keymap.set("n", "<M-j>", function() harpoon:list():select(1) end, { desc = "Harpoon nav file 1" })
         vim.keymap.set("n", "<M-k>", function() harpoon:list():select(2) end, { desc = "Harpoon nav file 2" })
         vim.keymap.set("n", "<M-l>", function() harpoon:list():select(3) end, { desc = "Harpoon nav file 3" })
