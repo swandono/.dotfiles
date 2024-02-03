@@ -82,19 +82,11 @@ return {
             { noremap = true, silent = true, desc = "Toggle DAP UI" })
         vim.keymap.set("n", "<leader>db", function() require("dapui").float_element("breakpoints") end,
             { noremap = true, silent = true, desc = "DAP Breakpoints" })
-        vim.keymap.set("n", "<leader>d;", function() require("dapui").float_element("watches") end,
-            { noremap = true, silent = true, desc = "DAP Watches" })
-        vim.keymap.set("n", "<leader>dj", function() require("dapui").float_element("scopes") end,
-            { noremap = true, silent = true, desc = "DAP Scopes" })
         vim.keymap.set("n", "<leader>dk",
             function() require("dapui").float_element("repl", { height = 62, width = 200, position = "center" }) end,
             { noremap = true, silent = true, desc = "DAP REPL" })
         vim.keymap.set("n", "<leader>dl",
             function() require("dapui").float_element("console", { height = 62, width = 200, position = "center" }) end,
             { noremap = true, silent = true, desc = "DAP Terminal" })
-        vim.keymap.set("n", "<leader>dm", function() require("dapui").float_element("stacks") end,
-            { noremap = true, silent = true, desc = "DAP Stacks" })
-        vim.keymap.set("n", "<leader>dn", dap.up, { noremap = true, silent = true, desc = "DAP Up" })
-        vim.keymap.set("n", "<leader>dp", dap.down, { noremap = true, silent = true, desc = "DAP Down" })
     end
 }
