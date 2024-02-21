@@ -1,3 +1,12 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+export XDG_CONFIG_HOME="$HOME/.config"
+
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(zsh-syntax-highlighting zsh-autosuggestions)
@@ -7,12 +16,12 @@ source $ZSH/oh-my-zsh.sh
 export AUTH_GITHUB_TOKEN=isi_dewe
 export PATH="/usr/local/bin:$PATH"
 export PATH="/opt/homebrew/bin:$PATH"
+export EDITOR='nvim'
 
 alias gs='git status'
 alias gb='git branch'
 alias gl='git log'
-alias gsw='git switch'
-alias gc='git checkout'
+alias lg='lazygit'
 
 alias ssh_connect='ssh ubuntu@your_ip'
 
@@ -53,6 +62,14 @@ export NVM_DIR="$HOME/.nvm"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+
+# bun completions
+[ -s "/Users/swandono/.bun/_bun" ] && source "/Users/swandono/.bun/_bun"
+
+# Bun
+export BUN_INSTALL="/Users/swandono/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
 # PyENV
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
@@ -68,4 +85,20 @@ eval "$(pyenv init -)"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+# flutter
+export PATH="$PATH:/Users/swandono/Work/developments/flutter/bin"
+
+# pnpm
+export PNPM_HOME="/Users/swandono/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+# Created by `pipx` on 2023-11-16 13:43:57
+export PATH="$PATH:/Users/swandono/.local/bin"
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
