@@ -42,28 +42,28 @@ return {
             lsp.on_attach(function(_, bufnr)
                 vim.keymap.set("n", "K", function()
                     vim.lsp.buf.hover()
-                end, { buffer = bufnr, remap = false, desc = "Hover" })
+                end, { buffer = bufnr, remap = false, desc = "Hover (LSP)" })
                 vim.keymap.set("i", "<C-h>", function()
                     vim.lsp.buf.signature_help()
-                end, { buffer = bufnr, remap = false, desc = "Signature help" })
+                end, { buffer = bufnr, remap = false, desc = "Signature help (LSP)" })
                 vim.keymap.set("n", "<leader>ff", function()
                     vim.lsp.buf.format({ async = true })
-                end, { buffer = bufnr, remap = false, desc = "Format" })
+                end, { buffer = bufnr, remap = false, desc = "Format (LSP)" })
                 vim.keymap.set("n", "<leader>va", function()
                     vim.lsp.buf.code_action()
-                end, { buffer = bufnr, remap = false, desc = "Code action" })
+                end, { buffer = bufnr, remap = false, desc = "Code action (LSP)" })
                 vim.keymap.set("n", "<leader>vf", function()
                     vim.diagnostic.open_float()
-                end, { buffer = bufnr, remap = false, desc = "Open float" })
+                end, { buffer = bufnr, remap = false, desc = "Open float (LSP)" })
                 vim.keymap.set("n", "<leader>vn", function()
                     vim.diagnostic.goto_next()
-                end, { buffer = bufnr, remap = false, desc = "Go to next" })
+                end, { buffer = bufnr, remap = false, desc = "Go to next (LSP)" })
                 vim.keymap.set("n", "<leader>vp", function()
                     vim.diagnostic.goto_prev()
-                end, { buffer = bufnr, remap = false, desc = "Go to previous" })
-                vim.keymap.set("n", "<leader>vc", function()
+                end, { buffer = bufnr, remap = false, desc = "Go to previous (LSP)" })
+                vim.keymap.set("n", "<leader>vr", function()
                     vim.lsp.buf.rename()
-                end, { buffer = bufnr, remap = false, desc = "Rename" })
+                end, { buffer = bufnr, remap = false, desc = "Rename (LSP)" })
             end)
 
             lsp.setup()
@@ -77,18 +77,6 @@ return {
         "mhartington/formatter.nvim",
         event = { "BufReadPre", "BufNewFile", "InsertEnter" },
         config = function()
-            local function go()
-                return {
-                    exe = "gofmt",
-                    stdin = true,
-                }
-            end
-            local function rust()
-                return {
-                    exe = "rustfmt",
-                    stdin = true,
-                }
-            end
             local function python()
                 return {
                     exe = "black",
@@ -119,8 +107,6 @@ return {
                     yaml = { require("formatter.filetypes.javascript").prettierd },
                     markdown = { require("formatter.filetypes.javascript").prettierd },
                     html = { require("formatter.filetypes.javascript").prettierd },
-                    go = { go },
-                    rust = { rust },
                     python = { python },
                     java = { java }
                 },
@@ -129,7 +115,7 @@ return {
                 }
             })
             vim.keymap.set("n", "<leader>fF", [[<CMD> Format<CR>]], { silent = true, desc = "Format using formatter" })
-            vim.keymap.set("n", "<leader>fw", [[<CMD> FormatWrite<CR>]],
+            vim.keymap.set("n", "<leader>fW", [[<CMD> FormatWrite<CR>]],
                 { silent = true, desc = "Format using formatter and write" })
         end,
     },

@@ -28,19 +28,19 @@ vim.keymap.set("n", "<leader>bv", [[<CMD>vsplit<CR>]], { desc = "VSplit Buffer" 
 
 vim.keymap.set("n", "<leader>fn", [[:TSTextobjectGotoNextStart @function.outer<CR>zz]],
     { silent = true, noremap = true, desc = "Next Function" })
-vim.keymap.set("n", "<leader>cvn", [[:TSTextobjectGotoNextStart @class.outer<CR>zz]],
+vim.keymap.set("n", "<leader>cn", [[:TSTextobjectGotoNextStart @class.outer<CR>zz]],
     { silent = true, noremap = true, desc = "Next Class" })
 vim.keymap.set("n", "<leader>fp", [[:TSTextobjectGotoPreviousStart @function.outer<CR>zz]],
     { silent = true, noremap = true, desc = "Previous Function" })
-vim.keymap.set("n", "<leader>cvp", [[:TSTextobjectGotoPreviousStart @class.outer<CR>zz]],
+vim.keymap.set("n", "<leader>cp", [[:TSTextobjectGotoPreviousStart @class.outer<CR>zz]],
     { silent = true, noremap = true, desc = "Previous Class" })
 vim.keymap.set("n", "<leader>fN", [[:TSTextobjectGotoNextEnd @function.outer<CR>zz]],
     { silent = true, noremap = true, desc = "Next Function" })
-vim.keymap.set("n", "<leader>cvN", [[:TSTextobjectGotoNextEnd @class.outer<CR>zz]],
+vim.keymap.set("n", "<leader>cN", [[:TSTextobjectGotoNextEnd @class.outer<CR>zz]],
     { silent = true, noremap = true, desc = "Next Class" })
 vim.keymap.set("n", "<leader>fP", [[:TSTextobjectGotoPreviousEnd @function.outer<CR>zz]],
     { silent = true, noremap = true, desc = "Previous Function" })
-vim.keymap.set("n", "<leader>cvP", [[:TSTextobjectGotoPreviousEnd @class.outer<CR>zz]],
+vim.keymap.set("n", "<leader>cP", [[:TSTextobjectGotoPreviousEnd @class.outer<CR>zz]],
     { silent = true, noremap = true, desc = "Previous Class" })
 
 vim.keymap.set("n", "<leader>gs", ":Git ", { desc = "Run Fugitive" })
@@ -85,4 +85,3 @@ vim.keymap.set("n", "<leader>cl",
         end
     end
     , { desc = "Toggle Quickfix" })
-
