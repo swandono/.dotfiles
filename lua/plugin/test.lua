@@ -36,6 +36,9 @@ return {
             vim.keymap.set("n", "<leader>ro", function()
                 neotest.output_panel.toggle()
             end, { desc = "Open Neotest Output Panel" })
+            vim.keymap.set("n", "<leader>rc", function()
+                neotest.output_panel.clear()
+            end, { desc = "Clear Neotest Output Panel" })
         end,
     },
 }
