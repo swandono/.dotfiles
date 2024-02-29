@@ -4,6 +4,7 @@ vim.keymap.set("i", "<C-c>", "<Esc>", { desc = "Escape" })
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll Down" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll Up" })
 vim.keymap.set("n", "<leader><CR>", ":edit<CR>", { desc = "Edit" })
+vim.keymap.set("n", "<leader>-", ":bdelete|edit#|bdelete#<CR>", { desc = "Close all buffers except current" })
 vim.keymap.set("n", "<leader>0", ":LspRestart<CR>", { desc = "LspRestart" })
 vim.keymap.set("n", "<leader>1", ":set nowrap!<CR>", { desc = "Toggle Wrap" })
 vim.keymap.set("n", "<leader>2", ":Sex<CR>", { desc = "Open File Explorer" })
@@ -43,7 +44,7 @@ vim.keymap.set("n", "<leader>fP", [[:TSTextobjectGotoPreviousEnd @function.outer
 vim.keymap.set("n", "<leader>cP", [[:TSTextobjectGotoPreviousEnd @class.outer<CR>zz]],
     { silent = true, noremap = true, desc = "Previous Class" })
 
-vim.keymap.set("n", "<leader>gs", ":Git ", { desc = "Run Fugitive" })
+vim.keymap.set("n", "<leader>gi", ":Git ", { desc = "Run Fugitive" })
 vim.keymap.set("n", "<leader>gj", vim.cmd.Git, { desc = "Open Fugitive" })
 vim.keymap.set("n", "<leader>gb", [[<CMD> Git blame<CR>]], { silent = true, noremap = true, desc = "Git Blame" })
 vim.keymap.set("n", "<leader>gn", [[<CMD> Gitsigns next_hunk<CR>]],

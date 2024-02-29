@@ -4,9 +4,9 @@ local A = {
     opts = { use_diagnostic_signs = true },
     config = function(_, opts)
         require("trouble").setup(opts)
-        vim.keymap.set("n", "<leader>td", "<cmd>TroubleToggle document_diagnostics<cr>",
+        vim.keymap.set("n", "<leader>vd", "<cmd>TroubleToggle document_diagnostics<cr>",
             { silent = true, noremap = true, desc = "Document Diagnostics (Trouble)" })
-        vim.keymap.set("n", "<leader>tw", "<cmd>TroubleToggle workspace_diagnostics<cr>",
+        vim.keymap.set("n", "<leader>vw", "<cmd>TroubleToggle workspace_diagnostics<cr>",
             { silent = true, noremap = true, desc = "Workspace Diagnostics (Trouble)" })
         vim.keymap.set("n", "<C-p>", function()
             if require("trouble").is_open() then
@@ -30,8 +30,6 @@ local A = {
             end
             vim.fn.feedkeys('zz<CR>')
         end, { desc = "Next trouble/quickfix" })
-        vim.keymap.set("n", "<leader>tr", function() require("trouble").toggle("lsp_references") end,
-            { desc = "LSP References (Trouble)" })
     end,
 }
 
