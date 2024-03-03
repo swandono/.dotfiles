@@ -1,4 +1,3 @@
-vim.g.mapleader = " "
 vim.keymap.set("i", "<C-c>", "<Esc>", { desc = "Escape" })
 
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll Down" })
@@ -27,62 +26,116 @@ vim.keymap.set("n", "<leader>bo", [[<CMD>only<CR>]], { desc = "Delete Buffer" })
 vim.keymap.set("n", "<leader>bh", [[<CMD>split<CR>]], { desc = "Split Buffer" })
 vim.keymap.set("n", "<leader>bv", [[<CMD>vsplit<CR>]], { desc = "VSplit Buffer" })
 
-vim.keymap.set("n", "<leader>fn", [[:TSTextobjectGotoNextStart @function.outer<CR>zz]],
-    { silent = true, noremap = true, desc = "Next Function" })
-vim.keymap.set("n", "<leader>cn", [[:TSTextobjectGotoNextStart @class.outer<CR>zz]],
-    { silent = true, noremap = true, desc = "Next Class" })
-vim.keymap.set("n", "<leader>fp", [[:TSTextobjectGotoPreviousStart @function.outer<CR>zz]],
-    { silent = true, noremap = true, desc = "Previous Function" })
-vim.keymap.set("n", "<leader>cp", [[:TSTextobjectGotoPreviousStart @class.outer<CR>zz]],
-    { silent = true, noremap = true, desc = "Previous Class" })
-vim.keymap.set("n", "<leader>fN", [[:TSTextobjectGotoNextEnd @function.outer<CR>zz]],
-    { silent = true, noremap = true, desc = "Next Function" })
-vim.keymap.set("n", "<leader>cN", [[:TSTextobjectGotoNextEnd @class.outer<CR>zz]],
-    { silent = true, noremap = true, desc = "Next Class" })
-vim.keymap.set("n", "<leader>fP", [[:TSTextobjectGotoPreviousEnd @function.outer<CR>zz]],
-    { silent = true, noremap = true, desc = "Previous Function" })
-vim.keymap.set("n", "<leader>cP", [[:TSTextobjectGotoPreviousEnd @class.outer<CR>zz]],
-    { silent = true, noremap = true, desc = "Previous Class" })
+vim.keymap.set(
+	"n",
+	"<leader>fn",
+	[[:TSTextobjectGotoNextStart @function.outer<CR>zz]],
+	{ silent = true, noremap = true, desc = "Next Function" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>cn",
+	[[:TSTextobjectGotoNextStart @class.outer<CR>zz]],
+	{ silent = true, noremap = true, desc = "Next Class" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>fp",
+	[[:TSTextobjectGotoPreviousStart @function.outer<CR>zz]],
+	{ silent = true, noremap = true, desc = "Previous Function" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>cp",
+	[[:TSTextobjectGotoPreviousStart @class.outer<CR>zz]],
+	{ silent = true, noremap = true, desc = "Previous Class" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>fN",
+	[[:TSTextobjectGotoNextEnd @function.outer<CR>zz]],
+	{ silent = true, noremap = true, desc = "Next Function" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>cN",
+	[[:TSTextobjectGotoNextEnd @class.outer<CR>zz]],
+	{ silent = true, noremap = true, desc = "Next Class" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>fP",
+	[[:TSTextobjectGotoPreviousEnd @function.outer<CR>zz]],
+	{ silent = true, noremap = true, desc = "Previous Function" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>cP",
+	[[:TSTextobjectGotoPreviousEnd @class.outer<CR>zz]],
+	{ silent = true, noremap = true, desc = "Previous Class" }
+)
 
 vim.keymap.set("n", "<leader>gi", ":Git ", { desc = "Run Fugitive" })
 vim.keymap.set("n", "<leader>gj", vim.cmd.Git, { desc = "Open Fugitive" })
 vim.keymap.set("n", "<leader>gb", [[<CMD> Git blame<CR>]], { silent = true, noremap = true, desc = "Git Blame" })
-vim.keymap.set("n", "<leader>gn", [[<CMD> Gitsigns next_hunk<CR>]],
-    { silent = true, noremap = true, desc = "Next Hunk" })
-vim.keymap.set("n", "<leader>gp", [[<CMD> Gitsigns prev_hunk<CR>]],
-    { silent = true, noremap = true, desc = "Previous Hunk" })
-vim.keymap.set("n", "<leader>grb", [[<CMD> Gitsigns reset_buffer<CR>]],
-    { silent = true, noremap = true, desc = "Reset Buffer" })
-vim.keymap.set("n", "<leader>grh", [[<CMD> Gitsigns reset_hunk<CR>]],
-    { silent = true, noremap = true, desc = "Reset Hunk" })
-vim.keymap.set("n", "<leader>gh", [[<CMD> Gitsigns preview_hunk<CR>]],
-    { silent = true, noremap = true, desc = "Preview Hunk" })
-vim.keymap.set("n", "<leader>gd", [[<CMD> Gitsigns toggle_deleted<CR>]],
-    { silent = true, noremap = true, desc = "Toggle Deleted" })
+vim.keymap.set(
+	"n",
+	"<leader>gn",
+	[[<CMD> Gitsigns next_hunk<CR>]],
+	{ silent = true, noremap = true, desc = "Next Hunk" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>gp",
+	[[<CMD> Gitsigns prev_hunk<CR>]],
+	{ silent = true, noremap = true, desc = "Previous Hunk" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>grb",
+	[[<CMD> Gitsigns reset_buffer<CR>]],
+	{ silent = true, noremap = true, desc = "Reset Buffer" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>grh",
+	[[<CMD> Gitsigns reset_hunk<CR>]],
+	{ silent = true, noremap = true, desc = "Reset Hunk" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>gh",
+	[[<CMD> Gitsigns preview_hunk<CR>]],
+	{ silent = true, noremap = true, desc = "Preview Hunk" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>gd",
+	[[<CMD> Gitsigns toggle_deleted<CR>]],
+	{ silent = true, noremap = true, desc = "Toggle Deleted" }
+)
 
 vim.keymap.set("n", "<leader>cf", ":e %:p:h/", { desc = "Open File" })
 vim.keymap.set("n", "<leader>t2", ":set tabstop=2 shiftwidth=2 softtabstop=2<CR>", { desc = "Set Tabstop 2" })
 vim.keymap.set("n", "<leader>t4", ":set tabstop=4 shiftwidth=4 softtabstop=4<CR>", { desc = "Set Tabstop 4" })
 
-vim.keymap.set("n", "<leader>cl",
-    function()
-        local qf_exists = false
-        for _, win in pairs(vim.fn.getwininfo()) do
-            if win["quickfix"] == 1 then
-                qf_exists = true
-            end
-        end
-        if qf_exists == true then
-            vim.cmd "cclose"
-            return
-        end
-        if not vim.tbl_isempty(vim.fn.getqflist()) then
-            vim.cmd "copen"
-            return
-        end
-        if vim.tbl_isempty(vim.fn.getqflist()) then
-            print "Quickfix is empty"
-            return
-        end
-    end
-    , { desc = "Toggle Quickfix" })
+vim.keymap.set("n", "<leader>cl", function()
+	local qf_exists = false
+	for _, win in pairs(vim.fn.getwininfo()) do
+		if win["quickfix"] == 1 then
+			qf_exists = true
+		end
+	end
+	if qf_exists == true then
+		vim.cmd("cclose")
+		return
+	end
+	if not vim.tbl_isempty(vim.fn.getqflist()) then
+		vim.cmd("copen")
+		return
+	end
+	if vim.tbl_isempty(vim.fn.getqflist()) then
+		print("Quickfix is empty")
+		return
+	end
+end, { desc = "Toggle Quickfix" })

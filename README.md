@@ -11,4 +11,3 @@ Make NeoVim better Editor!!!
 You need to install [fzf](https://github.com/junegunn/fzf), [ripgrep](https://github.com/BurntSushi/ripgrep), [fd](https://github.com/sharkdp/fd), [lazygit](https://github.com/jesseduffield/lazygit), [gnu-sed](https://www.gnu.org/software/sed/) first before using this config.
 
 After that you can create `nvim` folder in `~/.config`, then git clone this repo!
-
