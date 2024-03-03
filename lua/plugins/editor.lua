@@ -1,3 +1,4 @@
+-- Trouble
 local A = {
 	"folke/trouble.nvim",
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
@@ -41,6 +42,7 @@ local A = {
 	end,
 }
 
+-- File Explorer
 local B = {
 	"nvim-neo-tree/neo-tree.nvim",
 	dependencies = {
@@ -97,6 +99,7 @@ local B = {
 	end,
 }
 
+-- Search and Replace
 local C = {
 	"nvim-pack/nvim-spectre",
     -- stylua: ignore
@@ -110,6 +113,7 @@ local C = {
 	end,
 }
 
+-- Todo Comments
 local D = {
 	"folke/todo-comments.nvim",
 	keys = {
@@ -142,6 +146,7 @@ local D = {
 	end,
 }
 
+-- Copilot
 local E = {
 	"github/copilot.vim",
 	cmd = "Copilot",
@@ -163,6 +168,7 @@ local E = {
 	end,
 }
 
+-- Cloak (Hide sensitive information)
 local F = {
 	"laytan/cloak.nvim",
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
@@ -185,6 +191,7 @@ local F = {
 	end,
 }
 
+-- Harpoon (Bookmarks)
 local G = {
 	"ThePrimeagen/harpoon",
 	branch = "harpoon2",
