@@ -13,7 +13,9 @@ return {
 			},
 		},
 	},
+	dependencies = { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	config = function()
+		require("telescope").load_extension("fzf")
 		local tele = require("telescope.builtin")
 		vim.keymap.set("n", "<leader>ls", function()
 			local word = vim.fn.expand("<cword>")
