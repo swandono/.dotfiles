@@ -76,7 +76,7 @@ vim.keymap.set(
 )
 
 vim.keymap.set("n", "<leader>gi", ":Git ", { desc = "Run Fugitive" })
-vim.keymap.set("n", "<leader>gj", vim.cmd.Git, { desc = "Open Fugitive" })
+vim.keymap.set("n", "<leader>gl", vim.cmd.Git, { desc = "Open Fugitive" })
 vim.keymap.set("n", "<leader>gb", [[<CMD> Git blame<CR>]], { silent = true, noremap = true, desc = "Git Blame" })
 vim.keymap.set(
 	"n",
