@@ -10,11 +10,11 @@ return {
 			"rcasia/neotest-java",
 		},
 		keys = {
-			{ "<leader>rj" },
-			{ "<leader>rk" },
-			{ "<leader>rl" },
-			{ "<leader>ri" },
-			{ "<leader>ro" },
+			{ "<leader>to" },
+			{ "<leader>ta" },
+			{ "<leader>tdd" },
+			{ "<leader>tds" },
+			{ "<leader>tdo" },
 		},
 		config = function()
 			local neotest = require("neotest")
@@ -25,23 +25,23 @@ return {
 					require("neotest-java"),
 				},
 			})
-			vim.keymap.set("n", "<leader>rj", function()
+			vim.keymap.set("n", "<leader>to", function()
 				neotest.run.run()
 			end, { desc = "Run single function test" })
-			vim.keymap.set("n", "<leader>rk", function()
+			vim.keymap.set("n", "<leader>ta", function()
 				neotest.run.run(vim.fn.expand("%"))
 			end, { desc = "Run file tests" })
-			vim.keymap.set("n", "<leader>rl", function()
+			vim.keymap.set("n", "<leader>tdd", function()
 				neotest.output_panel.toggle()
 				neotest.summary.toggle()
 			end, { desc = "Open Neotest Dashboard" })
-			vim.keymap.set("n", "<leader>ri", function()
+			vim.keymap.set("n", "<leader>tdo", function()
 				neotest.output_panel.toggle()
 			end, { desc = "Open Neotest Output Panel" })
-			vim.keymap.set("n", "<leader>ro", function()
+			vim.keymap.set("n", "<leader>tds", function()
 				neotest.summary.toggle()
 			end, { desc = "Open Neotest Summary" })
-			vim.keymap.set("n", "<leader>rm", function()
+			vim.keymap.set("n", "<leader>tdc", function()
 				neotest.output_panel.clear()
 			end, { desc = "Clear Neotest Output Panel" })
 		end,
