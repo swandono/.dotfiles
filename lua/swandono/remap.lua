@@ -82,37 +82,75 @@ vim.keymap.set(
 	"n",
 	"<leader>gn",
 	[[<CMD> Gitsigns next_hunk<CR>]],
-	{ silent = true, noremap = true, desc = "Next Hunk" }
+	{ silent = true, noremap = true, desc = "Next Hunk (Gitsigns)" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>gp",
 	[[<CMD> Gitsigns prev_hunk<CR>]],
-	{ silent = true, noremap = true, desc = "Previous Hunk" }
+	{ silent = true, noremap = true, desc = "Previous Hunk (Gitsigns)" }
 )
+vim.keymap.set(
+	"n",
+	"<leader>gab",
+	[[<CMD> Gitsigns stage_buffer<CR>]],
+	{ silent = true, noremap = true, desc = "Stage Buffer (Gitsigns)" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>gah",
+	[[<CMD> Gitsigns stage_hunk<CR>]],
+	{ silent = true, noremap = true, desc = "Stage Hunk (Gitsigns)" }
+)
+vim.keymap.set("v", "<leader>gah", function()
+	local gs = require("gitsigns")
+	gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+end, { desc = "Stage Hunk - Visual Mode (Gitsigns)" })
 vim.keymap.set(
 	"n",
 	"<leader>grb",
 	[[<CMD> Gitsigns reset_buffer<CR>]],
-	{ silent = true, noremap = true, desc = "Reset Buffer" }
+	{ silent = true, noremap = true, desc = "Reset Buffer (Gitsigns)" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>grh",
 	[[<CMD> Gitsigns reset_hunk<CR>]],
-	{ silent = true, noremap = true, desc = "Reset Hunk" }
+	{ silent = true, noremap = true, desc = "Reset Hunk (Gitsigns)" }
+)
+vim.keymap.set("v", "<leader>grh", function()
+	local gs = require("gitsigns")
+	gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+end, { desc = "Reset Hunk - Visual Mode (Gitsigns)" })
+vim.keymap.set(
+	"n",
+	"<leader>guh",
+	[[<CMD> Gitsigns undo_stage_hunk<CR>]],
+	{ silent = true, noremap = true, desc = "Undo Stage Hunk (Gitsigns)" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>gh",
 	[[<CMD> Gitsigns preview_hunk<CR>]],
-	{ silent = true, noremap = true, desc = "Preview Hunk" }
+	{ silent = true, noremap = true, desc = "Preview Hunk (Gitsigns)" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>gtd",
+	[[<CMD> Gitsigns toggle_deleted<CR>]],
+	{ silent = true, noremap = true, desc = "Toggle Deleted (Gitsigns)" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>gtl",
+	[[<CMD> Gitsigns toggle_current_line_blame<CR>]],
+	{ silent = true, noremap = true, desc = "Toggle Current Line Blame (Gitsigns)" }
 )
 vim.keymap.set(
 	"n",
 	"<leader>gd",
-	[[<CMD> Gitsigns toggle_deleted<CR>]],
-	{ silent = true, noremap = true, desc = "Toggle Deleted" }
+	[[<CMD> Gitsigns diffthis<CR>]],
+	{ silent = true, noremap = true, desc = "Diffthis (Gitsigns)" }
 )
 
 vim.keymap.set("n", "<leader>cf", ":e %:p:h/", { desc = "Open File" })
