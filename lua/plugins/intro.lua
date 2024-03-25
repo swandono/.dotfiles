@@ -43,6 +43,10 @@ local I = {
 			})
 		end
 
+		if vim.fn.argc() == 1 then
+			return
+		end
+
 		local starter = require("mini.starter")
 		starter.setup(config)
 

@@ -1,19 +1,22 @@
+local function setup()
+	require("onedark").setup({
+		style = "cool",
+		transparent = {
+			background = true,
+			tabline = true,
+			statusline = true,
+		},
+	})
+	require("onedark").load()
+end
+
 return {
 	{
 		"swandono/onedark.nvim",
-		event = "VimEnter",
+		event = { "VimEnter", "BufReadPre", "BufNewFile", "InsertEnter" },
 		priority = 1000,
-		config = function()
-			require("onedark").setup({
-				style = "cool",
-				transparent = {
-					background = true,
-					tabline = true,
-					statusline = true,
-				},
-			})
-			require("onedark").load()
-		end,
+		config = setup,
+		init = setup,
 		opts = { style = "cool" },
 	},
 }
