@@ -36,5 +36,12 @@ return {
 	},
 	dependencies = { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	config = setup,
-	init = setup,
+	init = function()
+		if vim.fn.argc() == 1 then
+			local stat = vim.loop.fs_stat(vim.fn.argv(0))
+			if stat and stat.type == "directory" then
+				setup()
+			end
+		end
+	end,
 }

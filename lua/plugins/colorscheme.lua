@@ -16,7 +16,11 @@ return {
 		event = { "VimEnter", "BufReadPre", "BufNewFile", "InsertEnter" },
 		priority = 1000,
 		config = setup,
-		init = setup,
+		init = function()
+			if vim.fn.argc() == 1 then
+				setup()
+			end
+		end,
 		opts = { style = "cool" },
 	},
 }
