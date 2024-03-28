@@ -1,0 +1,24 @@
+neovim:
+  exe: nvim
+  dir: .config/test/nvim
+  config:
+    - init.lua
+    - lua
+    - ftplugin
+    - bg
+  dependencies:
+    - fd
+    - ripgrep
+    - fzf
+    - lazygit
+    - gnu-sed
+tmux:
+  exe: tmux
+  dir: .config/test/tmux
+  config:
+    - tmux/.tmux.conf
+kitty:
+  exe: kitty
+  dir: .config/test/kitty
+  config:
+    - kitty/kitty.conf
