@@ -6,6 +6,7 @@ neovim:
     - lua
     - ftplugin
     - bg
+    - lazy-lock.json
   dependencies:
     - fd
     - ripgrep
@@ -16,7 +17,7 @@ tmux:
   exe: tmux
   dir: .config/test/tmux
   config:
-    - tmux/.tmux.conf
+    - tmux/tmux.conf
 kitty:
   exe: kitty
   dir: .config/test/kitty
