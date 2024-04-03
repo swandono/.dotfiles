@@ -3,7 +3,7 @@ local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 local config = {
 	filetype = { "java" },
 	cmd = {
-		"/Users/swandono/.jenv/shims/java",
+		"/Users/swandono/.sdkman/candidates/java/current/bin/java",
 		"-Declipse.application=org.eclipse.jdt.ls.core.id1",
 		"-Dosgi.bundles.defaultStartLevel=4",
 		"-Declipse.product=org.eclipse.jdt.ls.core.product",
