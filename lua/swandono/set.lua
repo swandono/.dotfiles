@@ -25,7 +25,6 @@ vim.opt.hlsearch = false
 vim.opt.incsearch = true
 vim.opt.hidden = true
 vim.opt.swapfile = false
-vim.opt.smartcase = true
 
 vim.opt.scrolloff = 8
 vim.opt.tabstop = 4
