@@ -221,7 +221,7 @@ local G = {
 			harpoon:list():select(6)
 		end, { desc = "Harpoon nav file 6" })
 		vim.keymap.set("n", "<leader>ma", function()
-			harpoon:list():append()
+			harpoon:list():add()
 		end, { desc = "Harpoon mark add file" })
 		vim.keymap.set("n", "<leader>ml", function()
 			harpoon.ui:toggle_quick_menu(harpoon:list())
