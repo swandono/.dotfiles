@@ -229,4 +229,17 @@ local G = {
 	end,
 }
 
-return { A, B, C, D, E, F, G }
+-- OIL (File Explorer)
+local H = {
+	"stevearc/oil.nvim",
+	dependencies = { "nvim-tree/nvim-web-devicons" },
+	keys = {
+		{ "-" },
+	},
+	config = function()
+		require("oil").setup()
+		vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+	end,
+}
+
+return { A, B, C, D, E, F, G, H }
