@@ -47,7 +47,9 @@ local B = {
 					project_config = true,
 				},
 			},
+			fvm = true,
 		})
+		vim.keymap.set("n", "<leader>fl", ":Flutter", { desc = "Run Flutter" })
 	end,
 }
 
