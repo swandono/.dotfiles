@@ -88,5 +88,21 @@ local H = {
 		})
 	end,
 }
+local I = {
+	"kristijanhusak/vim-dadbod-ui",
+	keys = {
+		{ "<leader>db" },
+	},
+	dependencies = {
+		{ "tpope/vim-dadbod", lazy = true },
+		{ "kristijanhusak/vim-dadbod-completion", lazy = true },
+	},
+	init = function()
+		vim.g.db_ui_use_nerd_fonts = 1
+	end,
+	config = function()
+		vim.keymap.set("n", "<leader>db", "<cmd>DBUIToggle<cr>", { silent = true, noremap = true, desc = "DBUI" })
+	end,
+}
 
-return { A, B, C, D, E, F, G, H }
+return { A, B, C, D, E, F, G, H, I }
