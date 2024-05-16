@@ -5,15 +5,10 @@ local A = {
 		require("nvim-autopairs").setup({})
 	end,
 }
-local B = {
-	"windwp/nvim-ts-autotag",
-	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
-	config = function()
-		require("nvim-ts-autotag").setup()
-	end,
-}
-local C = { "dstein64/vim-startuptime", event = "VeryLazy", cmd = "StartupTime" }
-local D = {
+
+local B = { "dstein64/vim-startuptime", event = "VeryLazy", cmd = "StartupTime" }
+
+local C = {
 	"folke/persistence.nvim",
 	event = "VeryLazy",
 	opts = { options = { "buffers", "curdir", "tabpages", "winsize", "help", "globals" } },
@@ -36,8 +31,10 @@ local D = {
 		)
 	end,
 }
-local E = { "nvim-lua/plenary.nvim", event = "VeryLazy" }
-local F = {
+
+local D = { "nvim-lua/plenary.nvim", event = "VeryLazy" }
+
+local E = {
 	"stevearc/dressing.nvim",
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 	init = function()
@@ -67,7 +64,8 @@ local F = {
 		})
 	end,
 }
-local G = {
+
+local F = {
 	"j-hui/fidget.nvim",
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 	config = function()
@@ -81,7 +79,8 @@ local G = {
 		})
 	end,
 }
-local H = {
+
+local G = {
 	"kristijanhusak/vim-dadbod-ui",
 	keys = {
 		{ "<leader>db" },
@@ -96,6 +95,34 @@ local H = {
 	config = function()
 		vim.keymap.set("n", "<leader>db", "<cmd>DBUIToggle<cr>", { silent = true, noremap = true, desc = "DBUI" })
 	end,
+}
+
+local js_filetypes = {
+	"html",
+	"javascript",
+	"typescript",
+	"javascriptreact",
+	"typescriptreact",
+	"svelte",
+	"vue",
+	"tsx",
+	"jsx",
+	"rescript",
+	"xml",
+	"php",
+	"markdown",
+	"astro",
+	"glimmer",
+	"handlebars",
+	"hbs",
+}
+
+local H = {
+	"windwp/nvim-ts-autotag",
+	config = function()
+		require("nvim-ts-autotag").setup()
+	end,
+	ft = js_filetypes,
 }
 
 return { A, B, C, D, E, F, G, H }
