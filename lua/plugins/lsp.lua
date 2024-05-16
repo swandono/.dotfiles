@@ -39,9 +39,6 @@ return {
 			})
 
 			lsp.on_attach(function(_, bufnr)
-				vim.keymap.set("n", "K", function()
-					vim.lsp.buf.hover()
-				end, { buffer = bufnr, remap = false, desc = "Hover (LSP)" })
 				vim.keymap.set("i", "<C-h>", function()
 					vim.lsp.buf.signature_help()
 				end, { buffer = bufnr, remap = false, desc = "Signature help (LSP)" })

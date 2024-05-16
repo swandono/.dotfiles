@@ -14,13 +14,6 @@ local B = {
 }
 local C = { "dstein64/vim-startuptime", event = "VeryLazy", cmd = "StartupTime" }
 local D = {
-	"numToStr/Comment.nvim",
-	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
-	config = function()
-		require("Comment").setup()
-	end,
-}
-local E = {
 	"folke/persistence.nvim",
 	event = "VeryLazy",
 	opts = { options = { "buffers", "curdir", "tabpages", "winsize", "help", "globals" } },
@@ -43,8 +36,8 @@ local E = {
 		)
 	end,
 }
-local F = { "nvim-lua/plenary.nvim", event = "VeryLazy" }
-local G = {
+local E = { "nvim-lua/plenary.nvim", event = "VeryLazy" }
+local F = {
 	"stevearc/dressing.nvim",
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 	init = function()
@@ -74,7 +67,7 @@ local G = {
 		})
 	end,
 }
-local H = {
+local G = {
 	"j-hui/fidget.nvim",
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 	config = function()
@@ -88,7 +81,7 @@ local H = {
 		})
 	end,
 }
-local I = {
+local H = {
 	"kristijanhusak/vim-dadbod-ui",
 	keys = {
 		{ "<leader>db" },
@@ -105,4 +98,4 @@ local I = {
 	end,
 }
 
-return { A, B, C, D, E, F, G, H, I }
+return { A, B, C, D, E, F, G, H }
