@@ -201,7 +201,11 @@ local G = {
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 	config = function()
 		local harpoon = require("harpoon")
-		harpoon:setup()
+		harpoon:setup({
+			settings = {
+				save_on_toggle = true,
+			},
+		})
 		vim.keymap.set("n", "<M-j>", function()
 			harpoon:list():select(1)
 		end, { desc = "Harpoon nav file 1" })
