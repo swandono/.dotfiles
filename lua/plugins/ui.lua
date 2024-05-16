@@ -45,7 +45,7 @@ local B = {
 		},
 	},
 }
-local C = { "kyazdani42/nvim-web-devicons", lazy = true }
+local C = { "nvim-tree/nvim-web-devicons", lazy = true }
 local D = {
 	"rcarriga/nvim-notify",
 	event = "VeryLazy",

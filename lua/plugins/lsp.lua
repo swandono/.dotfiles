@@ -20,7 +20,6 @@ return {
 			lsp.preset("recommended")
 
 			lsp.ensure_installed({
-				"vtsls",
 				"rust_analyzer",
 				"gopls",
 				"lua_ls",

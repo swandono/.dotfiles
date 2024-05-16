@@ -232,7 +232,6 @@ local G = {
 -- OIL (File Explorer)
 local H = {
 	"stevearc/oil.nvim",
-	dependencies = { "nvim-tree/nvim-web-devicons" },
 	keys = {
 		{ "-" },
 	},
