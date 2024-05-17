@@ -166,7 +166,6 @@ local E = {
 			{ expr = true, replace_keycodes = false, desc = "Accept Copilot Suggestion" }
 		)
 		vim.keymap.set("i", "<C-k>", "<Plug>(copilot-accept-word)", { desc = "Accept Copilot Word" })
-		vim.keymap.set("n", "<M-p>", "<cmd>Copilot panel<cr>", { desc = "Show Copilot Panel" })
 	end,
 }
 
