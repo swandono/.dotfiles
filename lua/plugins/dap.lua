@@ -63,7 +63,7 @@ return {
 		},
 	},
 	keys = {
-		{ "<leader>dc" },
+		{ "<leader>dj" },
 	},
 	config = function()
 		local dap = require("dap")
