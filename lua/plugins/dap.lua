@@ -69,19 +69,19 @@ return {
 		local dap = require("dap")
 		vim.keymap.set(
 			"n",
-			"<leader>da",
+			"<leader>dh",
 			dap.toggle_breakpoint,
 			{ noremap = true, silent = true, desc = "Toggle Breakpoint (DAP)" }
 		)
 		vim.keymap.set(
 			"n",
-			"<leader>dc",
+			"<leader>dj",
 			dap.continue,
 			{ noremap = true, silent = true, desc = "Continue Next Breakpoint (DAP)" }
 		)
 		vim.keymap.set(
 			"n",
-			"<leader>df",
+			"<leader>dk",
 			dap.run_to_cursor,
 			{ noremap = true, silent = true, desc = "Go to Line (DAP)" }
 		)
@@ -91,26 +91,26 @@ return {
 		vim.keymap.set("n", "<leader>dO", dap.step_out, { noremap = true, silent = true, desc = "Step Out (DAP)" })
 		vim.keymap.set(
 			"n",
-			"<leader>dh",
-			require("dap.ui.widgets").hover,
-			{ noremap = true, silent = true, desc = "Widgets (DAP)" }
-		)
-		vim.keymap.set(
-			"n",
-			"<leader>dd",
+			"<leader>dn",
 			require("dapui").eval,
 			{ noremap = true, silent = true, desc = "Debug Eval (DAP)" }
 		)
 		vim.keymap.set(
 			"n",
-			"<leader>dt",
+			"<leader>dN",
+			require("dap.ui.widgets").hover,
+			{ noremap = true, silent = true, desc = "Widgets (DAP)" }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>du",
 			require("dapui").toggle,
 			{ noremap = true, silent = true, desc = "Toggle UI (DAP)" }
 		)
-		vim.keymap.set("n", "<leader>dj", function()
+		vim.keymap.set("n", "<leader>dH", function()
 			require("dapui").float_element("breakpoints")
 		end, { noremap = true, silent = true, desc = "Breakpoints (DAP)" })
-		vim.keymap.set("n", "<leader>dk", function()
+		vim.keymap.set("n", "<leader>dm", function()
 			require("dapui").float_element("repl", { height = 62, width = 200, position = "center" })
 		end, { noremap = true, silent = true, desc = "REPL (DAP)" })
 		vim.keymap.set("n", "<leader>dl", function()
