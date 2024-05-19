@@ -15,8 +15,11 @@ local function setup()
 	vim.keymap.set("n", "<leader>bs", tele.git_branches, { desc = "Telescope git branches" })
 	vim.keymap.set("n", "<leader>gs", tele.git_files, { desc = "Telescope find git files" })
 	vim.keymap.set("n", "<C-j>", tele.buffers, { desc = "Telescope buffers" })
-	vim.keymap.set("n", "<C-k>", tele.find_files, { desc = "Telescope find files" })
+	vim.keymap.set("n", "<C-k>", tele.find_files, { desc = "Telescope find files (Git respect)" })
 	vim.keymap.set("n", "<C-l>", tele.live_grep, { desc = "Telescope live grep" })
+	vim.keymap.set("n", "<leader>fs", function()
+		tele.find_files({ hidden = true, no_ignore = true, no_ignore_parent = true })
+	end, { silent = true, noremap = true, desc = "Telescope find all files" })
 end
 
 return {
