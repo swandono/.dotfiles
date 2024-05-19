@@ -15,14 +15,15 @@ vim.keymap.set("n", "n", "nzzzv")
 
 vim.keymap.set("n", "<leader>y", [["*Y]], { desc = "Copy Line to Clipboard" })
 vim.keymap.set("v", "<leader>y", [["*y]], { desc = "Copy to Clipboard" })
-vim.keymap.set({ "n", "v" }, "<leader>p", [["+p]], { desc = "Paste from Clipboard" })
+vim.keymap.set({ "n", "v" }, "<leader>p", [["+p]], { desc = "Paste from Clipboard (below)" })
+vim.keymap.set({ "n", "v" }, "<leader>P", [["+P]], { desc = "Paste from Clipboard (above)" })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move Line Up" })
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move Line Down" })
 
 vim.keymap.set("n", "<leader>u", [[<CMD>UndotreeShow<CR>]], { desc = "Open UndoTree" })
 
 vim.keymap.set("n", "<leader>bd", [[<CMD>bd<CR>]], { desc = "Delete Buffer" })
-vim.keymap.set("n", "<leader>bo", [[<CMD>only<CR>]], { desc = "Delete Buffer" })
+vim.keymap.set("n", "<leader>bo", [[<CMD>only<CR>]], { desc = "Buffer Only" })
 vim.keymap.set("n", "<leader>bh", [[<CMD>split<CR>]], { desc = "Split Buffer" })
 vim.keymap.set("n", "<leader>bv", [[<CMD>vsplit<CR>]], { desc = "VSplit Buffer" })
 
