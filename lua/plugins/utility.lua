@@ -119,10 +119,10 @@ local js_filetypes = {
 
 local H = {
 	"windwp/nvim-ts-autotag",
+	ft = js_filetypes,
 	config = function()
 		require("nvim-ts-autotag").setup()
 	end,
-	ft = js_filetypes,
 }
 
 return { A, B, C, D, E, F, G, H }
