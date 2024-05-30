@@ -11,7 +11,7 @@ vim.opt.termguicolors = true
 vim.opt.guicursor = ""
 vim.opt.cursorline = true
 vim.opt.showmode = false
-vim.opt.mouse = "a"
+vim.opt.mouse = ""
 
 vim.opt.exrc = true
 vim.opt.errorbells = false

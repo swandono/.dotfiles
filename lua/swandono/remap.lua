@@ -27,10 +27,10 @@ vim.keymap.set("n", "<leader>bo", [[<CMD>only<CR>]], { desc = "Buffer Only" })
 vim.keymap.set("n", "<leader>bh", [[<CMD>split<CR>]], { desc = "Split Buffer" })
 vim.keymap.set("n", "<leader>bv", [[<CMD>vsplit<CR>]], { desc = "VSplit Buffer" })
 
-vim.keymap.set("n", "<Up>", [[<CMD>resize -2<CR>]], { desc = "Resize Up" })
-vim.keymap.set("n", "<Down>", [[<CMD>resize +2<CR>]], { desc = "Resize Down" })
-vim.keymap.set("n", "<Left>", [[<CMD>vertical resize -2<CR>]], { desc = "Resize Left" })
-vim.keymap.set("n", "<Right>", [[<CMD>vertical resize +2<CR>]], { desc = "Resize Right" })
+vim.keymap.set({ "n", "i", "v" }, "<Up>", [[<CMD>resize -2<CR>]], { desc = "Resize Up" })
+vim.keymap.set({ "n", "i", "v" }, "<Down>", [[<CMD>resize +2<CR>]], { desc = "Resize Down" })
+vim.keymap.set({ "n", "i", "v" }, "<Left>", [[<CMD>vertical resize -2<CR>]], { desc = "Resize Left" })
+vim.keymap.set({ "n", "i", "v" }, "<Right>", [[<CMD>vertical resize +2<CR>]], { desc = "Resize Right" })
 
 vim.keymap.set(
 	"n",
