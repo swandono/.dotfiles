@@ -164,6 +164,9 @@ vim.keymap.set("n", "<leader>t2", ":set tabstop=2 shiftwidth=2 softtabstop=2<CR>
 vim.keymap.set("n", "<leader>t4", ":set tabstop=4 shiftwidth=4 softtabstop=4<CR>", { desc = "Set Tabstop 4" })
 
 vim.keymap.set("n", "<leader>cl", function()
+	if require("trouble").is_open() then
+		require("trouble").close()
+	end
 	local qf_exists = false
 	for _, win in pairs(vim.fn.getwininfo()) do
 		if win["quickfix"] == 1 then

@@ -8,18 +8,18 @@ local A = {
 		vim.keymap.set(
 			"n",
 			"<leader>vd",
-			"<cmd>TroubleToggle document_diagnostics<cr>",
+			"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
 			{ silent = true, noremap = true, desc = "Document Diagnostics (Trouble)" }
 		)
 		vim.keymap.set(
 			"n",
 			"<leader>vw",
-			"<cmd>TroubleToggle workspace_diagnostics<cr>",
+			"<cmd>Trouble diagnostics toggle<cr>",
 			{ silent = true, noremap = true, desc = "Workspace Diagnostics (Trouble)" }
 		)
 		vim.keymap.set("n", "<C-p>", function()
 			if require("trouble").is_open() then
-				require("trouble").previous({ skip_groups = true, jump = true })
+				require("trouble").prev({ skip_groups = true, jump = true })
 			else
 				local ok, _ = pcall(vim.cmd, "cprevious")
 				if not ok then
