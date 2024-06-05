@@ -125,4 +125,21 @@ local H = {
 	end,
 }
 
-return { A, B, C, D, E, F, G, H }
+local I = {
+	"NvChad/nvim-colorizer.lua",
+	keys = {
+		{ "<leader>cc" },
+	},
+	lazy = true,
+	config = function()
+		require("colorizer").setup()
+		vim.keymap.set(
+			"n",
+			"<leader>cc",
+			"<cmd>ColorizerToggle<cr>",
+			{ silent = true, noremap = true, desc = "Colorizer" }
+		)
+	end,
+}
+
+return { A, B, C, D, E, F, G, H, I }
