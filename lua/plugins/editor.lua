@@ -160,31 +160,8 @@ local E = {
 	end,
 }
 
--- Cloak (Hide sensitive information)
-local F = {
-	"laytan/cloak.nvim",
-	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
-	config = function()
-		require("cloak").setup({
-			enabled = true,
-			cloak_character = "*",
-			highlight_group = "Comment",
-			cloak_length = nil,
-			try_all_patterns = true,
-			patterns = {
-				{
-					file_pattern = "*.env*",
-					cloak_pattern = "=.+",
-					replace = nil,
-				},
-			},
-		})
-		vim.keymap.set("n", "<leader>ck", "<cmd>CloakToggle<cr>", { desc = "Toggle Cloak" })
-	end,
-}
-
 -- Harpoon (Bookmarks)
-local G = {
+local F = {
 	"ThePrimeagen/harpoon",
 	branch = "harpoon2",
 	dependencies = { "nvim-lua/plenary.nvim" },
@@ -224,7 +201,7 @@ local G = {
 }
 
 -- OIL (File Explorer)
-local H = {
+local G = {
 	"stevearc/oil.nvim",
 	keys = {
 		{ "-" },
@@ -244,4 +221,4 @@ local H = {
 	end,
 }
 
-return { A, B, C, D, E, F, G, H }
+return { A, B, C, D, E, F, G }
