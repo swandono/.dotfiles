@@ -73,11 +73,14 @@ return {
 			dap.toggle_breakpoint,
 			{ noremap = true, silent = true, desc = "Toggle Breakpoint (DAP)" }
 		)
+		vim.keymap.set("n", "<leader>dH", function()
+			require("dapui").float_element("breakpoints")
+		end, { noremap = true, silent = true, desc = "Breakpoints (DAP)" })
 		vim.keymap.set(
 			"n",
 			"<leader>dj",
 			dap.continue,
-			{ noremap = true, silent = true, desc = "Continue Next Breakpoint (DAP)" }
+			{ noremap = true, silent = true, desc = "Continue Next Breakpoint or Toggle Options (DAP)" }
 		)
 		vim.keymap.set(
 			"n",
@@ -85,35 +88,32 @@ return {
 			dap.run_to_cursor,
 			{ noremap = true, silent = true, desc = "Go to Line (DAP)" }
 		)
+		vim.keymap.set(
+			"n",
+			"<leader>dl",
+			require("dapui").eval,
+			{ noremap = true, silent = true, desc = "Debug Eval (DAP)" }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>dL",
+			require("dap.ui.widgets").hover,
+			{ noremap = true, silent = true, desc = "Widgets (DAP)" }
+		)
 		vim.keymap.set("n", "<leader>di", dap.step_into, { noremap = true, silent = true, desc = "Step Into (DAP)" })
 		vim.keymap.set("n", "<leader>dI", dap.step_back, { noremap = true, silent = true, desc = "Step Back (DAP)" })
 		vim.keymap.set("n", "<leader>do", dap.step_over, { noremap = true, silent = true, desc = "Step Over (DAP)" })
 		vim.keymap.set("n", "<leader>dO", dap.step_out, { noremap = true, silent = true, desc = "Step Out (DAP)" })
 		vim.keymap.set(
 			"n",
-			"<leader>dn",
-			require("dapui").eval,
-			{ noremap = true, silent = true, desc = "Debug Eval (DAP)" }
-		)
-		vim.keymap.set(
-			"n",
-			"<leader>dN",
-			require("dap.ui.widgets").hover,
-			{ noremap = true, silent = true, desc = "Widgets (DAP)" }
-		)
-		vim.keymap.set(
-			"n",
 			"<leader>du",
 			require("dapui").toggle,
 			{ noremap = true, silent = true, desc = "Toggle UI (DAP)" }
 		)
-		vim.keymap.set("n", "<leader>dH", function()
-			require("dapui").float_element("breakpoints")
-		end, { noremap = true, silent = true, desc = "Breakpoints (DAP)" })
 		vim.keymap.set("n", "<leader>dm", function()
 			require("dapui").float_element("repl", { height = 62, width = 200, position = "center" })
 		end, { noremap = true, silent = true, desc = "REPL (DAP)" })
-		vim.keymap.set("n", "<leader>dl", function()
+		vim.keymap.set("n", "<leader>dn", function()
 			require("dapui").float_element("console", { height = 62, width = 200, position = "center" })
 		end, { noremap = true, silent = true, desc = "Terminal (DAP)" })
 	end,

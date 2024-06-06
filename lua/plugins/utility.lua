@@ -137,7 +137,7 @@ local I = {
 			"n",
 			"<leader>cc",
 			"<cmd>ColorizerToggle<cr>",
-			{ silent = true, noremap = true, desc = "Colorizer" }
+			{ silent = true, noremap = true, desc = "Toggle Colorizer" }
 		)
 	end,
 }
