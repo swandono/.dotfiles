@@ -9,9 +9,9 @@ export XDG_CONFIG_HOME="$HOME/.config"
 
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(zsh-syntax-highlighting zsh-autosuggestions)
-
+plugins=(zsh-syntax-highlighting zsh-autosuggestions aws docker zsh-vi-mode)
 source $ZSH/oh-my-zsh.sh
+ZVM_CURSOR_STYLE_ENABLED=false
 
 export AUTH_GITHUB_TOKEN=isi_dewe
 export PATH="/usr/local/bin:$PATH"
@@ -91,6 +91,8 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # jabba
 [ -s "/Users/swandono/.jabba/jabba.sh" ] && source "/Users/swandono/.jabba/jabba.sh"
+
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
