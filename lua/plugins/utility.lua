@@ -1,3 +1,4 @@
+--  Autopair completion
 local A = {
 	"windwp/nvim-autopairs",
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
@@ -6,8 +7,10 @@ local A = {
 	end,
 }
 
+-- Startup Time
 local B = { "dstein64/vim-startuptime", event = "VeryLazy", cmd = "StartupTime" }
 
+-- Session Management
 local C = {
 	"folke/persistence.nvim",
 	event = "VeryLazy",
@@ -32,8 +35,10 @@ local C = {
 	end,
 }
 
+-- Plenary
 local D = { "nvim-lua/plenary.nvim", event = "VeryLazy" }
 
+-- Dressing
 local E = {
 	"stevearc/dressing.nvim",
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
@@ -65,6 +70,7 @@ local E = {
 	end,
 }
 
+-- Fidget to check lsp status
 local F = {
 	"j-hui/fidget.nvim",
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
@@ -80,6 +86,7 @@ local F = {
 	end,
 }
 
+-- DBUI
 local G = {
 	"kristijanhusak/vim-dadbod-ui",
 	keys = {
@@ -117,6 +124,7 @@ local js_filetypes = {
 	"hbs",
 }
 
+-- Autotag for js filetypes
 local H = {
 	"windwp/nvim-ts-autotag",
 	ft = js_filetypes,
@@ -125,6 +133,7 @@ local H = {
 	end,
 }
 
+-- Inline Colorizer
 local I = {
 	"NvChad/nvim-colorizer.lua",
 	keys = {
@@ -142,6 +151,7 @@ local I = {
 	end,
 }
 
+-- Hide sensitive information
 local J = {
 	"laytan/cloak.nvim",
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },

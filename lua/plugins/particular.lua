@@ -1,8 +1,10 @@
+-- Java specific plugins
 local A = {
 	"mfussenegger/nvim-jdtls",
 	ft = "java",
 }
 
+-- Flutter specific plugins
 local B = {
 	"akinsho/flutter-tools.nvim",
 	ft = "dart",
