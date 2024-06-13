@@ -102,7 +102,7 @@ return {
 						behavior = cmp.ConfirmBehavior.Replace,
 						select = true,
 					}),
-					["<C-f>"] = cmp.mapping.confirm({
+					["<C-j>"] = cmp.mapping.confirm({
 						behavior = cmp.ConfirmBehavior.Replace,
 						select = true,
 					}),
