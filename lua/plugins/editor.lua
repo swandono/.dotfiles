@@ -152,11 +152,11 @@ local E = {
 		}
 		vim.keymap.set(
 			"i",
-			"<C-j>",
+			"<C-k>",
 			'copilot#Accept("<CR>")',
 			{ expr = true, replace_keycodes = false, desc = "Accept Copilot Suggestion" }
 		)
-		vim.keymap.set("i", "<C-k>", "<Plug>(copilot-accept-word)", { desc = "Accept Copilot Word" })
+		vim.keymap.set("i", "<C-l>", "<Plug>(copilot-accept-word)", { desc = "Accept Copilot Word" })
 	end,
 }
 
