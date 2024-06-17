@@ -22,7 +22,8 @@ local I = {
                 new_section("Grep text", "Telescope live_grep", "Telescope"),
                 new_section("New file", "ene | startinsert", "Built-in"),
                 new_section("Quit", "qa", "Built-in"),
-                new_section("Session restore", [[lua require("persistence").load()]], "Session"),
+                new_section("Session restore", [[lua require("persistence").load()]], "Etc..."),
+                new_section("Lazy", [[Lazy]], "Etc..."),
             },
             content_hooks = {
                 starter.gen_hook.adding_bullet(pad .. "░ ", false),

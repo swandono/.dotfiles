@@ -166,6 +166,7 @@ vim.keymap.set("n", "<leader>t4", ":set tabstop=4 shiftwidth=4 softtabstop=4<CR>
 vim.keymap.set("n", "<leader>cl", function()
 	if require("trouble").is_open() then
 		require("trouble").close()
+		return
 	end
 	local qf_exists = false
 	for _, win in pairs(vim.fn.getwininfo()) do

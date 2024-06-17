@@ -28,7 +28,6 @@ return {
 				yaml = { { "prettierd", "prettier" } },
 				markdown = { { "prettierd", "prettier" } },
 				html = { { "prettierd", "prettier" } },
-				rust = { "rustfmt" },
 			},
 		},
 	},
