@@ -25,10 +25,16 @@ shift + alt - m : yabai -m window --toggle zoom-fullscreen
 shift + alt - e : yabai -m space --balance
 
 # increase window size
-shift + ctrl + alt - h : yabai -m window west --resize right:-20:0 2> /dev/null || yabai -m window --resize right:-20:0
-shift + ctrl + alt - j : yabai -m window north --resize bottom:0:20 2> /dev/null || yabai -m window --resize bottom:0:20
-shift + ctrl + alt - k : yabai -m window south --resize top:0:-20 2> /dev/null || yabai -m window --resize top:0:-20
-shift + ctrl + alt - l : yabai -m window east --resize left:20:0 2> /dev/null || yabai -m window --resize left:20:0
+shift + ctrl + alt - h : yabai -m window west --resize right:-100:0 2> /dev/null || yabai -m window --resize right:-100:0
+shift + ctrl + alt - j : yabai -m window north --resize bottom:0:100 2> /dev/null || yabai -m window --resize bottom:0:100
+shift + ctrl + alt - k : yabai -m window south --resize top:0:-100 2> /dev/null || yabai -m window --resize top:0:-100
+shift + ctrl + alt - l : yabai -m window east --resize left:100:0 2> /dev/null || yabai -m window --resize left:100:0
+
+# increase window size
+shift + ctrl + alt - y : yabai -m window west --resize right:-20:0 2> /dev/null || yabai -m window --resize right:-20:0
+shift + ctrl + alt - u : yabai -m window north --resize bottom:0:20 2> /dev/null || yabai -m window --resize bottom:0:20
+shift + ctrl + alt - i : yabai -m window south --resize top:0:-20 2> /dev/null || yabai -m window --resize top:0:-20
+shift + ctrl + alt - o : yabai -m window east --resize left:20:0 2> /dev/null || yabai -m window --resize left:20:0
 
 # -- Moving Windows Around --
 
