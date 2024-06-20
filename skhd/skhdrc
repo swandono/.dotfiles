@@ -13,16 +13,15 @@ alt - o: yabai -m display --focus east
 # -- Modifying the Layout --
 
 # toggle window float
-shift + alt - t : yabai -m window --toggle float --grid 4:4:1:1:2:2
-
+alt - t : yabai -m window --toggle float --grid 4:4:1:1:2:2
 
 # -- Modifying Window Size --
 
 # maximize a window
-shift + alt - m : yabai -m window --toggle zoom-fullscreen
+alt - m : yabai -m window --toggle zoom-fullscreen
 
 # balance out tree of windows (resize to occupy same area)
-shift + alt - e : yabai -m space --balance
+alt - e : yabai -m space --balance
 
 # increase window size
 shift + ctrl + alt - h : yabai -m window west --resize right:-100:0 2> /dev/null || yabai -m window --resize right:-100:0
@@ -55,6 +54,6 @@ shift + alt - i : yabai -m window --display west; yabai -m display --focus west;
 shift + alt - o : yabai -m window --display east; yabai -m display --focus east;
 
 # toggle space
-alt - b : yabai -m space --layout bsp
-alt - f : yabai -m space --layout float
+alt - a : yabai -m space --layout bsp
 alt - s : yabai -m space --layout stack
+alt - d : yabai -m space --layout float
