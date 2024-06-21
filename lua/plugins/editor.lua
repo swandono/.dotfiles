@@ -229,4 +229,24 @@ local G = {
 	end,
 }
 
-return { A, B, C, D, E, F, G }
+-- Copilot Chat
+local H = {
+	"CopilotC-Nvim/CopilotChat.nvim",
+	branch = "canary",
+	keys = {
+		{ "<leader>cs" },
+	},
+	dependencies = {
+		{ "github/copilot.vim" },
+		{ "nvim-lua/plenary.nvim" },
+	},
+	config = function()
+		require("CopilotChat").setup({})
+		vim.keymap.set("n", "<leader>cs", "<CMD>lua require('CopilotChat').open()<CR>", { desc = "Open Copilot Chat" })
+	end,
+	opts = {
+		debug = true,
+	},
+}
+
+return { A, B, C, D, E, F, G, H }
