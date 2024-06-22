@@ -90,6 +90,8 @@ return {
 					["<C-p>"] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_prev_item()
+						elseif has_words_before() then
+							cmp.complete()
 						else
 							fallback()
 						end

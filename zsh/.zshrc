@@ -6,10 +6,10 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 export XDG_CONFIG_HOME="$HOME/.config"
-
-export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(zsh-syntax-highlighting zsh-autosuggestions aws docker zsh-vi-mode)
+
+export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 ZVM_CURSOR_STYLE_ENABLED=false
 
@@ -49,11 +49,10 @@ alias cdp='cd ~/Work/code/proboid'
 
 alias pvim='pipenv run nvim'
 alias pps='pipenv shell'
-alias tmx='tmux a'
+alias tm='tmux a'
 alias tmn='tmux new'
 alias tmm='tmux new -sMe'
 alias tms='tmux new tmux-sessionizer'
-bindkey -s '^k' 'tmux a^M'
 
 alias mvngo='mvncmp && mvnrun'
 alias mvnres='mvnkill && mvncmp && mvnrun'
@@ -121,3 +120,5 @@ export SDKMAN_DIR="$HOME/.sdkman"
 ## Completion scripts setup. Remove the following line to uninstall
 [[ -f /Users/swandono/.config/.dart-cli-completion/zsh-config.zsh ]] && . /Users/swandono/.config/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
+
+eval "$(zoxide init --cmd cd zsh)"

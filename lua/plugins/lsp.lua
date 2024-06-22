@@ -28,14 +28,16 @@ return {
 			-- Fix Undefined global 'vim'
 			lsp.nvim_workspace()
 
-			lsp.set_preferences({
-				suggest_lsp_servers = false,
-				sign_icons = {
-					error = "E",
-					warn = "W",
-					hint = "H",
-					info = "I",
-				},
+			-- Set sign icons
+			lsp.set_sign_icons({
+				-- error = "E",
+				-- warn = "W",
+				-- hint = "H",
+				-- info = "I",
+				error = "✘",
+				warn = "▲",
+				hint = "⚑",
+				info = "»",
 			})
 
 			lsp.on_attach(function(_, bufnr)
@@ -45,9 +47,6 @@ return {
 				vim.keymap.set("n", "<leader>va", function()
 					vim.lsp.buf.code_action()
 				end, { buffer = bufnr, remap = false, desc = "Code action (LSP)" })
-				vim.keymap.set("n", "<leader>vf", function()
-					vim.diagnostic.open_float()
-				end, { buffer = bufnr, remap = false, desc = "Open float (LSP)" })
 				vim.keymap.set("n", "<leader>vn", function()
 					vim.diagnostic.goto_next()
 				end, { buffer = bufnr, remap = false, desc = "Go to next (LSP)" })
