@@ -234,7 +234,7 @@ local H = {
 	"CopilotC-Nvim/CopilotChat.nvim",
 	branch = "canary",
 	keys = {
-		{ "<leader>cs" },
+		{ "<leader>cm" },
 	},
 	dependencies = {
 		{ "github/copilot.vim" },
@@ -242,10 +242,15 @@ local H = {
 	},
 	config = function()
 		require("CopilotChat").setup({})
-		vim.keymap.set("n", "<leader>cs", "<CMD>lua require('CopilotChat').open()<CR>", { desc = "Open Copilot Chat" })
+		vim.keymap.set(
+			"n",
+			"<leader>cm",
+			"<CMD>lua require('CopilotChat').toggle()<CR>",
+			{ desc = "Open Copilot Chat" }
+		)
 	end,
 	opts = {
-		debug = true,
+		debug = false,
 	},
 }
 
