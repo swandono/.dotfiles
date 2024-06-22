@@ -141,22 +141,36 @@ local D = {
 
 -- Copilot
 local E = {
-	"github/copilot.vim",
+	"zbirenbaum/copilot.lua",
 	cmd = "Copilot",
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 	config = function()
-		vim.g.copilot_no_tab_map = true
-		vim.b.copilot_enable = true
-		vim.g.copilot_filetypes = {
-			["dap-repl"] = false,
-		}
-		vim.keymap.set(
-			"i",
-			"<C-k>",
-			'copilot#Accept("<CR>")',
-			{ expr = true, replace_keycodes = false, desc = "Accept Copilot Suggestion" }
-		)
-		vim.keymap.set("i", "<C-l>", "<Plug>(copilot-accept-word)", { desc = "Accept Copilot Word" })
+		require("copilot").setup({
+			suggestion = {
+				enabled = true,
+				auto_trigger = false,
+				hide_during_completion = true,
+				debounce = 75,
+			},
+			filetypes = {
+				["dap-repl"] = false,
+			},
+		})
+		vim.keymap.set("i", "<C-j>", function()
+			require("copilot.suggestion").accept()
+		end, { expr = true, replace_keycodes = false, desc = "Accept Copilot Suggestion (All)" })
+		vim.keymap.set("i", "<C-k>", function()
+			require("copilot.suggestion").accept_line()
+		end, { expr = true, replace_keycodes = false, desc = "Accept Copilot Suggestion (Line)" })
+		vim.keymap.set("i", "<C-l>", function()
+			require("copilot.suggestion").next()
+		end, { expr = true, replace_keycodes = false, desc = "Cycle Copilot Suggestion" })
+		vim.keymap.set("i", "<C-o>", function()
+			require("copilot.suggestion").dismiss()
+		end, { expr = true, replace_keycodes = false, desc = "Dismiss Copilot Suggestion" })
+		vim.keymap.set("n", "<leader>co", function()
+			require("copilot.suggestion").toggle_auto_trigger()
+		end, { expr = true, replace_keycodes = false, desc = "Toggle Copilot Auto Trigger" })
 	end,
 }
 
@@ -237,7 +251,7 @@ local H = {
 		{ "<leader>cm" },
 	},
 	dependencies = {
-		{ "github/copilot.vim" },
+		{ "zbirenbaum/copilot.lua" },
 		{ "nvim-lua/plenary.nvim" },
 	},
 	config = function()
