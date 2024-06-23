@@ -5,9 +5,13 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 export XDG_CONFIG_HOME="$HOME/.config"
 ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(zsh-syntax-highlighting zsh-autosuggestions aws docker zsh-vi-mode)
+plugins=(zsh-syntax-highlighting zsh-autosuggestions aws docker zsh-vi-mode fzf-tab kubectl kubectx command-not-found sudo git)
+
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
@@ -49,7 +53,7 @@ alias cdp='cd ~/Work/code/proboid'
 
 alias pvim='pipenv run nvim'
 alias pps='pipenv shell'
-alias tm='tmux a'
+alias fj='tmux a'
 alias tmn='tmux new'
 alias tmm='tmux new -sMe'
 alias tms='tmux new tmux-sessionizer'
@@ -120,5 +124,26 @@ export SDKMAN_DIR="$HOME/.sdkman"
 ## Completion scripts setup. Remove the following line to uninstall
 [[ -f /Users/swandono/.config/.dart-cli-completion/zsh-config.zsh ]] && . /Users/swandono/.config/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
+#
+
+# force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+zstyle ':completion:*' menu no
+# preview directory's content with eza when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 
 eval "$(zoxide init --cmd cd zsh)"
+
+eval "$(fzf --zsh)"
+
+# History
+HISTSIZE=10000
+SAVEHIST=$HISTSIZE
+HISTFILE=~/.zsh_history
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
