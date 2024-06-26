@@ -27,10 +27,10 @@ vim.keymap.set("n", "<leader>bo", [[<CMD>only<CR>]], { desc = "Buffer Only" })
 vim.keymap.set("n", "<leader>bh", [[<CMD>split<CR>]], { desc = "Split Buffer" })
 vim.keymap.set("n", "<leader>bv", [[<CMD>vsplit<CR>]], { desc = "VSplit Buffer" })
 
-vim.keymap.set({ "n", "i", "v" }, "<Up>", [[<CMD>resize -2<CR>]], { desc = "Resize Up" })
-vim.keymap.set({ "n", "i", "v" }, "<Down>", [[<CMD>resize +2<CR>]], { desc = "Resize Down" })
-vim.keymap.set({ "n", "i", "v" }, "<Left>", [[<CMD>vertical resize -2<CR>]], { desc = "Resize Left" })
-vim.keymap.set({ "n", "i", "v" }, "<Right>", [[<CMD>vertical resize +2<CR>]], { desc = "Resize Right" })
+vim.keymap.set({ "n", "v" }, "<Up>", [[<CMD>resize -2<CR>]], { desc = "Resize Up" })
+vim.keymap.set({ "n", "v" }, "<Down>", [[<CMD>resize +2<CR>]], { desc = "Resize Down" })
+vim.keymap.set({ "n", "v" }, "<Left>", [[<CMD>vertical resize -2<CR>]], { desc = "Resize Left" })
+vim.keymap.set({ "n", "v" }, "<Right>", [[<CMD>vertical resize +2<CR>]], { desc = "Resize Right" })
 
 vim.keymap.set(
 	"n",
@@ -187,3 +187,10 @@ vim.keymap.set("n", "<leader>cl", function()
 		return
 	end
 end, { desc = "Toggle Quickfix" })
+
+vim.keymap.set("n", "<leader>oo", ":ObsidianToday<CR>", { desc = "Open Today (Obsidian)" })
+vim.keymap.set("n", "<leader>os", ":ObsidianQuickSwitch<CR>", { desc = "QuickSwitch (Obsidian)" })
+vim.keymap.set("n", "<leader>ot", ":ObsidianTomorrow<CR>", { desc = "Open Tomorrow (Obsidian)" })
+vim.keymap.set("n", "<leader>oy", ":ObsidianYesterday<CR>", { desc = "Open Yesterday (Obsidian)" })
+vim.keymap.set("n", "<leader>on", ":ObsidianNew ./", { desc = "New Note (Obsidian)" })
+vim.keymap.set("n", "<leader>oc", "ObsidianToggleCheckbox", { desc = "Toggle Checkbox (Obsidian)" })

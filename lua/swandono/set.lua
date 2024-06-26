@@ -44,3 +44,5 @@ vim.opt.cmdheight = 1
 vim.opt.completeopt = "menu,menuone,noselect"
 vim.opt.wildmode = "longest,list,full"
 vim.opt.wildmenu = true
+
+vim.opt.conceallevel = 2
