@@ -193,4 +193,4 @@ vim.keymap.set("n", "<leader>os", ":ObsidianQuickSwitch<CR>", { desc = "QuickSwi
 vim.keymap.set("n", "<leader>ot", ":ObsidianTomorrow<CR>", { desc = "Open Tomorrow (Obsidian)" })
 vim.keymap.set("n", "<leader>oy", ":ObsidianYesterday<CR>", { desc = "Open Yesterday (Obsidian)" })
 vim.keymap.set("n", "<leader>on", ":ObsidianNew ./", { desc = "New Note (Obsidian)" })
-vim.keymap.set("n", "<leader>oc", "ObsidianToggleCheckbox", { desc = "Toggle Checkbox (Obsidian)" })
+vim.keymap.set("n", "<leader>oc", ":ObsidianToggleCheckbox<CR>", { desc = "Toggle Checkbox (Obsidian)" })
