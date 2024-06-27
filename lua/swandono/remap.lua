@@ -156,7 +156,7 @@ vim.keymap.set(
 	"n",
 	"<leader>gd",
 	[[<CMD> Gitsigns diffthis<CR>]],
-	{ silent = true, noremap = true, desc = "Diffthis (Gitsigns)" }
+	{ silent = true, noremap = true, desc = "Git Diff (Gitsigns)" }
 )
 
 vim.keymap.set("n", "<leader>cf", ":e %:p:h/", { desc = "Open File" })
