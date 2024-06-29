@@ -55,7 +55,7 @@ local C = { "nvim-tree/nvim-web-devicons", lazy = true }
 -- Beautify notifications
 local D = {
 	"rcarriga/nvim-notify",
-	event = "VeryLazy",
+	event = { "BufReadPre", "BufNewFile" },
 	config = function()
 		vim.notify = require("notify")
 		vim.notify.setup({

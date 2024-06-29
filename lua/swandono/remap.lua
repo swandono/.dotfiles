@@ -159,6 +159,8 @@ vim.keymap.set(
 	{ silent = true, noremap = true, desc = "Git Diff (Gitsigns)" }
 )
 
+vim.keymap.set("n", "<leader>lz", ":Lazy<CR>", { desc = "Open Lazy" })
+vim.keymap.set("n", "<leader>ms", ":Mason<CR>", { desc = "Open Mason" })
 vim.keymap.set("n", "<leader>cf", ":e %:p:h/", { desc = "Open File" })
 vim.keymap.set("n", "<leader>t2", ":set tabstop=2 shiftwidth=2 softtabstop=2<CR>", { desc = "Set Tabstop 2" })
 vim.keymap.set("n", "<leader>t4", ":set tabstop=4 shiftwidth=4 softtabstop=4<CR>", { desc = "Set Tabstop 4" })

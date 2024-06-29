@@ -8,27 +8,29 @@ local A = {
 }
 
 -- Startup Time
-local B = { "dstein64/vim-startuptime", event = "VeryLazy", cmd = "StartupTime" }
+local B = { "dstein64/vim-startuptime", cmd = "StartupTime" }
 
 -- Session Management
 local C = {
 	"folke/persistence.nvim",
-	event = "VeryLazy",
+	event = {
+		"VeryLazy",
+	},
 	opts = { options = { "buffers", "curdir", "tabpages", "winsize", "help", "globals" } },
 	config = function()
 		require("persistence").setup()
 		vim.keymap.set(
 			"n",
-			"<leader>qs",
+			"<leader>fj",
 			require("persistence").load,
 			{ noremap = true, silent = true, desc = "Restore Session" }
 		)
-		vim.keymap.set("n", "<leader>ql", function()
+		vim.keymap.set("n", "<leader>fk", function()
 			require("persistence").load({ last = true })
 		end, { noremap = true, silent = true, desc = "Restore Last Session" })
 		vim.keymap.set(
 			"n",
-			"<leader>qd",
+			"<leader>fh",
 			require("persistence").stop,
 			{ noremap = true, silent = true, desc = "Don't Save Current Session" }
 		)
@@ -36,7 +38,7 @@ local C = {
 }
 
 -- Plenary
-local D = { "nvim-lua/plenary.nvim", event = "VeryLazy" }
+local D = { "nvim-lua/plenary.nvim" }
 
 -- Dressing
 local E = {

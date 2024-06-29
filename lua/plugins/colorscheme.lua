@@ -21,7 +21,8 @@ end
 return {
 	{
 		"navarasu/onedark.nvim",
-		event = { "VimEnter", "BufReadPre", "BufNewFile", "InsertEnter" },
+		-- event = { "VimEnter", "BufReadPre", "BufNewFile", "InsertEnter" },
+		event = "VeryLazy",
 		priority = 1000,
 		config = setup,
 		init = function()

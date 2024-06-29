@@ -10,13 +10,6 @@ alt - l : yabai -m window --focus east
 alt - i: yabai -m display --focus west
 alt - o: yabai -m display --focus east
 
-# -- Modifying the Layout --
-
-# toggle window float
-alt - t : yabai -m window --toggle float --grid 4:4:1:1:2:2
-
-# -- Modifying Window Size --
-
 # maximize a window
 alt - m : yabai -m window --toggle zoom-fullscreen
 
@@ -57,3 +50,9 @@ shift + alt - o : yabai -m window --display east; yabai -m display --focus east;
 alt - a : yabai -m space --layout bsp
 alt - s : yabai -m space --layout stack
 alt - d : yabai -m space --layout float
+
+# set padding
+shift + alt - a : yabai -m config top_padding 0; yabai -m config bottom_padding 0; yabai -m config left_padding 0; yabai -m config right_padding 0; yabai -m config window_gap 0;
+shift + alt - s : yabai -m config top_padding 5; yabai -m config bottom_padding 5; yabai -m config left_padding 5; yabai -m config right_padding 5; yabai -m config window_gap 5;
+shift + alt - d : yabai -m config top_padding 10; yabai -m config bottom_padding 10; yabai -m config left_padding 10; yabai -m config right_padding 10; yabai -m config window_gap 10;
+
