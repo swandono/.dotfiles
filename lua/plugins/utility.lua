@@ -2,9 +2,7 @@
 local A = {
 	"windwp/nvim-autopairs",
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
-	config = function()
-		require("nvim-autopairs").setup({})
-	end,
+	config = true,
 }
 
 -- Startup Time
