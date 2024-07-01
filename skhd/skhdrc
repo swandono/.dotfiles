@@ -1,20 +1,18 @@
-# -- Changing Window Focus --
-
 # change window focus within space
-alt - j : yabai -m window --focus south
-alt - k : yabai -m window --focus north
-alt - h : yabai -m window --focus west
-alt - l : yabai -m window --focus east
+shift + alt - j : yabai -m window --focus south
+shift + alt - k : yabai -m window --focus north
+shift + alt - h : yabai -m window --focus west
+shift + alt - l : yabai -m window --focus east
 
 #change focus between external displays (left and right)
-alt - i: yabai -m display --focus west
-alt - o: yabai -m display --focus east
+shift + alt - 0x21 : yabai -m display --focus west
+shift + alt - 0x1E : yabai -m display --focus east
 
 # maximize a window
-alt - m : yabai -m window --toggle zoom-fullscreen
+shift + alt - m : yabai -m window --toggle zoom-fullscreen
 
 # balance out tree of windows (resize to occupy same area)
-alt - e : yabai -m space --balance
+shift + alt - e : yabai -m space --balance
 
 # increase window size
 shift + ctrl + alt - h : yabai -m window west --resize right:-100:0 2> /dev/null || yabai -m window --resize right:-100:0
@@ -28,31 +26,28 @@ shift + ctrl + alt - u : yabai -m window north --resize bottom:0:20 2> /dev/null
 shift + ctrl + alt - i : yabai -m window south --resize top:0:-20 2> /dev/null || yabai -m window --resize top:0:-20
 shift + ctrl + alt - o : yabai -m window east --resize left:20:0 2> /dev/null || yabai -m window --resize left:20:0
 
-# -- Moving Windows Around --
-
 # swap windows
-shift + alt - j : yabai -m window --swap south
-shift + alt - k : yabai -m window --swap north
-shift + alt - h : yabai -m window --swap west
-shift + alt - l : yabai -m window --swap east
+ctrl + alt - h : yabai -m window --swap west
+ctrl + alt - j : yabai -m window --swap south
+ctrl + alt - k : yabai -m window --swap north
+ctrl + alt - l : yabai -m window --swap east
 
 # move window and split
-ctrl + alt - j : yabai -m window --warp south
-ctrl + alt - k : yabai -m window --warp north
-ctrl + alt - h : yabai -m window --warp west
-ctrl + alt - l : yabai -m window --warp east
+ctrl + alt - y : yabai -m window --warp west
+ctrl + alt - u : yabai -m window --warp south
+ctrl + alt - i : yabai -m window --warp north
+ctrl + alt - o : yabai -m window --warp east
 
 # move window to display left and right
-shift + alt - i : yabai -m window --display west; yabai -m display --focus west;
-shift + alt - o : yabai -m window --display east; yabai -m display --focus east;
+ctrl + alt - 0x21 : yabai -m window --display west; yabai -m display --focus west;
+ctrl + alt - 0x1E : yabai -m window --display east; yabai -m display --focus east;
 
 # toggle space
-alt - a : yabai -m space --layout bsp
-alt - s : yabai -m space --layout stack
-alt - d : yabai -m space --layout float
+shift + alt - a : yabai -m space --layout bsp
+shift + alt - s : yabai -m space --layout stack
+shift + alt - d : yabai -m space --layout float
 
 # set padding
-shift + alt - a : yabai -m config top_padding 0; yabai -m config bottom_padding 0; yabai -m config left_padding 0; yabai -m config right_padding 0; yabai -m config window_gap 0;
-shift + alt - s : yabai -m config top_padding 5; yabai -m config bottom_padding 5; yabai -m config left_padding 5; yabai -m config right_padding 5; yabai -m config window_gap 5;
-shift + alt - d : yabai -m config top_padding 10; yabai -m config bottom_padding 10; yabai -m config left_padding 10; yabai -m config right_padding 10; yabai -m config window_gap 10;
-
+ctrl + alt - a : yabai -m config top_padding 0; yabai -m config bottom_padding 0; yabai -m config left_padding 0; yabai -m config right_padding 0; yabai -m config window_gap 0;
+ctrl + alt - s : yabai -m config top_padding 5; yabai -m config bottom_padding 5; yabai -m config left_padding 5; yabai -m config right_padding 5; yabai -m config window_gap 5;
+ctrl + alt - d : yabai -m config top_padding 10; yabai -m config bottom_padding 10; yabai -m config left_padding 10; yabai -m config right_padding 10; yabai -m config window_gap 10;
