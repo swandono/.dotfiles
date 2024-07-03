@@ -7,7 +7,7 @@ fi
 ZSH_THEME="powerlevel10k/powerlevel10k"
 export ZSH="$HOME/.oh-my-zsh"
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
-plugins=(aws docker kubectl kubectx command-not-found sudo git fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
+plugins+=(aws docker kubectl zsh-vi-mode kubectx command-not-found sudo git fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 ZVM_CURSOR_STYLE_ENABLED=false
 

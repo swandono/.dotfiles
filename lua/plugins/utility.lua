@@ -135,18 +135,20 @@ local H = {
 
 -- Inline Colorizer
 local I = {
-	"NvChad/nvim-colorizer.lua",
-	keys = {
-		{ "<leader>cc" },
-	},
-	lazy = true,
+	"brenoprata10/nvim-highlight-colors",
+	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 	config = function()
-		require("colorizer").setup()
+		require("nvim-highlight-colors").setup({
+			render = "virtual",
+			virtual_symbol = "●",
+			enable_tailwind = true,
+		})
+		vim.cmd("HighlightColors Off")
 		vim.keymap.set(
 			"n",
 			"<leader>cc",
-			"<cmd>ColorizerToggle<cr>",
-			{ silent = true, noremap = true, desc = "Toggle Colorizer" }
+			"<cmd>HighlightColors Toggle<cr>",
+			{ silent = true, noremap = true, desc = "Toggle HighlightColors" }
 		)
 	end,
 }

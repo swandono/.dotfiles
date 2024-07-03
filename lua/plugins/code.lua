@@ -145,6 +145,13 @@ return {
 			require("nvim-autopairs").setup({})
 			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+			cmp.event:on("menu_opened", function()
+				vim.b.copilot_suggestion_hidden = true
+			end)
+
+			cmp.event:on("menu_closed", function()
+				vim.b.copilot_suggestion_hidden = false
+			end)
 		end,
 	},
 	-- Snippets

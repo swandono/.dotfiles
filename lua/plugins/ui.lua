@@ -50,7 +50,7 @@ local B = {
 }
 
 -- Nvim icons
-local C = { "nvim-tree/nvim-web-devicons", lazy = true }
+local C = { "nvim-tree/nvim-web-devicons", lazy = true, priority = 1000 }
 
 -- Beautify notifications
 local D = {
