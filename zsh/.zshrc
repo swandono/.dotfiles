@@ -1,19 +1,13 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
+export XDG_CONFIG_HOME="$HOME/.config"
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
-export XDG_CONFIG_HOME="$HOME/.config"
 ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(zsh-syntax-highlighting zsh-autosuggestions aws docker zsh-vi-mode fzf-tab kubectl kubectx command-not-found sudo git)
-
-fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
-
 export ZSH="$HOME/.oh-my-zsh"
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+plugins=(aws docker kubectl kubectx command-not-found sudo git fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 ZVM_CURSOR_STYLE_ENABLED=false
 
@@ -41,7 +35,7 @@ alias sshadd_work='ssh_rm_agent && ssh_add_work && ssh_add_me && ssh_add_local'
 alias caf30='caffeinate -u -t 1800'
 alias caf60='caffeinate -u -t 3600'
 
-alias dcomp='docker-compose'
+alias dco='docker-compose'
 
 alias cdo='cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents'
 alias cdw='cd ~/Work'
@@ -79,22 +73,7 @@ export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-
-# bun completions
-[ -s "/Users/swandono/.bun/_bun" ] && source "/Users/swandono/.bun/_bun"
-
-# Bun
-export BUN_INSTALL="/Users/swandono/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# jabba
-[ -s "/Users/swandono/.jabba/jabba.sh" ] && source "/Users/swandono/.jabba/jabba.sh"
-
+#  gvm
 [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -114,8 +93,6 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-[[ -s "/Users/swandono/.gvm/scripts/gvm" ]] && source "/Users/swandono/.gvm/scripts/gvm"
-
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
@@ -124,16 +101,8 @@ export SDKMAN_DIR="$HOME/.sdkman"
 ## Completion scripts setup. Remove the following line to uninstall
 [[ -f /Users/swandono/.config/.dart-cli-completion/zsh-config.zsh ]] && . /Users/swandono/.config/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
-#
-
-# force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
-zstyle ':completion:*' menu no
-# preview directory's content with eza when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 
 eval "$(zoxide init --cmd cd zsh)"
-
-eval "$(fzf --zsh)"
 
 # History
 HISTSIZE=10000
@@ -147,3 +116,15 @@ setopt hist_ignore_all_dups
 setopt hist_save_no_dups
 setopt hist_ignore_dups
 setopt hist_find_no_dups
+
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+zstyle ':completion:*' menu no
+# preview directory's content with eza when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+source <(fzf --zsh)
+zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
