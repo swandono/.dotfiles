@@ -17,6 +17,7 @@ export PATH="/opt/homebrew/bin:$PATH"
 export EDITOR='nvim'
 
 alias vim='nvim'
+alias ducks='du -cksh * | sort -hr'
 
 alias gs='git status'
 alias gb='git branch'

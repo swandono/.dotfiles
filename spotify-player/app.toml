@@ -1,0 +1,32 @@
+client_id = "isi_dewe"
+client_port = 8018
+tracks_playback_limit = 200
+playback_format = "{track} • {artists}\n{album}\n{metadata}"
+notify_format = { summary = "{track} • {artists}", body = "{album}" }
+notify_timeout_in_secs = 0
+app_refresh_duration_in_ms = 32
+playback_refresh_duration_in_ms = 0
+page_size_in_rows = 20
+enable_media_control = true
+enable_streaming = "Always"
+enable_notify = false
+enable_cover_image_cache = false
+notify_streaming_only = false
+default_device = "spotify-player"
+play_icon = "▶"
+pause_icon = "⏸"
+liked_icon = "♥"
+playback_window_position = "Top"
+cover_img_length = 0
+cover_img_width = 0
+playback_window_width = 6
+seek_duration_secs = 5
+
+[device]
+name = "spotify-player"
+device_type = "speaker"
+volume = 100
+bitrate = 320
+audio_cache = true
+normalization = false
+autoplay = false

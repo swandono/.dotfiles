@@ -1,0 +1,15 @@
+[[keymaps]]
+command = "Quit"
+key_sequence = "Q"
+[[keymaps]]
+command = "None"
+key_sequence = "q"
+[[keymaps]]
+command = "None"
+key_sequence = "C-c"
+[[keymaps]]
+command = "CurrentlyPlayingContextPage"
+key_sequence = "f j"
+[[keymaps]]
+command = "LibraryPage"
+key_sequence = "f l"
