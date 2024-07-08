@@ -11,6 +11,7 @@ local B = { "dstein64/vim-startuptime", cmd = "StartupTime" }
 -- Session Management
 local C = {
 	"folke/persistence.nvim",
+	version = "v2.0.0",
 	event = {
 		"VeryLazy",
 	},
