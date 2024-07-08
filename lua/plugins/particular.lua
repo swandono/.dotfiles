@@ -1,7 +1,11 @@
 -- Java specific plugins
 local A = {
-	"mfussenegger/nvim-jdtls",
+	"nvim-java/nvim-java",
 	ft = "java",
+	config = function()
+		require("java").setup()
+		require("lspconfig").jdtls.setup({})
+	end,
 }
 
 -- Flutter specific plugins

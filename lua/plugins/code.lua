@@ -37,6 +37,8 @@ return {
 		version = false, -- last release is way too old
 		event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 		dependencies = {
+			"VonHeikemen/lsp-zero.nvim",
+			"onsails/lspkind.nvim",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-nvim-lsp",
@@ -46,12 +48,14 @@ return {
 		},
 		config = function()
 			local cmp = require("cmp")
+
 			local has_words_before = function()
 				local line, col = unpack(vim.api.nvim_win_get_cursor(0))
 				return col ~= 0
 					and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 			end
 
+			local lspkind = require("lspkind")
 			cmp.setup({
 				snippet = {
 					-- REQUIRED - you must specify a snippet engine
@@ -116,6 +120,14 @@ return {
 				}),
 				experimental = {
 					ghost_text = true,
+				},
+				formatting = {
+					format = lspkind.cmp_format({
+						mode = "symbol_text",
+						maxwidth = 50,
+						ellipsis_char = "...",
+						show_labelDetails = true,
+					}),
 				},
 			})
 
