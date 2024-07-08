@@ -143,14 +143,15 @@ local D = {
 local E = {
 	"zbirenbaum/copilot.lua",
 	cmd = "Copilot",
-	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
+	keys = {
+		{ "<leader>cv" },
+	},
 	config = function()
 		require("copilot").setup({
 			suggestion = {
 				enabled = true,
 				auto_trigger = false,
-				hide_during_completion = true,
-				debounce = 75,
+				debounce = 10,
 			},
 			filetypes = {
 				["dap-repl"] = false,
@@ -171,6 +172,7 @@ local E = {
 		vim.keymap.set("n", "<leader>co", function()
 			require("copilot.suggestion").toggle_auto_trigger()
 		end, { expr = true, replace_keycodes = false, desc = "Toggle Copilot Auto Trigger" })
+        vim.keymap.set("n", "<leader>cv", "", { desc = "Copilot Start" })
 	end,
 }
 

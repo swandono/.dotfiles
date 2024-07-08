@@ -1,11 +1,7 @@
 -- Java specific plugins
 local A = {
-	"nvim-java/nvim-java",
+	"mfussenegger/nvim-jdtls",
 	ft = "java",
-	config = function()
-		require("java").setup()
-		require("lspconfig").jdtls.setup({})
-	end,
 }
 
 -- Flutter specific plugins
@@ -28,7 +24,7 @@ local B = {
 					background_color = { r = 0, g = 0, b = 0 },
 					foreground = true, -- highlight the foreground
 					virtual_text = false, -- show the highlight using virtual text
-					virtual_text_str = "■", -- the virtual text character to highlight
+					virtual_text_str = "󰏘", -- the virtual text character to highlight
 				},
 				on_attach = function(client, bufnr)
 					require("config.lsp.handlers").on_attach(client, bufnr)
