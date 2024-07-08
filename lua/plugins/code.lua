@@ -38,6 +38,7 @@ return {
 		event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 		dependencies = {
 			"VonHeikemen/lsp-zero.nvim",
+			"nvim-highlight-colors",
 			"onsails/lspkind.nvim",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
@@ -122,12 +123,17 @@ return {
 					ghost_text = true,
 				},
 				formatting = {
-					format = lspkind.cmp_format({
-						mode = "symbol_text",
-						maxwidth = 50,
-						ellipsis_char = "...",
-						show_labelDetails = true,
-					}),
+					format = function(entry, item)
+						local color_item = require("nvim-highlight-colors").format(entry, { kind = item.kind })
+						item = require("lspkind").cmp_format({
+							-- any lspkind format settings here
+						})(entry, item)
+						if color_item.abbr_hl_group then
+							item.kind_hl_group = color_item.abbr_hl_group
+							item.kind = string.format("%s %s", "󰏘", "Color")
+						end
+						return item
+					end,
 				},
 			})
 
