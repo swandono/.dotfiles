@@ -18,7 +18,10 @@ local A = {
 local B = { "tpope/vim-fugitive", event = { "BufReadPre", "BufNewFile" } }
 local C = {
 	"sindrets/diffview.nvim",
-	keys = "<leader>go",
+	keys = {
+		"<leader>go",
+		"<leader>gO",
+	},
 	config = function()
 		require("diffview").setup()
 		vim.keymap.set(
@@ -30,6 +33,12 @@ local C = {
 		vim.keymap.set(
 			"n",
 			"<leader>gO",
+			":DiffviewFileHistory<CR>",
+			{ silent = true, noremap = true, desc = "Git Diff Open (Diffview)" }
+		)
+		vim.keymap.set(
+			"n",
+			"<leader>gc",
 			":DiffviewClose<CR>",
 			{ silent = true, noremap = true, desc = "Git Diff Close (Diffview)" }
 		)
