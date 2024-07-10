@@ -2,9 +2,7 @@
 
 Make NeoVim better Editor!!!
 
-<img width="1440" alt="Screenshot 2024-02-07 at 14 54 11" src="https://github.com/swandono/.dotfiles/assets/2106030/4fe5a31a-a046-4aa9-8b60-c4972564a58d">
-
-<img width="1440" alt="Screenshot 2024-02-07 at 14 55 07" src="https://github.com/swandono/.dotfiles/assets/2106030/5d1a6ecf-9136-4bdc-9eca-3c6a78449336">
+<img width="2560" alt="image" src="https://github.com/swandono/.dotfiles/assets/2106030/22b0ffcb-a60c-41ad-b6b1-fddc732ad36b">
 
 ## Installation
 
