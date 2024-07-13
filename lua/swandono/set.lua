@@ -44,3 +44,7 @@ vim.opt.cmdheight = 1
 vim.opt.completeopt = "menu,menuone,noselect"
 vim.opt.wildmode = "longest,list,full"
 vim.opt.wildmenu = true
+
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0

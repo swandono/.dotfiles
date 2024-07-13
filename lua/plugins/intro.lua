@@ -24,6 +24,7 @@ local I = {
                 new_section("Quit", "qa", "Built-in"),
                 new_section("Session restore", [[lua require("persistence").load()]], "Etc..."),
                 new_section("Lazy", [[Lazy]], "Etc..."),
+                new_section("Checkhealth", [[checkhealth]], "Etc...")
             },
             content_hooks = {
                 starter.gen_hook.adding_bullet(pad .. "░ ", false),
