@@ -10,6 +10,7 @@ return {
 	},
 	dependencies = {
 		"nvim-lua/plenary.nvim",
+		"nvim-treesitter/nvim-treesitter",
 		{
 			"tadmccorkle/markdown.nvim",
 			config = function()
@@ -37,8 +38,16 @@ return {
 					"<Cmd>MDListItemAbove<CR>",
 					{ desc = "Add List Item Above (Obsidian)" }
 				)
+				-- vim.keymap.set("n", "<leader>cm", ":Markview toggleAll<CR>", { desc = "Toggle Markdown View" })
 			end,
 		},
+		-- {
+		-- 	"OXY2DEV/markview.nvim",
+		-- 	config = function()
+		-- 		require("markview").setup()
+		-- 		pcall(vim.cmd, "Markview toggleAll")
+		-- 	end,
+		-- },
 	},
 	opts = {
 		workspaces = {

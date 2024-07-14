@@ -1,15 +1,18 @@
 vim.keymap.set("i", "<C-c>", "<Esc>", { desc = "Escape" })
 
+vim.keymap.set("n", "<leader>lz", ":Lazy<CR>", { desc = "Open Lazy" })
+vim.keymap.set("n", "<leader>ms", ":Mason<CR>", { desc = "Open Mason" })
+vim.keymap.set("n", "<leader>ch", ":checkhealth<CR>", { desc = "Check Health" })
+vim.keymap.set("n", "<leader>rl", ":LspRestart<CR>", { desc = "Restart LSP" })
+vim.keymap.set("n", "<leader>li", ":LspInfo<CR>", { desc = "LSP Info" })
+vim.keymap.set("n", "<leader>tw", ":set nowrap!<CR>", { desc = "Toggle Wrap" })
+vim.keymap.set("n", "<leader>rw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Replace Word" })
+vim.keymap.set("n", "<leader>rm", ":delm! | delm A-Z0-9<CR>", { desc = "Remove Marks" })
+vim.keymap.set("n", "<leader>0", ":silent !chmod +x %<CR>", { desc = "Chmod +x" })
+
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll Down" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll Up" })
 vim.keymap.set("n", "<leader><CR>", ":edit<CR>", { desc = "Edit" })
-vim.keymap.set("n", "<leader>-", ":Mason<CR>", { desc = "Open Mason" })
-vim.keymap.set("n", "<leader>0", ":Lazy<CR>", { desc = "Open Lazy" })
-vim.keymap.set("n", "<leader>1", ":LspRestart<CR>", { desc = "Restart LSP" })
-vim.keymap.set("n", "<leader>2", ":set nowrap!<CR>", { desc = "Toggle Wrap" })
-vim.keymap.set("n", "<leader>3", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Replace Word" })
-vim.keymap.set("n", "<leader>4", ":delm! | delm A-Z0-9<CR>", { desc = "Delete Marks" })
-vim.keymap.set("n", "<leader>5", ":silent !chmod +x %<CR>", { desc = "Chmod +x" })
 vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "n", "nzzzv")
 
@@ -159,8 +162,6 @@ vim.keymap.set(
 	{ silent = true, noremap = true, desc = "Git Diff (Gitsigns)" }
 )
 
-vim.keymap.set("n", "<leader>lz", ":Lazy<CR>", { desc = "Open Lazy" })
-vim.keymap.set("n", "<leader>ms", ":Mason<CR>", { desc = "Open Mason" })
 vim.keymap.set("n", "<leader>cf", ":e %:p:h/", { desc = "Open File" })
 vim.keymap.set("n", "<leader>t2", ":set tabstop=2 shiftwidth=2 softtabstop=2<CR>", { desc = "Set Tabstop 2" })
 vim.keymap.set("n", "<leader>t4", ":set tabstop=4 shiftwidth=4 softtabstop=4<CR>", { desc = "Set Tabstop 4" })

@@ -1,5 +1,4 @@
---  Lualine is a statusline
-local A = {
+return {
 	"nvim-lualine/lualine.nvim",
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 	opts = {
@@ -32,38 +31,3 @@ local A = {
 		},
 	},
 }
-
--- Indent lines
-local B = {
-	"lukas-reineke/indent-blankline.nvim",
-	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
-	main = "ibl",
-	opts = {
-		debounce = 100,
-		indent = { char = "▏" },
-		-- indent = { char = "│" },
-		whitespace = { highlight = { "Whitespace", "NonText" } },
-		scope = {
-			enabled = false,
-		},
-	},
-}
-
--- Nvim icons
-local C = { "nvim-tree/nvim-web-devicons", lazy = true, priority = 1000 }
-
--- Beautify notifications
-local D = {
-	"rcarriga/nvim-notify",
-	event = { "BufReadPre", "BufNewFile" },
-	config = function()
-		vim.notify = require("notify")
-		vim.notify.setup({
-			render = "compact",
-			top_down = false,
-			background_colour = "#000000",
-		})
-	end,
-}
-
-return { A, B, C, D }

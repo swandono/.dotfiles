@@ -1,4 +1,4 @@
-local A = {
+return {
 	"nvim-treesitter/nvim-treesitter",
 	version = false,
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
@@ -60,5 +60,3 @@ local A = {
 		require("treesitter-context").setup({})
 	end,
 }
-
-return { A }

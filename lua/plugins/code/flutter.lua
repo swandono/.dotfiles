@@ -1,11 +1,4 @@
--- Java specific plugins
-local A = {
-	"mfussenegger/nvim-jdtls",
-	ft = "java",
-}
-
--- Flutter specific plugins
-local B = {
+return {
 	"akinsho/flutter-tools.nvim",
 	ft = "dart",
 	dependencies = {
@@ -54,5 +47,3 @@ local B = {
 		vim.keymap.set("n", "<leader>fl", ":Flutter", { desc = "Run Flutter" })
 	end,
 }
-
-return { A, B }
