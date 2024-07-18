@@ -167,10 +167,10 @@ vim.keymap.set("n", "<leader>t2", ":set tabstop=2 shiftwidth=2 softtabstop=2<CR>
 vim.keymap.set("n", "<leader>t4", ":set tabstop=4 shiftwidth=4 softtabstop=4<CR>", { desc = "Set Tabstop 4" })
 
 vim.keymap.set("n", "<leader>cl", function()
-	if require("trouble").is_open() then
-		require("trouble").close()
-		return
-	end
+	-- if require("trouble").is_open() then
+	-- 	require("trouble").close()
+	-- 	return
+	-- end
 	local qf_exists = false
 	for _, win in pairs(vim.fn.getwininfo()) do
 		if win["quickfix"] == 1 then
@@ -190,3 +190,26 @@ vim.keymap.set("n", "<leader>cl", function()
 		return
 	end
 end, { desc = "Toggle Quickfix" })
+
+vim.keymap.set("n", "<C-p>", function()
+	-- if require("trouble").is_open() then
+	-- 	require("trouble").prev({ skip_groups = true, jump = true })
+	-- else
+	local ok, _ = pcall(vim.cmd, "cprevious")
+	if not ok then
+		print("No previous trouble or quickfix item")
+	end
+	-- end
+	vim.fn.feedkeys("zz<CR>")
+end, { desc = "Previous trouble/quickfix" })
+vim.keymap.set("n", "<C-n>", function()
+	-- if require("trouble").is_open() then
+	-- 	require("trouble").next({ skip_groups = true, jump = true })
+	-- else
+	local ok, _ = pcall(vim.cmd, "cnext")
+	if not ok then
+		print("No next trouble or quickfix item")
+	end
+	-- end
+	vim.fn.feedkeys("zz<CR>")
+end, { desc = "Next trouble/quickfix" })

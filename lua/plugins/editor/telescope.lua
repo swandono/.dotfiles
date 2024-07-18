@@ -20,18 +20,6 @@ local function setup()
 	vim.keymap.set("n", "<leader>fs", function()
 		tele.find_files({ hidden = true, no_ignore = true, no_ignore_parent = true })
 	end, { silent = true, noremap = true, desc = "Telescope find all files" })
-	vim.keymap.set(
-		"n",
-		"<space>fb",
-		":Telescope file_browser path=%:p:h select_buffer=true<CR>",
-		{ desc = "Telescope file browser (current file)" }
-	)
-	vim.keymap.set(
-		"n",
-		"<space>fB",
-		":Telescope file_browser<CR>",
-		{ desc = "Telescope file browser (root directory)" }
-	)
 end
 
 return {
@@ -51,10 +39,6 @@ return {
 	},
 	dependencies = {
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-		{
-			"nvim-telescope/telescope-file-browser.nvim",
-			dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
-		},
 	},
 	config = setup,
 	init = function()

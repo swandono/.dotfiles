@@ -6,7 +6,7 @@ return {
     },
 	config = function()
 		vim.keymap.set("n", "<leader>sp", function()
-			require("spectre").open()
+			require("spectre").toggle()
 		end, { silent = true, noremap = true, desc = "Replace in files (Spectre)" })
 	end,
 }
