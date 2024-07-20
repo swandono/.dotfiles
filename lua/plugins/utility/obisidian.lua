@@ -38,7 +38,7 @@ return {
 					"<Cmd>MDListItemAbove<CR>",
 					{ desc = "Add List Item Above (Obsidian)" }
 				)
-				-- vim.keymap.set("n", "<leader>cm", ":RenderMarkdownToggle<CR>", { desc = "Toggle Render Markdown" })
+				-- vim.keymap.set("n", "<leader>cm", ":RenderMarkdown toggle<CR>", { desc = "Toggle Render Markdown" })
 			end,
 		},
 		-- {

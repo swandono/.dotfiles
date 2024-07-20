@@ -5,7 +5,7 @@ return {
 		{
 			"<leader>ff",
 			function()
-				require("conform").format({ async = true, lsp_fallback = true })
+				require("conform").format({ async = true, lsp_format = "fallback" })
 			end,
 			mode = "",
 			desc = "Format",
@@ -16,16 +16,16 @@ return {
 			lua = { "stylua" },
 			python = { "black" },
 			java = { "google-java-format" },
-			javascript = { { "prettierd", "prettier" } },
-			javascriptreact = { { "prettierd", "prettier" } },
-			typescript = { { "prettierd", "prettier" } },
-			typescriptreact = { { "prettierd", "prettier" } },
-			css = { { "prettierd", "prettier" } },
-			vue = { { "prettierd", "prettier" } },
-			json = { { "prettierd", "prettier" } },
-			yaml = { { "prettierd", "prettier" } },
-			markdown = { { "prettierd", "prettier" } },
-			html = { { "prettierd", "prettier" } },
+			javascript = { "prettierd", "prettier" },
+			javascriptreact = { "prettierd", "prettier" },
+			typescript = { "prettierd", "prettier" },
+			typescriptreact = { "prettierd", "prettier" },
+			css = { "prettierd", "prettier" },
+			vue = { "prettierd", "prettier" },
+			json = { "prettierd", "prettier" },
+			yaml = { "prettierd", "prettier" },
+			markdown = { "prettierd", "prettier" },
+			html = { "prettierd", "prettier" },
 		},
 	},
 }
