@@ -26,6 +26,13 @@ return {
 			yaml = { "prettierd", "prettier" },
 			markdown = { "prettierd", "prettier" },
 			html = { "prettierd", "prettier" },
+			sql = { "sqlfluff" },
+		},
+		formatters = {
+			sqlfluff = {
+				exe = "sqlfluff",
+				args = { "fix", "--dialect=postgres", "-" },
+			},
 		},
 	},
 }
