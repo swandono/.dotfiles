@@ -1,7 +1,9 @@
 [env]
 TERM = "xterm-256color"
+
 [window]
-padding = { x = 0, y = 10 }
+padding = { x = 0, y = 5 }
+dynamic_padding = true
 decorations = "None"
 opacity = 0.825
 blur = true
@@ -12,6 +14,7 @@ normal = { family = "FiraCode Nerd Font Mono", style = "Regular" }
 bold = { style = "Regular" }
 italic = { style = "Regular" }
 bold_italic = { style = "Regular" }
+offset = { x = 1, y = 1 }
 size = 14
 # size= 13
 
@@ -44,4 +47,10 @@ cyan = "#32d4e8"
 white = "#abb2bf"
 
 [cursor]
-style = { shape = "Block", blinking = "On" }
+style = { shape = "Block", blinking = "Always" }
+
+[mouse]
+hide_when_typing = true
+
+[keyboard]
+bindings = [{ key = "Key6", mods = "Control", chars = "\u001e" }]

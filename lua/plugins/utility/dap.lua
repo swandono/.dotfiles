@@ -44,7 +44,7 @@ return {
 			end,
 			keys = {
 				{
-					"<leader>dbs",
+					"<leader>dH",
 					function()
 						require("telescope").extensions.dap.list_breakpoints({})
 					end,
@@ -73,7 +73,7 @@ return {
 			dap.toggle_breakpoint,
 			{ noremap = true, silent = true, desc = "Toggle Breakpoint (DAP)" }
 		)
-		vim.keymap.set("n", "<leader>dH", function()
+		vim.keymap.set("n", "<leader>ddh", function()
 			require("dapui").float_element("breakpoints")
 		end, { noremap = true, silent = true, desc = "Breakpoints Widgets (DAP)" })
 		vim.keymap.set(
@@ -84,25 +84,19 @@ return {
 		)
 		vim.keymap.set(
 			"n",
-			"<leader>df",
+			"<leader>dJ",
 			dap.run_to_cursor,
 			{ noremap = true, silent = true, desc = "Go to Line (DAP)" }
 		)
 		vim.keymap.set(
 			"n",
-			"<leader>dk",
+			"<leader>dl",
 			require("dapui").eval,
 			{ noremap = true, silent = true, desc = "Debug Eval (DAP)" }
 		)
-		vim.keymap.set("n", "<leader>dl", function()
+		vim.keymap.set("n", "<leader>dL", function()
 			require("dapui").float_element("scopes")
 		end, { noremap = true, silent = true, desc = "Scopes Widgets (DAP)" })
-		vim.keymap.set("n", "<leader>ds", function()
-			require("dapui").float_element("stacks")
-		end, { noremap = true, silent = true, desc = "Stacks Widgets (DAP)" })
-		vim.keymap.set("n", "<leader>dw", function()
-			require("dapui").float_element("watches")
-		end, { noremap = true, silent = true, desc = "Watches Widgets (DAP)" })
 		vim.keymap.set("n", "<leader>di", dap.step_into, { noremap = true, silent = true, desc = "Step Into (DAP)" })
 		vim.keymap.set("n", "<leader>dI", dap.step_back, { noremap = true, silent = true, desc = "Step Back (DAP)" })
 		vim.keymap.set("n", "<leader>do", dap.step_over, { noremap = true, silent = true, desc = "Step Over (DAP)" })
@@ -113,11 +107,16 @@ return {
 			require("dapui").toggle,
 			{ noremap = true, silent = true, desc = "Toggle UI (DAP)" }
 		)
-		vim.keymap.set("n", "<leader>dm", function()
-			require("dapui").float_element("repl", { height = 62, width = 200, position = "center" })
+		vim.keymap.set("n", "<leader>dk", function()
+			-- require("dapui").float_element("repl", { height = 62, width = 200, position = "center" }) -- kitty
+			require("dapui").float_element("repl", { height = 70, width = 200, position = "center" }) -- alacritty
 		end, { noremap = true, silent = true, desc = "REPL Widgets (DAP)" })
+		vim.keymap.set("n", "<leader>d;", function()
+			require("dapui").float_element("watches")
+		end, { noremap = true, silent = true, desc = "Watches Widgets (DAP)" })
 		vim.keymap.set("n", "<leader>dn", function()
-			require("dapui").float_element("console", { height = 62, width = 200, position = "center" })
+			-- require("dapui").float_element("console", { height = 62, width = 200, position = "center" }) -- kitty
+			require("dapui").float_element("console", { height = 70, width = 200, position = "center" }) -- alacritty
 		end, { noremap = true, silent = true, desc = "Terminal Widgets (DAP)" })
 	end,
 }
