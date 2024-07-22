@@ -1,26 +1,26 @@
 return {
 	"sindrets/diffview.nvim",
 	keys = {
-		"<leader>go",
-		"<leader>gO",
+		"<leader>dv",
+		"<leader>dV",
 	},
 	config = function()
 		require("diffview").setup()
 		vim.keymap.set(
 			"n",
-			"<leader>go",
+			"<leader>dv",
 			":DiffviewOpen<CR>",
 			{ silent = true, noremap = true, desc = "Git Diff Open (Diffview)" }
 		)
 		vim.keymap.set(
 			"n",
-			"<leader>gO",
+			"<leader>dV",
 			":DiffviewFileHistory<CR>",
 			{ silent = true, noremap = true, desc = "Git Diff Open (Diffview)" }
 		)
 		vim.keymap.set(
 			"n",
-			"<leader>gc",
+			"<leader>dc",
 			":DiffviewClose<CR>",
 			{ silent = true, noremap = true, desc = "Git Diff Close (Diffview)" }
 		)
