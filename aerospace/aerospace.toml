@@ -24,7 +24,7 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
 # You can set 0 to disable the padding feature
-accordion-padding = 30
+accordion-padding = 0
 
 # Possible values: tiles|accordion
 default-root-container-layout = 'tiles'
@@ -52,6 +52,10 @@ on-focus-changed = "move-mouse window-lazy-center"
 #                 In this example, 24 is a default value when there is no match.
 #                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
 #                 See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
+
+[workspace-to-monitor-force-assignment]
+M = 'Built-in Retina Display'
+
 [gaps]
 inner.horizontal = 10
 inner.vertical = 10
@@ -85,60 +89,62 @@ outer.right = 10
 # alt-enter = 'exec-and-forget open -n /System/Applications/Utilities/Terminal.app'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
-alt-slash = 'layout tiles horizontal vertical'
-alt-comma = 'layout accordion horizontal vertical'
+alt-shift-slash = 'layout tiles horizontal vertical'
+alt-shift-comma = 'layout accordion horizontal vertical'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#focus
-alt-h = 'focus left'
-alt-j = 'focus down'
-alt-k = 'focus up'
-alt-l = 'focus right'
-alt-i = 'focus-monitor left'
-alt-o = 'focus-monitor right'
+alt-shift-h = 'focus left'
+alt-shift-j = 'focus down'
+alt-shift-k = 'focus up'
+alt-shift-l = 'focus right'
+alt-shift-i = 'focus-monitor left'
+alt-shift-o = 'focus-monitor right'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move
-alt-shift-h = 'move left'
-alt-shift-j = 'move down'
-alt-shift-k = 'move up'
-alt-shift-l = 'move right'
-alt-shift-i = ['move-node-to-monitor left', 'focus-monitor left']
-alt-shift-o = ['move-node-to-monitor right', 'focus-monitor right']
+alt-ctrl-shift-h = 'move left'
+alt-ctrl-shift-j = 'move down'
+alt-ctrl-shift-k = 'move up'
+alt-ctrl-shift-l = 'move right'
+alt-ctrl-shift-i = ['move-node-to-monitor left', 'focus-monitor left']
+alt-ctrl-shift-o = ['move-node-to-monitor right', 'focus-monitor right']
 
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
-alt-1 = 'workspace 1'
-alt-2 = 'workspace 2'
-alt-3 = 'workspace 3'
-alt-q = 'workspace Q'
-alt-w = 'workspace W'
-alt-e = 'workspace E'
-alt-a = 'workspace A'
-alt-s = 'workspace S'
-alt-d = 'workspace D'
-alt-z = 'workspace Z'
-alt-x = 'workspace X'
-alt-c = 'workspace C'
+alt-shift-1 = 'workspace 1'
+alt-shift-2 = 'workspace 2'
+alt-shift-3 = 'workspace 3'
+alt-shift-q = 'workspace Q'
+alt-shift-w = 'workspace W'
+alt-shift-e = 'workspace E'
+alt-shift-a = 'workspace A'
+alt-shift-s = 'workspace S'
+alt-shift-d = 'workspace D'
+alt-shift-z = 'workspace Z'
+alt-shift-x = 'workspace X'
+alt-shift-c = 'workspace C'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
-alt-shift-1 = 'move-node-to-workspace 1'
-alt-shift-2 = 'move-node-to-workspace 2'
-alt-shift-3 = 'move-node-to-workspace 3'
-alt-shift-q = 'move-node-to-workspace Q'
-alt-shift-w = 'move-node-to-workspace W'
-alt-shift-e = 'move-node-to-workspace E'
-alt-shift-a = 'move-node-to-workspace A'
-alt-shift-s = 'move-node-to-workspace S'
-alt-shift-d = 'move-node-to-workspace D'
-alt-shift-z = 'move-node-to-workspace Z'
-alt-shift-x = 'move-node-to-workspace X'
-alt-shift-c = 'move-node-to-workspace C'
+alt-ctrl-shift-1 = 'move-node-to-workspace 1'
+alt-ctrl-shift-2 = 'move-node-to-workspace 2'
+alt-ctrl-shift-3 = 'move-node-to-workspace 3'
+alt-ctrl-shift-q = 'move-node-to-workspace Q'
+alt-ctrl-shift-w = 'move-node-to-workspace W'
+alt-ctrl-shift-e = 'move-node-to-workspace E'
+alt-ctrl-shift-a = 'move-node-to-workspace A'
+alt-ctrl-shift-s = 'move-node-to-workspace S'
+alt-ctrl-shift-d = 'move-node-to-workspace D'
+alt-ctrl-shift-z = 'move-node-to-workspace Z'
+alt-ctrl-shift-x = 'move-node-to-workspace X'
+alt-ctrl-shift-c = 'move-node-to-workspace C'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-semicolon = 'mode service'
 
-alt-f = 'fullscreen'
+alt-shift-f = 'fullscreen'
 
-alt-r = 'mode resize'
+alt-shift-r = 'mode resize'
+
+alt-shift-v = 'layout floating tiling'
 
 [mode.resize.binding]
 h = 'resize width -50'
@@ -176,11 +182,35 @@ if.app-id = 'net.kovidgoyal.kitty'
 run = "move-node-to-workspace Z"
 
 [[on-window-detected]]
+if.app-id = 'org.alacritty'
+run = "move-node-to-workspace Z"
+
+[[on-window-detected]]
+if.app-id = 'com.github.wez.wezterm'
+run = "move-node-to-workspace Z"
+
+[[on-window-detected]]
 if.app-id = 'net.whatsapp.WhatsApp'
 run = "move-node-to-workspace C"
 
 [[on-window-detected]]
-if.app-id = 'org.jkiss.dbeaver.core.product'
+if.app-id = 'com.apple.Photos'
+run = "move-node-to-workspace C"
+
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = "move-node-to-workspace A"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Safari.WebApp.9DEEA453-11DD-4BB9-9C49-B0310D528E48'
+run = "move-node-to-workspace A"
+
+[[on-window-detected]]
+if.app-id = 'com.jgraph.drawio.desktop'
+run = "move-node-to-workspace A"
+
+[[on-window-detected]]
+if.app-id = 'org.gimp.gimp-2.10'
 run = "move-node-to-workspace A"
 
 [[on-window-detected]]
@@ -188,7 +218,7 @@ if.app-id = 'com.tinyspeck.slackmacgap'
 run = "move-node-to-workspace D"
 
 [[on-window-detected]]
-if.app-id = 'com.postmanlabs.mac'
+if.app-id = 'org.jkiss.dbeaver.core.product'
 run = "move-node-to-workspace Q"
 
 [[on-window-detected]]
@@ -196,11 +226,7 @@ if.app-id = 'com.electron.dockerdesktop'
 run = "move-node-to-workspace W"
 
 [[on-window-detected]]
-if.app-id = 'md.obsidian'
-run = "move-node-to-workspace E"
-
-[[on-window-detected]]
-if.app-id = 'com.brave.Browser.app.kmcnjdcipmgchfndpapkoecbidofdpbc'
+if.app-id = 'com.postmanlabs.mac'
 run = "move-node-to-workspace E"
 
 [[on-window-detected]]
@@ -213,10 +239,26 @@ run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
 if.app-id = 'com.apple.ActivityMonitor'
-run = "move-node-to-workspace 2"
+run = "move-node-to-workspace 1"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.AppStore'
+run = "move-node-to-workspace 1"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.VoiceMemos'
+run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
 if.app-id = 'org.openvpn.client.app'
+run = "move-node-to-workspace 2"
+
+[[on-window-detected]]
+if.app-id = 'com.1password.1password'
+run = "move-node-to-workspace 2"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.calculator'
 run = "move-node-to-workspace 2"
 
 [[on-window-detected]]
