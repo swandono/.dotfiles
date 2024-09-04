@@ -178,16 +178,24 @@ alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
 
 [[on-window-detected]]
+if.app-id = 'com.spotify.client'
+run = "move-node-to-workspace A"
+
+[[on-window-detected]]
 if.app-id = 'net.kovidgoyal.kitty'
-run = "move-node-to-workspace Z"
+run = "move-node-to-workspace A"
 
 [[on-window-detected]]
 if.app-id = 'org.alacritty'
-run = "move-node-to-workspace Z"
+run = "move-node-to-workspace A"
 
 [[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'
-run = "move-node-to-workspace Z"
+run = "move-node-to-workspace A"
+
+[[on-window-detected]]
+if.app-id = 'org.mozilla.firefox'
+run = "move-node-to-workspace X"
 
 [[on-window-detected]]
 if.app-id = 'net.whatsapp.WhatsApp'
@@ -199,19 +207,23 @@ run = "move-node-to-workspace C"
 
 [[on-window-detected]]
 if.app-id = 'md.obsidian'
-run = "move-node-to-workspace A"
+run = "move-node-to-workspace Z"
 
 [[on-window-detected]]
-if.app-id = 'com.apple.Safari.WebApp.9DEEA453-11DD-4BB9-9C49-B0310D528E48'
-run = "move-node-to-workspace A"
+if.app-id = 'com.brave.Browser.app.kmcnjdcipmgchfndpapkoecbidofdpbc'
+run = "move-node-to-workspace Z"
 
 [[on-window-detected]]
 if.app-id = 'com.jgraph.drawio.desktop'
-run = "move-node-to-workspace A"
+run = "move-node-to-workspace Z"
 
 [[on-window-detected]]
 if.app-id = 'org.gimp.gimp-2.10'
-run = "move-node-to-workspace A"
+run = "move-node-to-workspace Z"
+
+[[on-window-detected]]
+if.app-id = 'com.brave.Browser'
+run = "move-node-to-workspace S"
 
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
