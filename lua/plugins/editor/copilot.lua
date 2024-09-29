@@ -2,13 +2,13 @@ return {
 	"zbirenbaum/copilot.lua",
 	cmd = "Copilot",
 	keys = {
-		{ "<leader>cv" },
+		{ "<leader>cV" },
 	},
 	config = function()
 		require("copilot").setup({
 			suggestion = {
 				enabled = true,
-				auto_trigger = true,
+				auto_trigger = false,
 				debounce = 0,
 			},
 			filetypes = {
@@ -27,9 +27,8 @@ return {
 		vim.keymap.set("i", "<C-o>", function()
 			require("copilot.suggestion").dismiss()
 		end, { expr = true, replace_keycodes = false, desc = "Dismiss Copilot Suggestion" })
-		vim.keymap.set("n", "<leader>co", function()
+		vim.keymap.set("n", "<leader>cV", function()
 			require("copilot.suggestion").toggle_auto_trigger()
 		end, { expr = true, replace_keycodes = false, desc = "Toggle Copilot Auto Trigger" })
-		vim.keymap.set("n", "<leader>cv", "", { desc = "Copilot Start" })
 	end,
 }

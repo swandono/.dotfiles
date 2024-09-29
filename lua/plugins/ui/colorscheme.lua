@@ -6,10 +6,12 @@ local opts = {
 	},
 	colors = {
 		bg3 = "#444a61",
+		customgrey = "#3c4357",
 	},
 	highlights = {
 		FloatBorder = { fg = "$grey", bg = "$transparent" and "$none" or "$bg0" },
 		NormalFloat = { fg = "$fg", bg = "$transparent" and "$none" or "$bg0" },
+		IblIndent = { fg = "$customgrey", fmt = "nocombine" },
 	},
 }
 

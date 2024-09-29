@@ -23,35 +23,34 @@ return {
 				vim.keymap.set("n", "<leader>o[", ":ObsidianYesterday<CR>", { desc = "Open Yesterday (Obsidian)" })
 				vim.keymap.set("n", "<leader>o]", ":ObsidianTomorrow<CR>", { desc = "Open Tomorrow (Obsidian)" })
 				vim.keymap.set("n", "<leader>on", ":ObsidianNew ./", { desc = "New Note (Obsidian)" })
-				vim.keymap.set("n", "<leader>oc", ":MDTaskToggle<CR>", { desc = "Toggle Checkbox (Obsidian)" })
-				vim.keymap.set("n", "<leader>oa", ":MDListItemBelow<CR>", { desc = "Add List Item Below (Obsidian)" })
-				vim.keymap.set("n", "<leader>oA", ":MDListItemAbove<CR>", { desc = "Add List Item Above (Obsidian)" })
 				vim.keymap.set(
 					"i",
-					"<C-o><C-j>",
+					"<C-o><C-o>",
 					"<Cmd>MDListItemBelow<CR>",
 					{ desc = "Add List Item Below (Obsidian)" }
 				)
-				vim.keymap.set(
-					"i",
-					"<C-o><C-k>",
-					"<Cmd>MDListItemAbove<CR>",
-					{ desc = "Add List Item Above (Obsidian)" }
-				)
-				-- vim.keymap.set("n", "<leader>cm", ":RenderMarkdown toggle<CR>", { desc = "Toggle Render Markdown" })
+				vim.keymap.set("n", "<leader>cm", ":RenderMarkdown toggle<CR>", { desc = "Toggle Render Markdown" })
 			end,
 		},
-		-- {
-		-- 	"MeanderingProgrammer/markdown.nvim",
-		-- 	name = "render-markdown", -- Only needed if you have another plugin named markdown.nvim
-		-- 	dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" }, -- if you use standalone mini plugins
-		-- 	-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-		-- 	config = function()
-		-- 		require("render-markdown").setup({
-		-- 			enabled = false,
-		-- 		})
-		-- 	end,
-		-- },
+		{
+			"MeanderingProgrammer/markdown.nvim",
+			name = "render-markdown", -- Only needed if you have another plugin named markdown.nvim
+			dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" }, -- if you use standalone mini plugins
+			-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+			config = function()
+				require("render-markdown").setup({
+					checkbox = {
+						unchecked = { icon = "󰄱", highlight = "RenderMarkdownUnchecked" },
+						checked = { icon = "", highlight = "RenderMarkdownChecked" },
+						custom = {
+							todo = { raw = "[>]", rendered = "󰥔", highlight = "RenderMarkdownTodo" },
+							fav = { raw = "[~]", rendered = "󰓎", highlight = "RenderMarkdownInfo" },
+							warn = { raw = "[!]", rendered = "", highlight = "DiagnosticWarn" },
+						},
+					},
+				})
+			end,
+		},
 	},
 	opts = {
 		workspaces = {
@@ -74,6 +73,9 @@ return {
 		new_notes_location = "current_dir",
 		attachments = {
 			img_folder = "Files", -- This is the default
+		},
+		ui = {
+			enable = false,
 		},
 	},
 }
