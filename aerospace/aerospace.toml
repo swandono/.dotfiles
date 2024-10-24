@@ -1,61 +1,23 @@
-# Place a copy of this config to ~/.aerospace.toml
-# After that, you can edit ~/.aerospace.toml to your liking
-
-# It's not necessary to copy all keys to your config.
-# If the key is missing in your config, "default-config.toml" will serve as a fallback
-
-# You can use it to add commands that run after login to macOS user session.
-# 'start-at-login' needs to be 'true' for 'after-login-command' to work
-# Available commands: https://nikitabobko.github.io/AeroSpace/commands
+################################################################################
+# Default config for AeroSpace
+################################################################################
 after-login-command = []
-
-# You can use it to add commands that run after AeroSpace startup.
-# 'after-startup-command' is run after 'after-login-command'
-# Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = []
-
-# Start AeroSpace at login
 start-at-login = true
-
-# Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
-
-# See: https://nikitabobko.github.io/AeroSpace/guide#layouts
-# The 'accordion-padding' specifies the size of accordion padding
-# You can set 0 to disable the padding feature
 accordion-padding = 0
-
-# Possible values: tiles|accordion
 default-root-container-layout = 'tiles'
-
-# Possible values: horizontal|vertical|auto
-# 'auto' means: wide monitor (anything wider than high) gets horizontal orientation,
-#               tall monitor (anything higher than wide) gets vertical orientation
 default-root-container-orientation = 'auto'
-
-# Possible values: (qwerty|dvorak)
-# See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
 key-mapping.preset = 'qwerty'
-
-# Mouse follows focus when focused monitor changes
-# Drop it from your config, if you don't like this behavior
-# See https://nikitabobko.github.io/AeroSpace/guide#on-focus-changed-callbacks
-# See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 on-focus-changed = "move-mouse window-lazy-center"
 
-# Gaps between windows (inner-*) and between monitor edges (outer-*).
-# Possible values:
-# - Constant:     gaps.outer.top = 8
-# - Per monitor:  gaps.outer.top = [{ monitor.main = 16 }, { monitor."some-pattern" = 32 }, 24]
-#                 In this example, 24 is a default value when there is no match.
-#                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
-#                 See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
-
+# Set Built-in Retina Display as a M workspace
 [workspace-to-monitor-force-assignment]
 M = 'Built-in Retina Display'
 
+# Gaps between windows (inner-*) and between monitor edges (outer-*)
 [gaps]
 inner.horizontal = 10
 inner.vertical = 10
@@ -64,52 +26,27 @@ outer.bottom = 10
 outer.top = 10
 outer.right = 10
 
-# 'main' binding mode declaration
-# See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
-# 'main' binding mode must be always presented
+################################################################################
+# Main mode
+################################################################################
+alt-shift-f = 'fullscreen'
+alt-shift-v = 'layout floating tiling'
+
 [mode.main.binding]
-
-# All possible keys:
-# - Letters.        a, b, c, ..., z
-# - Numbers.        0, 1, 2, ..., 9
-# - Keypad numbers. keypad0, keypad1, keypad2, ..., keypad9
-# - F-keys.         f1, f2, ..., f20
-# - Special keys.   minus, equal, period, comma, slash, backslash, quote, semicolon, backtick,
-#                   leftSquareBracket, rightSquareBracket, space, enter, esc, backspace, tab
-# - Keypad special. keypadClear, keypadDecimalMark, keypadDivide, keypadEnter, keypadEqual,
-#                   keypadMinus, keypadMultiply, keypadPlus
-# - Arrows.         left, down, up, right
-
-# All possible modifiers: cmd, alt, ctrl, shift
-
-# All possible commands: https://nikitabobko.github.io/AeroSpace/commands
-
-# You can uncomment this line to open up terminal with alt + enter shortcut
-# See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
-# alt-enter = 'exec-and-forget open -n /System/Applications/Utilities/Terminal.app'
-
-# See: https://nikitabobko.github.io/AeroSpace/commands#layout
 alt-shift-slash = 'layout tiles horizontal vertical'
 alt-shift-comma = 'layout accordion horizontal vertical'
-
-# See: https://nikitabobko.github.io/AeroSpace/commands#focus
 alt-shift-h = 'focus left'
 alt-shift-j = 'focus down'
 alt-shift-k = 'focus up'
 alt-shift-l = 'focus right'
 alt-shift-i = 'focus-monitor left'
 alt-shift-o = 'focus-monitor right'
-
-# See: https://nikitabobko.github.io/AeroSpace/commands#move
 alt-ctrl-shift-h = 'move left'
 alt-ctrl-shift-j = 'move down'
 alt-ctrl-shift-k = 'move up'
 alt-ctrl-shift-l = 'move right'
 alt-ctrl-shift-i = ['move-node-to-monitor left', 'focus-monitor left']
 alt-ctrl-shift-o = ['move-node-to-monitor right', 'focus-monitor right']
-
-
-# See: https://nikitabobko.github.io/AeroSpace/commands#workspace
 alt-shift-1 = 'workspace 1'
 alt-shift-2 = 'workspace 2'
 alt-shift-3 = 'workspace 3'
@@ -122,8 +59,6 @@ alt-shift-d = 'workspace D'
 alt-shift-z = 'workspace Z'
 alt-shift-x = 'workspace X'
 alt-shift-c = 'workspace C'
-
-# See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
 alt-ctrl-shift-1 = 'move-node-to-workspace 1'
 alt-ctrl-shift-2 = 'move-node-to-workspace 2'
 alt-ctrl-shift-3 = 'move-node-to-workspace 3'
@@ -137,14 +72,27 @@ alt-ctrl-shift-z = 'move-node-to-workspace Z'
 alt-ctrl-shift-x = 'move-node-to-workspace X'
 alt-ctrl-shift-c = 'move-node-to-workspace C'
 
-# See: https://nikitabobko.github.io/AeroSpace/commands#mode
+################################################################################
+# Service mode
+################################################################################
 alt-shift-semicolon = 'mode service'
 
-alt-shift-f = 'fullscreen'
+[mode.service.binding]
+esc = ['reload-config', 'mode main']
+r = ['flatten-workspace-tree', 'mode main']
+f = [
+    'layout floating tiling',
+    'mode main',
+]
+alt-shift-h = ['join-with left', 'mode main']
+alt-shift-j = ['join-with down', 'mode main']
+alt-shift-k = ['join-with up', 'mode main']
+alt-shift-l = ['join-with right', 'mode main']
 
+################################################################################
+# Resize mode
+################################################################################
 alt-shift-r = 'mode resize'
-
-alt-shift-v = 'layout floating tiling'
 
 [mode.resize.binding]
 h = 'resize width -50'
@@ -152,31 +100,13 @@ j = 'resize height +50'
 k = 'resize height -50'
 l = 'resize width +50'
 b = 'balance-sizes'
-
-
-# See: https://nikitabobko.github.io/AeroSpace/commands#resize
 minus = 'resize smart -50'
 equal = 'resize smart +50'
-
-enter = 'mode main'
 esc = 'mode main'
 
-# 'service' binding mode declaration.
-# See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
-[mode.service.binding]
-esc = ['reload-config', 'mode main']
-r = ['flatten-workspace-tree', 'mode main'] # reset layout
-#s = ['layout sticky tiling', 'mode main'] # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
-f = [
-    'layout floating tiling',
-    'mode main',
-] # Toggle between floating and tiling layout
-
-alt-shift-h = ['join-with left', 'mode main']
-alt-shift-j = ['join-with down', 'mode main']
-alt-shift-k = ['join-with up', 'mode main']
-alt-shift-l = ['join-with right', 'mode main']
-
+################################################################################
+# Automatically move application windows to workspaces
+################################################################################
 [[on-window-detected]]
 if.app-id = 'com.spotify.client'
 run = "move-node-to-workspace A"
@@ -235,6 +165,14 @@ run = "move-node-to-workspace Q"
 
 [[on-window-detected]]
 if.app-id = 'com.electron.dockerdesktop'
+run = "move-node-to-workspace W"
+
+[[on-window-detected]]
+if.app-id = 'dev.kdrag0n.MacVirt'
+run = "move-node-to-workspace W"
+
+[[on-window-detected]]
+if.app-id = 'io.podmandesktop.PodmanDesktop'
 run = "move-node-to-workspace W"
 
 [[on-window-detected]]
