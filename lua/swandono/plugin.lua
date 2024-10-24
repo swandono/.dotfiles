@@ -17,8 +17,8 @@ require("lazy").setup({
 	},
 	install = { colorscheme = { "onedark" } },
 	checker = { enabled = false },
-	rocks = {
-		hererocks = false,
-		enabled = false,
-	},
+	-- rocks = {
+	-- 	hererocks = false,
+	-- 	enabled = false,
+	-- },
 })

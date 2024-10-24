@@ -32,7 +32,9 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.smartindent = true
-vim.opt.foldenable = true
+vim.opt.foldenable = false
+vim.opt.foldmethod = "expr"
+vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.wrap = false
 vim.opt.breakindent = true
 
@@ -45,6 +47,7 @@ vim.opt.completeopt = "menu,menuone,noselect"
 vim.opt.wildmode = "longest,list,full"
 vim.opt.wildmenu = true
 
-vim.g.loaded_python3_provider = 0
+vim.g.python3_host_prog = "/Users/swandono/.pyenv/versions/3.11.9/bin/python"
+-- vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
