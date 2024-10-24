@@ -16,7 +16,7 @@ return {
 			config = function()
 				require("markdown").setup()
 				vim.keymap.set("n", "<leader>oo", ":ObsidianToday<CR>", { desc = "Open Today (Obsidian)" })
-				vim.keymap.set("n", "<leader>oq", ":ObsidianQuickSwitch<CR>", { desc = "QuickSwitch (Obsidian)" })
+				vim.keymap.set("n", "<leader>oa", ":ObsidianQuickSwitch<CR>", { desc = "QuickSwitch (Obsidian)" })
 				vim.keymap.set("n", "<leader>os", ":ObsidianSearch<CR>", { desc = "Search (Obsidian)" })
 				vim.keymap.set("n", "<leader>ob", ":ObsidianBacklinks<CR>", { desc = "Backlinks (Obsidian)" })
 				vim.keymap.set("n", "<leader>ot", ":ObsidianTags<CR>", { desc = "Tags (Obsidian)" })
@@ -40,9 +40,9 @@ return {
 			config = function()
 				require("render-markdown").setup({
 					heading = {
-                        position = "inline",
+						position = "inline",
 						width = "block",
-                        left_pad = 1,
+						left_pad = 1,
 						right_pad = 1,
 					},
 					code = {
