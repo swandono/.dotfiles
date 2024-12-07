@@ -3,11 +3,12 @@ local I = {
 	version = false, -- wait till new 0.7.0 release to put it back on semver
 	event = "VimEnter",
 	opts = function()
+		local logo_pad = string.rep(" ", 12)
 		local logo = table.concat({
-			"          █▀ █░█░█ ▄▀█ █▄░█ █▀▄ █▀█ █▄░█ █▀█",
-			"          ▄█ ▀▄▀▄▀ █▀█ █░▀█ █▄▀ █▄█ █░▀█ █▄█",
+			logo_pad .. "█▄░█ █░█ █ █▀▄▀█",
+			logo_pad .. "█░▀█ ▀▄▀ █ █░▀░█",
 		}, "\n")
-		local pad = string.rep(" ", 22)
+		local pad = string.rep(" ", 15)
 		local new_section = function(name, action, section)
 			return { name = name, action = action, section = pad .. section }
 		end
@@ -18,11 +19,11 @@ local I = {
             evaluate_single = true,
             header = logo,
             items = {
-                new_section("Find file", "Telescope find_files", "Telescope"),
-                new_section("Grep text", "Telescope live_grep", "Telescope"),
-                new_section("New file", "ene | startinsert", "Built-in"),
+                new_section("Find File", "Telescope find_files", "Telescope"),
+                new_section("Grep Text", "Telescope live_grep", "Telescope"),
+                new_section("New File", "ene | startinsert", "Built-in"),
                 new_section("Quit", "qa", "Built-in"),
-                new_section("Session restore", [[lua require("persistence").load()]], "Etc..."),
+                new_section("Session", [[lua require("persistence").load()]], "Etc..."),
                 new_section("Lazy", [[Lazy]], "Etc..."),
                 new_section("Checkhealth", [[checkhealth]], "Etc...")
             },
@@ -57,13 +58,8 @@ local I = {
 			callback = function()
 				local stats = require("lazy").stats()
 				local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-				local pad_footer = string.rep(" ", 8)
-				starter.config.footer = pad_footer
-					.. "⚡ Neovim loaded "
-					.. stats.count
-					.. " plugins in "
-					.. ms
-					.. "ms"
+				local pad_footer = string.rep(" ", 9)
+				starter.config.footer = pad_footer .. "⚡ " .. stats.count .. " plugins (" .. ms .. " ms)"
 				pcall(starter.refresh)
 			end,
 		})
