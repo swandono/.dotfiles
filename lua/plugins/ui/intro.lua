@@ -59,7 +59,7 @@ local I = {
 				local stats = require("lazy").stats()
 				local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
 				local pad_footer = string.rep(" ", 9)
-				starter.config.footer = pad_footer .. "⚡ " .. stats.count .. " plugins (" .. ms .. " ms)"
+				starter.config.footer = pad_footer .. "⚡" .. stats.count .. " plugins (" .. ms .. " ms)"
 				pcall(starter.refresh)
 			end,
 		})
