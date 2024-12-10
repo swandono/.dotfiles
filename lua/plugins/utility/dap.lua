@@ -108,15 +108,15 @@ return {
 			{ noremap = true, silent = true, desc = "Toggle UI (DAP)" }
 		)
 		vim.keymap.set("n", "<leader>dk", function()
-			require("dapui").float_element("repl", { height = 62, width = 200, position = "center" }) -- kitty
-			-- require("dapui").float_element("repl", { height = 70, width = 200, position = "center" }) -- alacritty
+			-- require("dapui").float_element("repl", { height = 62, width = 200, position = "center" }) -- kitty
+			require("dapui").float_element("repl", { height = 70, width = 200, position = "center" }) -- alacritty
 		end, { noremap = true, silent = true, desc = "REPL Widgets (DAP)" })
 		vim.keymap.set("n", "<leader>d;", function()
 			require("dapui").float_element("watches")
 		end, { noremap = true, silent = true, desc = "Watches Widgets (DAP)" })
 		vim.keymap.set("n", "<leader>dn", function()
-			require("dapui").float_element("console", { height = 62, width = 200, position = "center" }) -- kitty
-			-- require("dapui").float_element("console", { height = 70, width = 200, position = "center" }) -- alacritty
+			-- require("dapui").float_element("console", { height = 62, width = 200, position = "center" }) -- kitty
+			require("dapui").float_element("console", { height = 70, width = 200, position = "center" }) -- alacritty
 		end, { noremap = true, silent = true, desc = "Terminal Widgets (DAP)" })
 	end,
 }

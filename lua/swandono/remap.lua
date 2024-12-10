@@ -18,6 +18,8 @@ vim.keymap.set("n", "n", "nzzzv")
 
 vim.keymap.set("n", "<leader>y", [["*Y]], { desc = "Copy Line to Clipboard" })
 vim.keymap.set("v", "<leader>y", [["*y]], { desc = "Copy to Clipboard" })
+-- vim.keymap.set("n", "<leader>y", [["+Y]], { desc = "Copy Line to Clipboard" })
+-- vim.keymap.set("v", "<leader>y", [["+y]], { desc = "Copy to Clipboard" })
 vim.keymap.set({ "n", "v" }, "<leader>p", [["+p]], { desc = "Paste from Clipboard (below)" })
 vim.keymap.set({ "n", "v" }, "<leader>P", [["+P]], { desc = "Paste from Clipboard (above)" })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move Line Up" })
