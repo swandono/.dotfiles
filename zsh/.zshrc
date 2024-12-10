@@ -7,44 +7,42 @@ fi
 ZSH_THEME="powerlevel10k/powerlevel10k"
 export ZSH="$HOME/.oh-my-zsh"
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
-plugins+=(aws docker kubectl zsh-vi-mode kubectx command-not-found sudo git fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
+plugins+=(aws docker kubectl command-not-found git fzf-tab zsh-autosuggestions zsh-syntax-highlighting zsh-vi-mode)
 source $ZSH/oh-my-zsh.sh
 ZVM_CURSOR_STYLE_ENABLED=false
 
-export AUTH_GITHUB_TOKEN=isi_dewe
 export PATH="/usr/local/bin:$PATH"
 export PATH="/opt/homebrew/bin:$PATH"
 export EDITOR='nvim'
 
+alias ls='eza --color=always --icons=always'
+alias ll='eza -1 --color=always --icons=always -l'
 alias vim='nvim'
-alias ducks='du -cksh * | sort -hr'
+alias ducks='du -cksh * | sort -h'
+alias sp='spotify_player'
+alias dtt='defaults write com.apple.finder CreateDesktop true; killall Finder'
+alias dtf='defaults write com.apple.finder CreateDesktop false; killall Finder'
 
 alias gs='git status'
 alias gb='git branch'
 alias gl='git log'
-alias lg='lazygit'
+alias lzg='lazygit'
+alias lzd='lazydocker'
 
 alias ssh_connect='ssh ubuntu@your_ip'
 
 alias ssh_rm_agent='ssh-add -D'
-alias ssh_add_me='ssh-add -K ~/.ssh/me'
-alias ssh_add_work='ssh-add -K ~/.ssh/work'
-alias ssh_add_local='ssh-add -K ~/.ssh/local && ssh-add -K ~/.ssh/local2'
-alias sshadd_me='ssh_rm_agent && ssh_add_me && ssh_add_work && ssh_add_local'
-alias sshadd_work='ssh_rm_agent && ssh_add_work && ssh_add_me && ssh_add_local'
 
 alias caf30='caffeinate -u -t 1800'
 alias caf60='caffeinate -u -t 3600'
+alias caf90='caffeinate -u -t 5400'
+alias caf120='caffeinate -u -t 7200'
 
-alias dco='docker-compose'
+alias dco='docker compose'
 
 alias cdo='cd ~/Library/Mobile\ Documents/iCloud~md~obsidian/Documents'
 alias cdw='cd ~/Work'
-alias cds='cd ~/Work/code'
-alias cdm='cd ~/Work/code/personal'
-alias cdl='cd ~/Work/code/learn'
-alias cdc='cd ~/Work/code/cs'
-alias cdp='cd ~/Work/code/proboid'
+alias cdc='cd ~/.config'
 
 alias pvim='pipenv run nvim'
 alias pps='pipenv shell'
@@ -80,7 +78,6 @@ export NVM_DIR="$HOME/.config/nvm"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # flutter
 export PATH="$PATH:/Users/swandono/Work/development/flutter/bin"
@@ -126,6 +123,14 @@ eval "$(pyenv init -)"
 # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
 zstyle ':completion:*' menu no
 # preview directory's content with eza when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons=always $realpath'
 source <(fzf --zsh)
 zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
+
+# atac config
+export ATAC_KEY_BINDINGS=~/.config/atac/vim_key_bindings.toml
+
+. "$HOME/.local/bin/env"
+
+. "$HOME/.cargo/env"
