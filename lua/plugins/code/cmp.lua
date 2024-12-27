@@ -80,7 +80,7 @@ return {
 			sources = cmp.config.sources({
 				{ name = "nvim_lsp" },
 				{ name = "luasnip" }, -- For luasnip users.
-				{ name = "buffer" },
+				-- { name = "buffer" },
 				{ name = "path" },
 			}),
 			experimental = {
@@ -112,7 +112,7 @@ return {
 			sources = cmp.config.sources({
 				{ name = "path" },
 				{ name = "cmdline" },
-				{ name = "buffer" },
+				-- { name = "buffer" },
 			}),
 		})
 

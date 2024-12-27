@@ -10,10 +10,10 @@ blur = true
 option_as_alt = "OnlyLeft"
 
 [font]
-normal = { family = "FiraCode Nerd Font Mono", style = "Regular" }
-bold = { style = "Regular" }
-italic = { style = "Regular" }
-bold_italic = { style = "Regular" }
+normal = { family = "FiraCode Nerd Font Mono", style = "Retina" }
+bold = { style = "Retina" }
+italic = { style = "Retina" }
+bold_italic = { style = "Retina" }
 offset = { x = 1, y = 1 }
 size = 14
 # size= 13

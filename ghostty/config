@@ -1,0 +1,45 @@
+# ghostty configuration file
+
+# window
+background-opacity=0.825
+window-decoration=false
+background-blur-radius=20
+
+# cursor
+cursor-style="block"
+shell-integration-features=no-cursor
+
+# font
+font-family="FiraCode Nerd Font Mono"
+font-style="Retina"
+font-style-bold="Retina"
+font-style-italic="Retina"
+font-style-bold-italic="Retina"
+font-size=14
+font-feature="-calt"
+font-feature="-liga"
+font-feature="-dlig"
+
+# color
+foreground="#abb2bf"
+background="#051431"
+palette=0=#131d2c
+palette=1=#e5646e
+palette=2=#89d354
+palette=3=#e4b763
+palette=4=#2677c9
+palette=5=#c678dd
+palette=6=#32d4e8
+palette=7=#abb2bf
+palette=8=#3a445a
+palette=9=#e5646e
+palette=10=#8ac16f
+palette=11=#e4b763
+palette=12=#38a3e9
+palette=13=#c678dd
+palette=14=#32d4e8
+palette=15=#abb2bf
+
+# terminal
+mouse-hide-while-typing=true
+macos-option-as-alt="left"
