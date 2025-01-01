@@ -4,17 +4,21 @@
 background-opacity=0.825
 window-decoration=false
 background-blur-radius=20
+window-padding-x=0
+window-padding-y=0
+window-padding-balance=true
 
 # cursor
 cursor-style="block"
 shell-integration-features=no-cursor
+cursor-style-blink=true
 
 # font
-font-family="FiraCode Nerd Font Mono"
-font-style="Retina"
-font-style-bold="Retina"
-font-style-italic="Retina"
-font-style-bold-italic="Retina"
+font-family="JetBrainsMono Nerd Font Mono"
+font-style="Medium"
+font-style-bold="Bold"
+font-style-italic="Medium Italic"
+font-style-bold-italic="Bold Italic"
 font-size=14
 font-feature="-calt"
 font-feature="-liga"
