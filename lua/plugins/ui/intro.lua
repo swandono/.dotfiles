@@ -3,12 +3,12 @@ local I = {
 	version = false, -- wait till new 0.7.0 release to put it back on semver
 	event = "VimEnter",
 	opts = function()
-		local logo_pad = string.rep(" ", 12)
+		local logo_pad = string.rep(" ", 3)
 		local logo = table.concat({
 			logo_pad .. "█▄░█ █░█ █ █▀▄▀█",
 			logo_pad .. "█░▀█ ▀▄▀ █ █░▀░█",
 		}, "\n")
-		local pad = string.rep(" ", 15)
+		local pad = string.rep(" ", 6)
 		local new_section = function(name, action, section)
 			return { name = name, action = action, section = pad .. section }
 		end
@@ -58,8 +58,7 @@ local I = {
 			callback = function()
 				local stats = require("lazy").stats()
 				local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-				local pad_footer = string.rep(" ", 9)
-				starter.config.footer = pad_footer .. "⚡" .. stats.count .. " plugins (" .. ms .. " ms)"
+				starter.config.footer = "⚡" .. stats.count .. " plugins (" .. ms .. " ms)"
 				pcall(starter.refresh)
 			end,
 		})

@@ -34,10 +34,14 @@ return {
 				-- warn = "W",
 				-- hint = "H",
 				-- info = "I",
-				error = "✘",
-				warn = "▲",
-				hint = "⚑",
-				info = "»",
+				-- error = "✘",
+				-- warn = "▲",
+				-- hint = "⚑",
+				-- info = "»",
+				error = "",
+				warn = "⚠",
+				hint = "",
+				info = "",
 			})
 
 			lsp.on_attach(function(_, bufnr)
