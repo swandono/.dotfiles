@@ -42,7 +42,7 @@ return {
 			end,
 		})
 		vim.keymap.set("n", "<C-h>", function()
-			require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
+			require("neo-tree.command").execute({ toggle = true, dir = vim.fn.getcwd() })
 		end, { silent = true, noremap = true, desc = "Explorer NeoTree (cwd)" })
 	end,
 }

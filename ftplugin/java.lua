@@ -1,27 +1,37 @@
-local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+local project_name = "gps" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:gs?/?-?")
 
 local config = {
 	filetype = { "java" },
 	cmd = {
-		"/Users/swandono/.sdkman/candidates/java/current/bin/java",
+		"/root/.sdkman/candidates/java/current/bin/java",
+		"-Declipse.application=org.eclipse.jdt.ls.core.id1",
+		"-Dosgi.bundles.defaultStartLevel=4",
+		"-Declipse.product=org.eclipse.jdt.ls.core.product",
 		"-Dlog.protocol=true",
 		"-Dlog.level=ALL",
-		"-Xms2G",
-		"-Xmx2G",
-		"-javaagent:/Users/swandono/.local/share/jdtls/lombok.jar",
-		"-jar",
-		"/Users/swandono/.local/share/jdtls/plugins/org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar",
-		"-configuration",
-		"/Users/swandono/.local/share/jdtls/config_mac_arm",
-		"-data",
-		"/Users/swandono/.local/share/jdtls/workspace/" .. project_name,
+		"-Xmx16G",
 		"--add-modules=ALL-SYSTEM",
 		"--add-opens",
 		"java.base/java.util=ALL-UNNAMED",
 		"--add-opens",
 		"java.base/java.lang=ALL-UNNAMED",
+		"-javaagent:/root/.local/share/jdtls/lombok.jar",
+		"-jar",
+		"/root/.local/share/jdtls/plugins/org.eclipse.equinox.launcher_1.6.900.v20240613-2009.jar",
+		"-configuration",
+		"/root/.local/share/jdtls/config_linux",
+		"-data",
+		"/root/.local/share/jdtls/workspace/" .. project_name,
 	},
-	root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }),
+	root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew" }),
+	init_options = {
+		bundles = {
+			vim.fn.glob(
+				"/root/.local/share/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-0.53.1.jar",
+				1
+			),
+		},
+	},
 }
 
 require("jdtls").start_or_attach(config)

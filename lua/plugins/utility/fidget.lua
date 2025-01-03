@@ -7,6 +7,7 @@ return {
 				window = {
 					winblend = 0,
 					border = "rounded",
+                    max_width = 60,
 				},
 			},
 		})
