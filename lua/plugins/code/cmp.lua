@@ -1,3 +1,31 @@
+local cmp_kinds = {
+	Text = " ",
+	Method = " ",
+	Function = " ",
+	Constructor = " ",
+	Field = " ",
+	Variable = " ",
+	Class = " ",
+	Interface = " ",
+	Module = " ",
+	Property = " ",
+	Unit = " ",
+	Value = " ",
+	Enum = " ",
+	Keyword = " ",
+	Snippet = " ",
+	Color = " ",
+	File = " ",
+	Reference = " ",
+	Folder = " ",
+	EnumMember = " ",
+	Constant = " ",
+	Struct = " ",
+	Event = " ",
+	Operator = " ",
+	TypeParameter = " ",
+}
+
 return {
 	"hrsh7th/nvim-cmp",
 	version = false, -- last release is way too old
@@ -5,7 +33,6 @@ return {
 	dependencies = {
 		"VonHeikemen/lsp-zero.nvim",
 		"nvim-highlight-colors",
-		"onsails/lspkind.nvim",
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
 		"hrsh7th/cmp-nvim-lsp",
@@ -89,13 +116,11 @@ return {
 			formatting = {
 				format = function(entry, item)
 					local color_item = require("nvim-highlight-colors").format(entry, { kind = item.kind })
-					item = require("lspkind").cmp_format({
-						-- any lspkind format settings here
-					})(entry, item)
 					if color_item.abbr_hl_group then
 						item.kind_hl_group = color_item.abbr_hl_group
 						item.kind = string.format("%s %s", "󰏘", "Color")
 					end
+					item.kind = (cmp_kinds[item.kind] or "") .. item.kind .. " "
 					return item
 				end,
 			},
