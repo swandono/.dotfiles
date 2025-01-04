@@ -28,6 +28,7 @@ alias gb='git branch'
 alias gl='git log'
 alias lzg='lazygit'
 alias lzd='lazydocker'
+alias yz='yazi'
 
 alias ssh_connect='ssh ubuntu@your_ip'
 
