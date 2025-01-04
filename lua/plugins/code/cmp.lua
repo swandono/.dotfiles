@@ -14,7 +14,7 @@ local cmp_kinds = {
 	Enum = " ",
 	Keyword = " ",
 	Snippet = " ",
-	Color = " ",
+	Color = "󱓻 ",
 	File = " ",
 	Reference = " ",
 	Folder = " ",
@@ -125,7 +125,7 @@ return {
 					local color_item = require("nvim-highlight-colors").format(entry, { kind = item.kind })
 					if color_item.abbr_hl_group then
 						item.kind_hl_group = color_item.abbr_hl_group
-						item.kind = string.format("%s %s", "󰏘", "Color")
+						item.kind = string.format("%s %s", "󱓻", "Color")
 					end
 					item.kind = (cmp_kinds[item.kind] or "") .. item.kind .. " "
 
