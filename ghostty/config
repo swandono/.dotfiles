@@ -20,9 +20,9 @@ font-style-bold = "Bold"
 font-style-italic = "Medium Italic"
 font-style-bold-italic = "Bold Italic"
 font-size = 14
-# font-feature = "-calt"
-# font-feature = "-liga"
-# font-feature = "-dlig"
+font-feature = "-calt"
+font-feature = "-liga"
+font-feature = "-dlig"
 
 # theme
 palette = 0=#131d2c
@@ -36,10 +36,10 @@ palette = 7=#abb2bf
 palette = 8=#3a445a
 palette = 9=#e5646e
 palette = 10=#95dc55
-palette = 11=#ffe763
+palette = 11=#ebc700
 palette = 12=#60a4ec
 palette = 13=#c678dd
-palette = 14=#60b6cb
+palette = 14=#18bed3
 palette = 15=#abb2bf
 
 foreground = #abb2bf
