@@ -1,7 +1,5 @@
 return {
 	"kristijanhusak/vim-dadbod-ui",
-	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
-	lazy = true,
 	keys = {
 		{ "<leader>db" },
 	},
