@@ -26,6 +26,13 @@ local cmp_kinds = {
 	TypeParameter = " ",
 }
 
+local function abbreviateString(str, maxwidth, ellipsis_char)
+	if vim.fn.strchars(str) > maxwidth then
+		str = vim.fn.strcharpart(str, 0, maxwidth) .. (ellipsis_char ~= nil and ellipsis_char or "")
+	end
+	return str
+end
+
 return {
 	"hrsh7th/nvim-cmp",
 	version = false, -- last release is way too old
@@ -121,6 +128,12 @@ return {
 						item.kind = string.format("%s %s", "󰏘", "Color")
 					end
 					item.kind = (cmp_kinds[item.kind] or "") .. item.kind .. " "
+
+					-- trim the menu string and abbreviation string to a max width
+					local maxwidth = 50
+					maxwidth = type(maxwidth) == "function" and maxwidth() or maxwidth
+					item.menu = abbreviateString(item.menu, maxwidth, "...")
+					item.abbr = abbreviateString(item.abbr, maxwidth, "...")
 					return item
 				end,
 			},
