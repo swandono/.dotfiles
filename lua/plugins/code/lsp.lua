@@ -22,6 +22,7 @@ return {
 			lsp.ensure_installed({
 				"rust_analyzer",
 				"gopls",
+				"vtsls",
 				"lua_ls",
 			})
 

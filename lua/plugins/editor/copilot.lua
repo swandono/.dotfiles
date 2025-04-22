@@ -4,11 +4,13 @@ return {
 	keys = {
 		{ "<leader>cV" },
 	},
+	-- event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 	config = function()
 		require("copilot").setup({
 			suggestion = {
 				enabled = true,
-				auto_trigger = false,
+				-- auto_trigger = false,
+				-- auto_trigger = true,
 				debounce = 0,
 			},
 			filetypes = {
