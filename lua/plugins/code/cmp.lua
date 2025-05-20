@@ -38,7 +38,6 @@ return {
 	version = false, -- last release is way too old
 	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 	dependencies = {
-		"VonHeikemen/lsp-zero.nvim",
 		"nvim-highlight-colors",
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
