@@ -45,7 +45,7 @@ return {
 				callback = function(event)
 					local bufnr = event.buf
 					vim.keymap.set("i", "<C-h>", function()
-						vim.lsp.buf.signature_help()
+						vim.lsp.buf.signature_help({ border = "rounded" })
 					end, { buffer = bufnr, remap = false, desc = "Signature help (LSP)" })
 					vim.keymap.set("n", "<leader>va", function()
 						vim.lsp.buf.code_action()
@@ -65,7 +65,7 @@ return {
 					vim.keymap.set(
 						"n",
 						"K",
-						"<cmd>lua vim.lsp.buf.hover()<cr>",
+						"<cmd>lua vim.lsp.buf.hover({border = 'rounded'})<cr>",
 						{ buffer = bufnr, remap = false, desc = "Hover (LSP)" }
 					)
 					vim.keymap.set(
