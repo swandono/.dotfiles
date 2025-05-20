@@ -52,7 +52,6 @@ return {
 				},
 			},
 		},
-		-- golang debugger
 		{
 			"leoluz/nvim-dap-go",
 			ft = "go",
@@ -66,6 +65,24 @@ return {
 		{ "<leader>dj" },
 	},
 	config = function()
+		-- Monkey-patch both termopen and jobstart to clear modified flag
+		local orig_termopen = vim.fn.termopen
+		vim.fn.termopen = function(cmd, opts)
+			local bufnr = vim.api.nvim_get_current_buf()
+			if vim.api.nvim_buf_is_valid(bufnr) then
+				vim.api.nvim_buf_set_option(bufnr, "modified", false)
+			end
+			return orig_termopen(cmd, opts)
+		end
+		local orig_jobstart = vim.fn.jobstart
+		vim.fn.jobstart = function(cmd, opts)
+			local bufnr = vim.api.nvim_get_current_buf()
+			if vim.api.nvim_buf_is_valid(bufnr) then
+				vim.api.nvim_buf_set_option(bufnr, "modified", false)
+			end
+			return orig_jobstart(cmd, opts)
+		end
+
 		local dap = require("dap")
 		vim.keymap.set(
 			"n",
