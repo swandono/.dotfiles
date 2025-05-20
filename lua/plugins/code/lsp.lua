@@ -101,7 +101,7 @@ return {
 					vim.keymap.set(
 						"n",
 						"gs",
-						"<cmd>lua vim.lsp.buf.signature_help()<cr>",
+						"<cmd>lua vim.lsp.buf.signature_help({ border = 'rounded' })<cr>",
 						{ buffer = bufnr, remap = false, desc = "Signature help (LSP)" }
 					)
 					vim.keymap.set(
