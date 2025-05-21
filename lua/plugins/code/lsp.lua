@@ -116,6 +116,12 @@ return {
 						"<cmd>lua vim.lsp.buf.code_action()<cr>",
 						{ buffer = bufnr, remap = false, desc = "Code action (LSP)" }
 					)
+					vim.keymap.set(
+						"n",
+						"gl",
+						"<cmd>lua vim.diagnostic.open_float({ border = 'rounded' })<cr>",
+						{ buffer = bufnr, remap = false, desc = "Show diagnostics (LSP)" }
+					)
 				end,
 			})
 		end,
