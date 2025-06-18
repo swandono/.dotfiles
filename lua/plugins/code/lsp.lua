@@ -1,8 +1,10 @@
 return {
 	{
 		"williamboman/mason-lspconfig.nvim",
+		-- version = "^1.0.0",
 		event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 		dependencies = {
+			-- { "williamboman/mason.nvim", opts = {}, version = "^1.0.0" },
 			{ "williamboman/mason.nvim", opts = {} },
 			{ "neovim/nvim-lspconfig" },
 		},
@@ -14,19 +16,21 @@ return {
 				require("cmp_nvim_lsp").default_capabilities()
 			)
 
+			local mlsp = require("mason-lspconfig")
+			local servers = mlsp.get_installed_servers()
+			for _, name in ipairs(servers) do
+				require("lspconfig")[name].setup({})
+			end
+
 			require("mason").setup({})
-			require("mason-lspconfig").setup({
+			mlsp.setup({
 				ensure_installed = {
 					"rust_analyzer",
 					"gopls",
 					"vtsls",
 					"lua_ls",
 				},
-				handlers = {
-					function(server_name)
-						require("lspconfig")[server_name].setup({})
-					end,
-				},
+				automatic_enable = false,
 			})
 
 			vim.diagnostic.config({
