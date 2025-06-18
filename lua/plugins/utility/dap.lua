@@ -115,9 +115,9 @@ return {
 			require("dapui").float_element("scopes")
 		end, { noremap = true, silent = true, desc = "Scopes Widgets (DAP)" })
 		vim.keymap.set("n", "<leader>di", dap.step_into, { noremap = true, silent = true, desc = "Step Into (DAP)" })
-		vim.keymap.set("n", "<leader>dI", dap.step_back, { noremap = true, silent = true, desc = "Step Back (DAP)" })
+		vim.keymap.set("n", "<leader>dI", dap.step_out, { noremap = true, silent = true, desc = "Step Out (DAP)" })
 		vim.keymap.set("n", "<leader>do", dap.step_over, { noremap = true, silent = true, desc = "Step Over (DAP)" })
-		vim.keymap.set("n", "<leader>dO", dap.step_out, { noremap = true, silent = true, desc = "Step Out (DAP)" })
+		vim.keymap.set("n", "<leader>dO", dap.step_back, { noremap = true, silent = true, desc = "Step Back (DAP)" })
 		vim.keymap.set(
 			"n",
 			"<leader>du",
