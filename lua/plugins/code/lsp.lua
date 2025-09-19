@@ -9,17 +9,15 @@ return {
 			{ "neovim/nvim-lspconfig" },
 		},
 		opts = function()
-			local lspconfig_defaults = require("lspconfig").util.default_config
-			lspconfig_defaults.capabilities = vim.tbl_deep_extend(
-				"force",
-				lspconfig_defaults.capabilities,
-				require("cmp_nvim_lsp").default_capabilities()
-			)
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			local mlsp = require("mason-lspconfig")
 			local servers = mlsp.get_installed_servers()
 			for _, name in ipairs(servers) do
-				require("lspconfig")[name].setup({})
+				vim.lsp.config(name, {
+					capabilities = vim.deepcopy(capabilities),
+				})
+				vim.lsp.enable(name)
 			end
 
 			require("mason").setup({})
