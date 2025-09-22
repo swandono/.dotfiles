@@ -1,6 +1,7 @@
 return {
 	{
 		"olimorris/codecompanion.nvim",
+		event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },

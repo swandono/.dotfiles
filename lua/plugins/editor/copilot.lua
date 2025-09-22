@@ -1,22 +1,22 @@
 return {
 	"zbirenbaum/copilot.lua",
 	cmd = "Copilot",
-	keys = {
-		{ "<leader>cV" },
-	},
+	build = ":Copilot auth",
+	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 	requires = {
 		"copilotlsp-nvim/copilot-lsp", -- (optional) for NES functionality
 	},
-	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 	config = function()
 		require("copilot").setup({
 			suggestion = {
 				enabled = true,
-				-- auto_trigger = false,
 				auto_trigger = true,
-				debounce = 0,
+				hide_during_completion = true,
 			},
+			panel = { enabled = false },
 			filetypes = {
+				markdown = true,
+				help = true,
 				["dap-repl"] = false,
 			},
 		})
@@ -27,6 +27,9 @@ return {
 			require("copilot.suggestion").accept_line()
 		end, { expr = true, replace_keycodes = false, desc = "Accept Copilot Suggestion (Line)" })
 		vim.keymap.set("i", "<C-l>", function()
+			require("copilot.suggestion").accept_word()
+		end, { expr = true, replace_keycodes = false, desc = "Accept Copilot Suggestion (Word)" })
+		vim.keymap.set("i", "<C-f>", function()
 			require("copilot.suggestion").next()
 		end, { expr = true, replace_keycodes = false, desc = "Cycle Copilot Suggestion" })
 		vim.keymap.set("i", "<C-o>", function()
