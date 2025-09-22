@@ -1,20 +1,22 @@
 return {
 	{
 		"olimorris/codecompanion.nvim",
-		event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 		},
 		opts = {
-			-- Use Copilot adapter by default
 			strategies = {
 				chat = { adapter = "copilot", mode = "GPT-5-mini" },
 				inline = { adapter = "copilot" },
 			},
-			opts = {
-				-- Set debug logging initially to help with token checks
-				log_level = "DEBUG",
+			display = {
+				chat = {
+					window = {
+						position = "right",
+						width = 0.25,
+					},
+				},
 			},
 		},
 		config = function(_, opts)
@@ -22,8 +24,14 @@ return {
 			vim.keymap.set(
 				"n",
 				"<leader>cc",
+				"<cmd>CodeCompanionChat Toggle<cr>",
+				{ silent = true, noremap = true, desc = "Code Companion Chat" }
+			)
+			vim.keymap.set(
+				"n",
+				"<leader>ca",
 				"<cmd>CodeCompanionActions<cr>",
-				{ silent = true, noremap = true, desc = "Code Companion" }
+				{ silent = true, noremap = true, desc = "Code Companion Action" }
 			)
 		end,
 	},
