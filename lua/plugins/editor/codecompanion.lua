@@ -96,17 +96,16 @@ return {
 			fidget_spinner:init()
 		end,
 		config = function(_, opts)
-			print(require("vim.inspect")(opts.adapters or opts))
 			require("codecompanion").setup(opts)
 			vim.keymap.set(
 				"n",
-				"<leader>cc",
+				"<leader>fj",
 				"<cmd>CodeCompanionChat Toggle<cr>",
 				{ silent = true, noremap = true, desc = "Code Companion Chat" }
 			)
 			vim.keymap.set(
 				"n",
-				"<leader>ca",
+				"<leader>cc",
 				"<cmd>CodeCompanionActions<cr>",
 				{ silent = true, noremap = true, desc = "Code Companion Action" }
 			)

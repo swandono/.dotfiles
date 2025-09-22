@@ -7,7 +7,7 @@ return {
 	opts = { options = { "buffers", "curdir", "tabpages", "winsize", "help", "globals" } },
 	config = function()
 		require("persistence").setup()
-		vim.keymap.set("n", "<leader>fj", function()
+		vim.keymap.set("n", "<leader>vj", function()
 			require("persistence").load({ last = true })
 		end, { noremap = true, silent = true, desc = "Restore Last Session" })
 	end,
