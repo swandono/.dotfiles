@@ -8,7 +8,7 @@ return {
 		},
 		opts = {
 			strategies = {
-				chat = { adapter = "copilot", mode = "GPT-5-mini" },
+				chat = { adapter = "copilot", mode = "gpt-5-mini" },
 				inline = { adapter = "copilot" },
 			},
 			display = {
