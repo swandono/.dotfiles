@@ -10,7 +10,7 @@ return {
 		vim.cmd("HighlightColors Off")
 		vim.keymap.set(
 			"n",
-			"<leader>cc",
+			"<leader>hc",
 			"<cmd>HighlightColors Toggle<cr>",
 			{ silent = true, noremap = true, desc = "Toggle HighlightColors" }
 		)
