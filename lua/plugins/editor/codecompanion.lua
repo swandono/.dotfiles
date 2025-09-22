@@ -80,8 +80,18 @@ return {
 		opts = {
 			strategies = {
 				-- Use the documented adapter table form to set both name and model
-				chat = { adapter = { name = "copilot", model = "gpt-5-mini" } },
+				chat = {
+					adapter = { name = "copilot", model = "gpt-5-mini" },
+					-- Override chat buffer keymaps: don't bind <C-c> to close; use <C-x> instead
+					keymaps = {
+						close = {
+							modes = { n = "<C-x>", i = "<C-x>" },
+							opts = { noremap = true, silent = true },
+						},
+					},
+				},
 				inline = { adapter = { name = "copilot", model = "gpt-5-mini" } },
+				cmd = { adapter = { name = "copilot", model = "gpt-5-mini" } },
 			},
 			display = {
 				chat = {
