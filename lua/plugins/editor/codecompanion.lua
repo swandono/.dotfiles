@@ -1,3 +1,73 @@
+local fidget_spinner = {}
+
+fidget_spinner.handles = {}
+
+function fidget_spinner:init()
+	local group = vim.api.nvim_create_augroup("CodeCompanionFidgetHooks", {})
+
+	vim.api.nvim_create_autocmd({ "User" }, {
+		pattern = "CodeCompanionRequestStarted",
+		group = group,
+		callback = function(request)
+			local handle = fidget_spinner:create_progress_handle(request)
+			fidget_spinner:store_progress_handle(request.data.id, handle)
+		end,
+	})
+
+	vim.api.nvim_create_autocmd({ "User" }, {
+		pattern = "CodeCompanionRequestFinished",
+		group = group,
+		callback = function(request)
+			local handle = fidget_spinner:pop_progress_handle(request.data.id)
+			if handle then
+				fidget_spinner:report_exit_status(handle, request)
+				handle:finish()
+			end
+		end,
+	})
+end
+
+function fidget_spinner:store_progress_handle(id, handle)
+	self.handles[id] = handle
+end
+
+function fidget_spinner:pop_progress_handle(id)
+	local handle = self.handles[id]
+	self.handles[id] = nil
+	return handle
+end
+
+function fidget_spinner:create_progress_handle(request)
+	local progress = self._progress or require("fidget.progress")
+	self._progress = progress
+	return progress.handle.create({
+		title = " Requesting assistance (" .. request.data.strategy .. ")",
+		message = "In progress...",
+		lsp_client = {
+			name = self:llm_role_title(request.data.adapter),
+		},
+	})
+end
+
+function fidget_spinner:llm_role_title(adapter)
+	local parts = {}
+	table.insert(parts, adapter.formatted_name)
+	if adapter.model and adapter.model ~= "" then
+		table.insert(parts, "(" .. adapter.model .. ")")
+	end
+	return table.concat(parts, " ")
+end
+
+function fidget_spinner:report_exit_status(handle, request)
+	if request.data.status == "success" then
+		handle.message = "Completed"
+	elseif request.data.status == "error" then
+		handle.message = " Error"
+	else
+		handle.message = "󰜺 Cancelled"
+	end
+end
+
 return {
 	{
 		"olimorris/codecompanion.nvim",
@@ -23,7 +93,7 @@ return {
 			},
 		},
 		init = function()
-			require("plugins.editor.codecompanion.fidget-spinner"):init()
+			fidget_spinner:init()
 		end,
 		config = function(_, opts)
 			print(require("vim.inspect")(opts.adapters or opts))
