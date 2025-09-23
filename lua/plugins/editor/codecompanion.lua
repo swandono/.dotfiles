@@ -84,9 +84,13 @@ return {
 					adapter = { name = "copilot", model = "gpt-5-mini" },
 					-- Override chat buffer keymaps: don't bind <C-c> to close; use <C-x> instead
 					keymaps = {
+						send = {
+							modes = {
+								n = { "<CR>" },
+							},
+						},
 						close = {
 							modes = { n = "<C-x>", i = "<C-x>" },
-							opts = { noremap = true, silent = true },
 						},
 					},
 				},
@@ -109,7 +113,7 @@ return {
 			require("codecompanion").setup(opts)
 			vim.keymap.set(
 				"n",
-				"<leader>fj",
+				"<C-j>",
 				"<cmd>CodeCompanionChat Toggle<cr>",
 				{ silent = true, noremap = true, desc = "Code Companion Chat" }
 			)
