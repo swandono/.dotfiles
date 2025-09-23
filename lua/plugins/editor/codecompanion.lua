@@ -101,7 +101,7 @@ return {
 				chat = {
 					window = {
 						position = "right",
-						width = 0.25,
+						width = 0.35,
 					},
 				},
 			},
