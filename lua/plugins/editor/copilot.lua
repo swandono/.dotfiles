@@ -2,7 +2,7 @@ return {
 	"zbirenbaum/copilot.lua",
 	cmd = "Copilot",
 	build = ":Copilot auth",
-	event = { "InsertEnter" }, -- hide server spin-up during startup
+	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 	config = function()
 		require("copilot").setup({
 			panel = { enabled = false }, -- less UI = less overhead
