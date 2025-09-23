@@ -2,7 +2,7 @@ return {
 	"zbirenbaum/copilot.lua",
 	cmd = "Copilot",
 	build = ":Copilot auth",
-	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
+	event = { "InsertEnter" },
 	requires = {
 		"copilotlsp-nvim/copilot-lsp", -- (optional) for NES functionality
 	},
