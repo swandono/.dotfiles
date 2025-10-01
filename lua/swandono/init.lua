@@ -26,7 +26,26 @@ autocmd("TextYankPost", {
 autocmd({ "BufWritePre" }, {
 	group = Swandono,
 	pattern = "*",
-	command = [[%s/\s\+$//e]],
+	callback = function()
+		local bufnr = vim.api.nvim_get_current_buf()
+		local ok, lines = pcall(vim.api.nvim_buf_get_lines, bufnr, 0, -1, false)
+		if not ok or not lines then
+			return
+		end
+		local changed = false
+		for i = 1, #lines do
+			local new = lines[i]:gsub("%s+$", "")
+			if new ~= lines[i] then
+				lines[i] = new
+				changed = true
+			end
+		end
+		if changed then
+			local view = vim.fn.winsaveview()
+			pcall(vim.api.nvim_buf_set_lines, bufnr, 0, -1, false, lines)
+			vim.fn.winrestview(view)
+		end
+	end,
 })
 
 vim.api.nvim_create_autocmd({
