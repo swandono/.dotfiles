@@ -61,7 +61,7 @@ return {
 				enabled = true,
 				auto_show = true,
 				border = "rounded",
-				winhighlight = "Search:None",
+				winhighlight = "Search:None,CursorLine:PmenuSel",
 				draw = {
 					columns = {
 						{ "kind_icon" },
@@ -75,7 +75,6 @@ return {
 				auto_show = true,
 				window = {
 					border = "rounded",
-					winhighlight = "Search:None",
 				},
 			},
 
@@ -98,6 +97,7 @@ return {
 
 	config = function(_, opts)
 		local blink = require("blink.cmp")
+        vim.api.nvim_set_hl(0, 'PmenuSel', { bg = '#424854' })
 		blink.setup(opts)
 	end,
 }
