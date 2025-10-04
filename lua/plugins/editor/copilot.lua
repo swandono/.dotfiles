@@ -10,7 +10,6 @@ return {
 			suggestion = {
 				enabled = true,
 				auto_trigger = true, -- start suggesting as you type
-				hide_during_completion = true,
 				debounce = 0, -- ↓ default is 75; feel free to try 25–60
 				trigger_on_accept = true,
 			},

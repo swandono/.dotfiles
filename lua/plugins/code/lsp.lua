@@ -1,15 +1,14 @@
 return {
 	{
 		"williamboman/mason-lspconfig.nvim",
-		-- version = "^1.0.0",
 		event = { "BufReadPre", "BufNewFile", "InsertEnter" },
 		dependencies = {
-			-- { "williamboman/mason.nvim", opts = {}, version = "^1.0.0" },
 			{ "williamboman/mason.nvim", opts = {} },
 			{ "neovim/nvim-lspconfig" },
+			{ "saghen/blink.cmp" },
 		},
 		opts = function()
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			local mlsp = require("mason-lspconfig")
 			local servers = mlsp.get_installed_servers()
