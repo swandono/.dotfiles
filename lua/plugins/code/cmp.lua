@@ -21,11 +21,6 @@ return {
 			["<C-f>"] = { "accept", "fallback" },
 		},
 
-		appearance = {
-			use_nvim_cmp_as_default = true,
-			nerd_font_variant = "mono",
-		},
-
 		sources = {
 			default = { "lsp", "path", "snippets", "buffer" },
 		},
@@ -66,7 +61,7 @@ return {
 				enabled = true,
 				auto_show = true,
 				border = "rounded",
-				winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+				winhighlight = "Search:None",
 				draw = {
 					columns = {
 						{ "kind_icon" },
@@ -80,7 +75,7 @@ return {
 				auto_show = true,
 				window = {
 					border = "rounded",
-					winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+					winhighlight = "Search:None",
 				},
 			},
 
