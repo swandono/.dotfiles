@@ -137,7 +137,7 @@ run = "move-node-to-workspace X"
 
 [[on-window-detected]]
 if.app-id = 'app.zen-browser.zen'
-run = "move-node-to-workspace S"
+run = "move-node-to-workspace X"
 
 [[on-window-detected]]
 if.app-id = 'net.whatsapp.WhatsApp'
