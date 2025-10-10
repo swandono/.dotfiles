@@ -157,12 +157,6 @@ vim.keymap.set(
 	[[<CMD> Gitsigns toggle_current_line_blame<CR>]],
 	{ silent = true, noremap = true, desc = "Toggle Current Line Blame (Gitsigns)" }
 )
-vim.keymap.set(
-	"n",
-	"<leader>gd",
-	[[<CMD> Gitsigns diffthis<CR>]],
-	{ silent = true, noremap = true, desc = "Git Diff (Gitsigns)" }
-)
 
 vim.keymap.set("n", "<leader>cf", ":e %:p:h/", { desc = "Open File" })
 vim.keymap.set("n", "<leader>t2", ":set tabstop=2 shiftwidth=2 softtabstop=2<CR>", { desc = "Set Tabstop 2" })
