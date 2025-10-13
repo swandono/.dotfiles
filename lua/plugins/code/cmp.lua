@@ -18,7 +18,6 @@ return {
 			["<C-d>"] = { "scroll_documentation_down", "fallback" },
 			["<C-c>"] = { "cancel", "fallback" },
 			["<CR>"] = { "accept", "fallback" },
-			["<C-f>"] = { "accept", "fallback" },
 		},
 
 		sources = {
@@ -29,15 +28,25 @@ return {
 			enabled = true,
 			keymap = {
 				preset = "cmdline",
-				["<CR>"] = { "fallback" },
+				["<CR>"] = { "accept", "fallback" },
+				["<C-c>"] = { "cancel", "fallback" },
+				["<C-y>"] = { "accept_and_enter" },
 			},
 			completion = {
 				menu = {
 					auto_show = function(ctx)
-						return ctx.mode == "cmdline"
+						local line = ctx.line or vim.fn.getcmdline()
+						if not line then
+							return false
+						end
+						-- strip leading command chars and whitespace (':', '/', '?')
+						line = line:gsub("^[:/?%s]+", "")
+						return (
+							ctx.mode == "cmdline"
 							or vim.fn.getcmdtype() == ":"
 							or vim.fn.getcmdtype() == "/"
 							or vim.fn.getcmdtype() == "?"
+						) and #line >= 3
 					end,
 				},
 			},
@@ -97,7 +106,7 @@ return {
 
 	config = function(_, opts)
 		local blink = require("blink.cmp")
-        vim.api.nvim_set_hl(0, 'PmenuSel', { bg = '#424854' })
+		vim.api.nvim_set_hl(0, "PmenuSel", { bg = "#424854" })
 		blink.setup(opts)
 	end,
 }
