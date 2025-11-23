@@ -1,11 +1,11 @@
 return {
-	"zbirenbaum/copilot.lua",
-	cmd = "Copilot",
-	build = ":Copilot auth",
-	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
-	config = function()
-		require("copilot").setup({
-			panel = { enabled = false }, -- less UI = less overhead
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    build = ":Copilot auth",
+    event = "InsertEnter",
+    config = function()
+        require("copilot").setup({
+            panel = { enabled = false }, -- less UI = less overhead
 
 			suggestion = {
 				enabled = true,
@@ -29,11 +29,11 @@ return {
 				return true
 			end,
 
-			filetypes = {
-				markdown = true,
-				help = true,
-				["dap-repl"] = false,
-			},
+            filetypes = {
+                markdown = true,
+                help = true,
+                ["dap-repl"] = false,
+            },
 
 			server = {
 				type = "binary",

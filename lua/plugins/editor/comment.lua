@@ -1,11 +1,12 @@
 -- Comment
 local A = {
 	"numToStr/Comment.nvim",
-	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
-	dependencies = {},
-	lazy = true,
+	event = "VeryLazy",
 	config = function()
-		require("Comment").setup()
+		local ok, integration = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
+		require("Comment").setup({
+			pre_hook = ok and integration.create_pre_hook() or nil,
+		})
 	end,
 }
 
@@ -14,9 +15,7 @@ local B = {
 	"JoosepAlviste/nvim-ts-context-commentstring",
 	ft = { "jsx", "tsx", "javascriptreact", "typescriptreact" },
 	config = function()
-		require("Comment").setup({
-			pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
-		})
+		require("ts_context_commentstring").setup({ enable_autocmd = false })
 	end,
 }
 

@@ -1,9 +1,51 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "permission": {
-    "edit": "ask",
-    "bash": "ask"
-  },
   "autoupdate": true,
-  "share": "disabled"
+  "share": "disabled",
+  "instructions": ["/Users/swandono/.config/opencode/AGENTS.md"],
+  "keybinds": {
+    "leader": "ctrl+o",
+    "session_child_cycle": "<leader>]",
+    "session_child_cycle_reverse": "<leader>["
+  },
+  "mcp": {
+    "gh_grep": {
+      "type": "remote",
+      "url": "https://mcp.grep.app",
+      "enabled": true
+    },
+    "filesystem": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/swandono/Work"
+      ],
+      "enabled": true
+    },
+    "sequential-thinking": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "enabled": true
+    },
+    "memory": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-memory"],
+      "enabled": true
+    },
+    "docker": {
+      "type": "local",
+      "command": ["npx", "-y", "docker-mcp"],
+      "enabled": true,
+      "environment": {
+        "DOCKER_MCP_LOCAL": "true"
+      }
+    }
+  },
+  "plugin": ["opencode-gemini-auth@latest"]
 }

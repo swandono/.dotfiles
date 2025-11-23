@@ -1,10 +1,10 @@
 return {
 	"saghen/blink.cmp",
 	version = "1.*",
-	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
+	event = "InsertEnter",
 	dependencies = {
+		"L3MON4D3/LuaSnip",
 		"rafamadriz/friendly-snippets",
-		"nvim-highlight-colors",
 	},
 
 	opts = {
