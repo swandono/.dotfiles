@@ -28,6 +28,17 @@ If AGENTS.md does NOT exist, create it with TWO sections:
 ```markdown
 ---
 
+## MCP Tools Available
+
+| Tool | Description |
+|------|-------------|
+| **postgres** | Query PostgreSQL databases. Run `/db-init` to configure connection. |
+| **playwright** | Browser automation - screenshots, page interaction, UI debugging. |
+| **context7** | Search official documentation for libraries and frameworks. |
+| **gh_grep** | Search real-world code examples from GitHub repositories. |
+
+---
+
 ## Safe Development Rules
 
 This project uses OpenCode's safe agent for careful development.
