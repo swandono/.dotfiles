@@ -16,6 +16,9 @@ Search for database credentials in the following locations based on project type
 | **Python** | `.env`, `settings.py`, `config.py`, `.flaskenv` |
 | **Docker** | `docker-compose.yaml`, `docker-compose.yml`, `.env` |
 | **Rails** | `config/database.yml`, `.env` |
+| **Rust** | `.env`, `Rocket.toml`, `config.yaml`, `config.json` |
+| **Zig** | `.env`, `config.zig`, `config.yaml`, `config.json` |
+| **SQLite (any project)** | `.env` (do not read), `settings.py`, `config.py`, `config.yaml`, `config.json`, `*.db`, `*.sqlite*` |
 
 **Step 2: Extract database credentials**
 
@@ -38,40 +41,39 @@ Search for database credentials in the following locations based on project type
 Look for these common patterns in non-.env files:
 
 ```
-# Pattern 1: Individual fields (in YAML/JSON/Python configs)
-DB_HOST / DATABASE_HOST / POSTGRES_HOST
-DB_PORT / DATABASE_PORT / POSTGRES_PORT
-DB_NAME / DATABASE_NAME / POSTGRES_DB
-DB_USER / DATABASE_USER / POSTGRES_USER
-DB_PASSWORD / DATABASE_PASSWORD / POSTGRES_PASSWORD
+# Pattern 1: Individual fields (YAML/JSON/Python configs)
+DB_HOST / DATABASE_HOST / POSTGRES_HOST / MYSQL_HOST
+DB_PORT / DATABASE_PORT / POSTGRES_PORT / MYSQL_PORT
+DB_NAME / DATABASE_NAME / POSTGRES_DB / MYSQL_DATABASE / MYSQL_DB
+DB_USER / DATABASE_USER / POSTGRES_USER / MYSQL_USER
+DB_PASSWORD / DATABASE_PASSWORD / POSTGRES_PASSWORD / MYSQL_PASSWORD
+SQLITE_PATH / SQLITE_FILE / SQLITE_DB / SQLITE_DATABASE
 
 # Pattern 2: Full connection string
 DATABASE_URL
 DB_URL
 JDBC_DATABASE_URL
+postgres://... or postgresql://...
+sqlite://... or sqlite:///...
 
 # Pattern 3: Spring Boot JDBC URL
-spring.datasource.url (extract host, port, database from jdbc:postgresql://host:port/database)
+spring.datasource.url (jdbc:postgresql://host:port/database or jdbc:sqlite:/path/to/file)
 spring.datasource.username
 spring.datasource.password
 
 # Pattern 4: Docker Compose environment
 services.*.environment.POSTGRES_*
+services.*.environment.MYSQL_*
 services.*.environment.DATABASE_URL
 ```
 
-**Step 3: Construct the PostgreSQL connection string**
+**Step 3: Construct the connection string**
 
-If individual fields are found, construct:
-```
-postgresql://USERNAME:PASSWORD@HOST:PORT/DATABASE
-```
-
-Example transformations:
-- `.env` with `DB_HOST=localhost`, `DB_PORT=5432`, `DB_NAME=myapp`, `DB_USER=admin`, `DB_PASSWORD=secret123`
-  → `postgresql://admin:secret123@localhost:5432/myapp`
-
-- `application.yaml` with:
+- **PostgreSQL:**
+  ```
+  # Format: postgres://[user]:[password]@[host]:[port]/[database]?[options]
+  ```
+  Example transformation (Spring):
   ```yaml
   spring:
     datasource:
@@ -81,24 +83,61 @@ Example transformations:
   ```
   → `postgresql://admin:secret123@localhost:5432/myapp`
 
+- **SQLite:**
+  ```
+  # Format: sqlite:///[path/to/database.db] or sqlite:///:memory:
+  ```
+  Notes:
+  - Use the sqlite DSN form with `sqlite:///ABSOLUTE/PATH`. Example: `sqlite:///Users/you/app/data/app.db`.
+  - In-memory: `sqlite:///:memory:` (ephemeral; not persisted).
+  - No host/user/password/port required.
+  - Ensure the file exists and is readable when using a file path.
+  - Transform `jdbc:sqlite:/path/to/db.sqlite3` → `sqlite:///path/to/db.sqlite3`.
+
 **Step 4: Create or update the project's opencode.json**
 
-IMPORTANT: This step creates a project-specific MCP configuration so the PostgreSQL connection works for this folder.
+IMPORTANT: This step creates a project-specific MCP configuration so the database connection works for this folder.
 
 Check if `opencode.json` exists in the current project directory:
 
-**If opencode.json does NOT exist**, create it with:
+**If opencode.json does NOT exist**, create it using DBHub (handles Postgres, MySQL, SQLite, SQL Server, MariaDB) with either a single DSN or a TOML config:
+- Single database via stdio transport (direct `npx`, no extra config file). Examples:
+  - Postgres:
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "postgres": {
+    "dbhub": {
       "type": "local",
       "command": [
         "npx",
         "-y",
-        "@modelcontextprotocol/server-postgres",
-        "CONNECTION_STRING_HERE"
+        "@bytebase/dbhub",
+        "--transport",
+        "stdio",
+        "--dsn",
+        "postgresql://user:password@localhost:5432/database"
+      ],
+      "enabled": true
+    }
+  }
+}
+```
+  - SQLite (use absolute path, DSN form):
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "dbhub": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@bytebase/dbhub",
+        "--transport",
+        "stdio",
+        "--dsn",
+        "sqlite:///Users/you/path/to/app.db"
       ],
       "enabled": true
     }
@@ -106,10 +145,54 @@ Check if `opencode.json` exists in the current project directory:
 }
 ```
 
+- Multiple databases with `dbhub.toml` (absolute path recommended):
+```toml
+[[sources]]
+id = "postgres-artemis3"
+dsn = "postgres://postgres:postgres@127.0.0.1:5432/artemis3"
+readonly = true
+
+[[sources]]
+id = "postgres-crm"
+dsn = "postgres://postgres:postgres@127.0.0.1:54321/crm"
+readonly = true
+
+[[sources]]
+id = "local-sqlite"
+dsn = "sqlite:///Users/you/path/to/app.db"
+```
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "dbhub": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@bytebase/dbhub",
+        "--transport",
+        "stdio",
+        "--config",
+        "/ABSOLUTE/PATH/TO/dbhub.toml"
+      ],
+      "enabled": true
+    }
+  }
+}
+```
+  - The first `[[sources]]` entry becomes the default if no `id` is specified.
+  - `readonly = true` is recommended unless write access is required.
+  - DBHub configuration priority: CLI args > TOML > env vars > `.env` files. `--config` is mutually exclusive with `--dsn`, `--id`, and `--readonly` (those go in TOML).
+  - Default transport is `stdio`; use `--transport http --port 8080` if you need the admin console/API.
+
+After editing `opencode.json`, restart OpenCode so the MCP servers load and the tools (e.g., `mcp__dbhub__...`) appear in the session.
+
 **If opencode.json already exists**, read it and:
-- If it has an `mcp` section, add or update the `postgres` entry
+- If it has an `mcp` section, add or update the `dbhub` entry (single DSN or `--config` pointing to `dbhub.toml`)
 - If it doesn't have an `mcp` section, add the entire `mcp` block
 - Preserve all other existing configuration (theme, keybinds, other mcp servers, etc.)
+
 
 Replace `CONNECTION_STRING_HERE` with the actual connection string constructed in Step 3.
 
@@ -138,9 +221,10 @@ Tell the user:
 OpenCode Project Config Updated
 ================================
 File: opencode.json
-Added: PostgreSQL MCP configuration
+Added: Database MCP configuration
 
 Connection String: postgresql://[user]:[hidden]@[host]:[port]/[database]
+(or sqlite:///absolute/path/to/database.sqlite3)
 
 Security: Added opencode.json to .gitignore
 
@@ -150,35 +234,33 @@ Run: exit and re-run opencode in this directory
 
 **Step 7: Test the connection (if MCP is already available)**
 
-If the PostgreSQL MCP tool is available in the current session, test the connection:
-
-```sql
-SELECT version();
-```
-
-Then show basic database info:
-
-```sql
-SELECT
-  current_database() as database,
-  current_user as user,
-  inet_server_addr() as host,
-  inet_server_port() as port;
-```
+- **PostgreSQL:**
+  ```sql
+  SELECT version();
+  SELECT
+    current_database() as database,
+    current_user as user,
+    inet_server_addr() as host,
+    inet_server_port() as port;
+  ```
+- **SQLite:**
+  ```sql
+  SELECT sqlite_version();
+  PRAGMA database_list;
+  ```
 
 **Step 8: Report final summary**
 
 Present a summary:
-
 ```
 Database Initialization Complete
 ================================
 Project Type:    [detected type]
 Config Source:   [file where credentials were found]
-Host:            [host]
-Port:            [port]
-Database:        [database name]
-User:            [username]
+Host:            [host] (Postgres only)
+Port:            [port] (Postgres only)
+Database:        [database name or sqlite file path]
+User:            [username] (Postgres only)
 Connection:      [Tested OK / Restart Required]
 
 Files Modified:
@@ -192,14 +274,20 @@ If connection cannot be tested (MCP not yet loaded), remind user to restart Open
 
 **Step 9: (Optional) List available tables**
 
-If connected successfully, show available tables:
-
-```sql
-SELECT table_name, table_type
-FROM information_schema.tables
-WHERE table_schema = 'public'
-ORDER BY table_name;
-```
+- **PostgreSQL:**
+  ```sql
+  SELECT table_name, table_type
+  FROM information_schema.tables
+  WHERE table_schema = 'public'
+  ORDER BY table_name;
+  ```
+- **SQLite:**
+  ```sql
+  SELECT name as table_name, type as table_type
+  FROM sqlite_master
+  WHERE type IN ('table','view')
+  ORDER BY name;
+  ```
 
 ---
 

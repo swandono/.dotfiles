@@ -4,23 +4,79 @@ description: Initialize headless browser environment for screenshots
 
 Initialize headless browser environment for the current project:
 
-1. Create a `screenshots/` directory in the current working directory if it doesn't exist
-2. Add `screenshots/` to `.gitignore` if not already present (create `.gitignore` if it doesn't exist)
-3. Update `AGENTS.md` to document the screenshots folder (add a section about the screenshots directory if not already present)
-4. Test the browser MCP connection by listing pages or creating a new page (works with either Playwright MCP or Chrome DevTools MCP)
+**Step 1: Create screenshots directory**
+Create a `screenshots/` directory in the current working directory if it doesn't exist.
 
-For the AGENTS.md update, add something like:
-```
+**Step 2: Update .gitignore**
+Add `screenshots/` to `.gitignore` if not already present (create `.gitignore` if it doesn't exist).
+
+**Step 3: Add project MCP config (chrome-devtools)**
+Add a `chrome-devtools` MCP entry to the project's `opencode.json` (not the global one). Use platform-appropriate commands:
+
+- macOS:
+  ```json
+  {
+    "mcp": {
+      "chrome-devtools": {
+        "type": "local",
+        "command": ["npx", "-y", "chrome-devtools-mcp@latest", "--headless"],
+        "enabled": false
+      }
+    }
+  }
+  ```
+- Linux:
+  ```json
+  {
+    "mcp": {
+      "chrome-devtools": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "chrome-devtools-mcp@latest",
+          "--headless",
+          "--executable-path=/usr/bin/google-chrome",
+          "--chrome-arg=--no-sandbox",
+          "--chrome-arg=--disable-setuid-sandbox"
+        ],
+        "enabled": false
+      }
+    }
+  }
+  ```
+After editing `opencode.json`, restart OpenCode so the `chrome-devtools` tool appears.
+
+**Step 4: Update AGENTS.md**
+Add a screenshots section to `AGENTS.md` if not already present:
+
+```markdown
 ## Screenshots
 
 The `screenshots/` directory is used by the headless browser for storing screenshots.
 This folder is git-ignored.
+
+### Taking Screenshots
+
+When using chrome-devtools MCP, always specify the full path to save screenshots in this folder:
+
+- Use: `screenshots/screenshot-name.png` or `{cwd}/screenshots/screenshot-name.png`
+- Example names: `screenshots/homepage.png`, `screenshots/error-state.png`, `screenshots/2024-01-15-bug.png`
 ```
 
-After initialization, report the status:
+**Step 5: Report status**
+After initialization, report:
+
 - Whether the screenshots folder was created or already existed
 - Whether .gitignore was updated
 - Whether AGENTS.md was updated
-- Whether the headless browser connection is working
+- Whether the MCP entry was added to project `opencode.json`
+
+**Important Notes:**
+
+- The chrome-devtools `take_screenshot` tool requires a `path` parameter
+- Always use relative paths from project root: `screenshots/filename.png`
+- Use descriptive filenames that indicate what the screenshot shows
+- For debugging sessions, include timestamps: `screenshots/2024-01-15-issue-123.png`
 
 If the browser connection fails, suggest troubleshooting steps like restarting OpenCode or checking the MCP configuration.
