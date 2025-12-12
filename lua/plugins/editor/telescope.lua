@@ -1,52 +1,47 @@
-local function setup()
-	require("telescope").load_extension("fzf")
+local function grep_cursor_word(is_cword)
 	local tele = require("telescope.builtin")
-	vim.keymap.set("n", "<leader>ls", function()
-		local word = vim.fn.expand("<cword>")
-		tele.grep_string({ search = word })
-	end, { silent = true, noremap = true, desc = "Telescope grep word" })
-	vim.keymap.set("n", "<leader>lS", function()
-		local word = vim.fn.expand("<cWORD>")
-		tele.grep_string({ search = word })
-	end, { silent = true, noremap = true, desc = "Telescope grep words" })
-	vim.keymap.set("n", "<leader>ks", tele.keymaps, { desc = "Telescope keymaps" })
-	vim.keymap.set("n", "<leader>hs", tele.help_tags, { desc = "Telescope help tags" })
-	vim.keymap.set("n", "<leader>bs", tele.git_branches, { desc = "Telescope git branches" })
-	vim.keymap.set("n", "<leader>gs", tele.git_files, { desc = "Telescope find git files" })
-	vim.keymap.set("n", "<leader>js", tele.lsp_references, { desc = "Telescope LSP references" })
-	vim.keymap.set("n", "<C-j>", tele.buffers, { desc = "Telescope buffers" })
-	vim.keymap.set("n", "<C-k>", tele.find_files, { desc = "Telescope find files (Git respect)" })
-	vim.keymap.set("n", "<C-l>", tele.live_grep, { desc = "Telescope live grep" })
-	vim.keymap.set("n", "<leader>fs", function()
-		tele.find_files({ hidden = true, no_ignore = true, no_ignore_parent = true })
-	end, { silent = true, noremap = true, desc = "Telescope find all files" })
+	local word = vim.fn.expand(is_cword and "<cword>" or "<cWORD>")
+	tele.grep_string({ search = word })
 end
 
 return {
 	"nvim-telescope/telescope.nvim",
 	cmd = "Telescope",
-	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
+	keys = {
+		{ "<leader>ls", function() grep_cursor_word(true) end, desc = "Telescope grep word" },
+		{ "<leader>lS", function() grep_cursor_word(false) end, desc = "Telescope grep words" },
+		{ "<leader>ks", function() require("telescope.builtin").keymaps() end, desc = "Telescope keymaps" },
+		{ "<leader>hs", function() require("telescope.builtin").help_tags() end, desc = "Telescope help tags" },
+		{ "<leader>bs", function() require("telescope.builtin").git_branches() end, desc = "Telescope git branches" },
+		{ "<leader>gs", function() require("telescope.builtin").git_files() end, desc = "Telescope find git files" },
+		{ "<leader>js", function() require("telescope.builtin").lsp_references() end, desc = "Telescope LSP references" },
+		{ "<C-j>", function() require("telescope.builtin").buffers() end, desc = "Telescope buffers" },
+		{ "<C-k>", function() require("telescope.builtin").find_files() end, desc = "Telescope find files (Git respect)" },
+		{ "<C-l>", function() require("telescope.builtin").live_grep() end, desc = "Telescope live grep" },
+		{
+			"<leader>fs",
+			function()
+				require("telescope.builtin").find_files({ hidden = true, no_ignore = true, no_ignore_parent = true })
+			end,
+			desc = "Telescope find all files",
+		},
+	},
 	version = false,
 	opts = {
 		extensions = {
 			fzf = {
-				fuzzy = true, -- false will only do exact matching
-				override_generic_sorter = true, -- override the generic sorter
-				override_file_sorter = true, -- override the file sorter
-				case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+				fuzzy = true,
+				override_generic_sorter = true,
+				override_file_sorter = true,
+				case_mode = "smart_case",
 			},
 		},
 	},
 	dependencies = {
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 	},
-	config = setup,
-	init = function()
-		if vim.fn.argc() == 1 then
-			local stat = vim.loop.fs_stat(vim.fn.argv(0))
-			if stat and stat.type == "directory" then
-				setup()
-			end
-		end
+	config = function(_, opts)
+		require("telescope").setup(opts)
+		pcall(require("telescope").load_extension, "fzf")
 	end,
 }

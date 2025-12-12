@@ -2,7 +2,6 @@ return {
 	"akinsho/toggleterm.nvim",
 	keys = {
 		{ "<leader>gk" },
-		{ "<leader>gj" },
 		{ "<c-]>" },
 	},
 	opts = {
@@ -26,27 +25,12 @@ return {
 		function LazyGitToggle()
 			lazygit:toggle()
 		end
-		local gitui = Terminal:new({
-			cmd = "gitui",
-			hidden = true,
-			direction = "float",
-		})
-		function GitUIToggle()
-			gitui:toggle()
-		end
 
 		vim.api.nvim_set_keymap(
 			"n",
 			"<leader>gk",
 			"<cmd>lua LazyGitToggle()<CR>",
 			{ noremap = true, silent = true, desc = "LazyGitToggle" }
-		)
-
-		vim.api.nvim_set_keymap(
-			"n",
-			"<leader>gj",
-			"<cmd>lua GitUIToggle()<CR>",
-			{ noremap = true, silent = true, desc = "GitUIToggle" }
 		)
 	end,
 }

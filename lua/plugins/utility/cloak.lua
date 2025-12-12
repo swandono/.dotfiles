@@ -1,6 +1,9 @@
 return {
 	"laytan/cloak.nvim",
-	event = { "BufReadPre", "BufNewFile", "InsertEnter" },
+	cmd = { "CloakToggle", "CloakEnable", "CloakDisable" },
+	keys = {
+		{ "<leader>ck", "<cmd>CloakToggle<cr>", desc = "Toggle Cloak" },
+	},
 	config = function()
 		require("cloak").setup({
 			enabled = true,
@@ -16,6 +19,5 @@ return {
 				},
 			},
 		})
-		vim.keymap.set("n", "<leader>ck", "<cmd>CloakToggle<cr>", { desc = "Toggle Cloak" })
 	end,
 }

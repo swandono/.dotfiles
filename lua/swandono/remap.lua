@@ -86,9 +86,6 @@ vim.keymap.set(
 	{ silent = true, noremap = true, desc = "Previous Class" }
 )
 
-vim.keymap.set("n", "<leader>gi", ":Git ", { desc = "Run Fugitive" })
-vim.keymap.set("n", "<leader>gl", vim.cmd.Git, { desc = "Open Fugitive" })
-vim.keymap.set("n", "<leader>gb", [[<CMD> Git blame<CR>]], { silent = true, noremap = true, desc = "Git Blame" })
 vim.keymap.set(
 	"n",
 	"<leader>gn",
@@ -163,10 +160,12 @@ vim.keymap.set("n", "<leader>t2", ":set tabstop=2 shiftwidth=2 softtabstop=2<CR>
 vim.keymap.set("n", "<leader>t4", ":set tabstop=4 shiftwidth=4 softtabstop=4<CR>", { desc = "Set Tabstop 4" })
 
 vim.keymap.set("n", "<leader>cl", function()
-	if require("trouble").is_open() then
-		require("trouble").close()
+	local ok, trouble = pcall(require, "trouble")
+	if ok and trouble.is_open() then
+		trouble.close()
 		return
 	end
+
 	local qf_exists = false
 	for _, win in pairs(vim.fn.getwininfo()) do
 		if win["quickfix"] == 1 then
@@ -188,22 +187,24 @@ vim.keymap.set("n", "<leader>cl", function()
 end, { desc = "Toggle Quickfix" })
 
 vim.keymap.set("n", "<C-p>", function()
-	if require("trouble").is_open() then
-		require("trouble").prev({ skip_groups = true, jump = true })
+	local ok, trouble = pcall(require, "trouble")
+	if ok and trouble.is_open() then
+		trouble.prev({ skip_groups = true, jump = true })
 	else
-		local ok, _ = pcall(vim.cmd, "cprevious")
-		if not ok then
+		local ok_prev, _ = pcall(vim.cmd, "cprevious")
+		if not ok_prev then
 			print("No previous trouble or quickfix item")
 		end
 	end
 	vim.fn.feedkeys("zz<CR>")
 end, { desc = "Previous trouble/quickfix" })
 vim.keymap.set("n", "<C-n>", function()
-	if require("trouble").is_open() then
-		require("trouble").next({ skip_groups = true, jump = true })
+	local ok, trouble = pcall(require, "trouble")
+	if ok and trouble.is_open() then
+		trouble.next({ skip_groups = true, jump = true })
 	else
-		local ok, _ = pcall(vim.cmd, "cnext")
-		if not ok then
+		local ok_next, _ = pcall(vim.cmd, "cnext")
+		if not ok_next then
 			print("No next trouble or quickfix item")
 		end
 	end

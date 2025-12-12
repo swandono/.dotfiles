@@ -1,9 +1,15 @@
 return {
 	"rcarriga/nvim-notify",
-	event = { "BufReadPre", "BufNewFile" },
+	lazy = true,
+	init = function()
+		vim.notify = function(...)
+			require("lazy").load({ plugins = { "nvim-notify" } })
+			return vim.notify(...)
+		end
+	end,
 	config = function()
-		vim.notify = require("notify")
-		vim.notify.setup({
+		local notify = require("notify")
+		notify.setup({
 			render = "wrapped-compact",
 			top_down = false,
 			background_colour = "#000000",
@@ -12,5 +18,6 @@ return {
 			fps = 120,
 			timeout = 100,
 		})
+		vim.notify = notify
 	end,
 }
