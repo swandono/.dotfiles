@@ -8,16 +8,16 @@ You are initializing the database connection for this project. Follow these step
 
 Search for database credentials in the following locations based on project type:
 
-| Project Type | Config Files to Check |
-|--------------|----------------------|
-| **Java Spring Boot** | `application.yaml`, `application.yml`, `application.properties`, `application-*.yaml` |
-| **Go** | `.env`, `config.yaml`, `config.json` |
-| **Node.js** | `.env`, `.env.local`, `config.json`, `database.json` |
-| **Python** | `.env`, `settings.py`, `config.py`, `.flaskenv` |
-| **Docker** | `docker-compose.yaml`, `docker-compose.yml`, `.env` |
-| **Rails** | `config/database.yml`, `.env` |
-| **Rust** | `.env`, `Rocket.toml`, `config.yaml`, `config.json` |
-| **Zig** | `.env`, `config.zig`, `config.yaml`, `config.json` |
+| Project Type             | Config Files to Check                                                                               |
+| ------------------------ | --------------------------------------------------------------------------------------------------- |
+| **Java Spring Boot**     | `application.yaml`, `application.yml`, `application.properties`, `application-*.yaml`               |
+| **Go**                   | `.env`, `config.yaml`, `config.json`                                                                |
+| **Node.js**              | `.env`, `.env.local`, `config.json`, `database.json`                                                |
+| **Python**               | `.env`, `settings.py`, `config.py`, `.flaskenv`                                                     |
+| **Docker**               | `docker-compose.yaml`, `docker-compose.yml`, `.env`                                                 |
+| **Rails**                | `config/database.yml`, `.env`                                                                       |
+| **Rust**                 | `.env`, `Rocket.toml`, `config.yaml`, `config.json`                                                 |
+| **Zig**                  | `.env`, `config.zig`, `config.yaml`, `config.json`                                                  |
 | **SQLite (any project)** | `.env` (do not read), `settings.py`, `config.py`, `config.yaml`, `config.json`, `*.db`, `*.sqlite*` |
 
 **Step 2: Extract database credentials**
@@ -25,17 +25,21 @@ Search for database credentials in the following locations based on project type
 **IMPORTANT: For `.env` files, do NOT attempt to read them directly.** These files often contain sensitive credentials and may be blocked by security rules.
 
 **If only `.env` files are found:**
+
 - Do NOT try to read the `.env` file
 - Ask the user to paste their `DATABASE_URL` connection string:
+
   ```
   I found a .env file but cannot read it directly for security reasons.
 
   Please paste your DATABASE_URL connection string:
-  Example: postgresql://username:password@localhost:5432/database
+  Example (do not paste real credentials into chat if you can avoid it): postgresql://username:password@localhost:5432/database
   ```
+
 - Wait for the user to provide the connection string before proceeding
 
 **For other config files** (application.yaml, docker-compose.yaml, config.json, settings.py, etc.):
+
 - Read and extract credentials normally
 
 Look for these common patterns in non-.env files:
@@ -70,10 +74,13 @@ services.*.environment.DATABASE_URL
 **Step 3: Construct the connection string**
 
 - **PostgreSQL:**
+
   ```
   # Format: postgres://[user]:[password]@[host]:[port]/[database]?[options]
   ```
+
   Example transformation (Spring):
+
   ```yaml
   spring:
     datasource:
@@ -81,6 +88,7 @@ services.*.environment.DATABASE_URL
       username: admin
       password: secret123
   ```
+
   → `postgresql://admin:secret123@localhost:5432/myapp`
 
 - **SQLite:**
@@ -101,8 +109,10 @@ IMPORTANT: This step creates a project-specific MCP configuration so the databas
 Check if `opencode.json` exists in the current project directory:
 
 **If opencode.json does NOT exist**, create it using DBHub (handles Postgres, MySQL, SQLite, SQL Server, MariaDB) with either a single DSN or a TOML config:
+
 - Single database via stdio transport (direct `npx`, no extra config file). Examples:
   - Postgres:
+
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
@@ -123,7 +133,9 @@ Check if `opencode.json` exists in the current project directory:
   }
 }
 ```
-  - SQLite (use absolute path, DSN form):
+
+- SQLite (use absolute path, DSN form):
+
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
@@ -146,6 +158,7 @@ Check if `opencode.json` exists in the current project directory:
 ```
 
 - Multiple databases with `dbhub.toml` (absolute path recommended):
+
 ```toml
 [[sources]]
 id = "postgres-artemis3"
@@ -161,6 +174,7 @@ readonly = true
 id = "local-sqlite"
 dsn = "sqlite:///Users/you/path/to/app.db"
 ```
+
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
@@ -181,18 +195,19 @@ dsn = "sqlite:///Users/you/path/to/app.db"
   }
 }
 ```
-  - The first `[[sources]]` entry becomes the default if no `id` is specified.
-  - `readonly = true` is recommended unless write access is required.
-  - DBHub configuration priority: CLI args > TOML > env vars > `.env` files. `--config` is mutually exclusive with `--dsn`, `--id`, and `--readonly` (those go in TOML).
-  - Default transport is `stdio`; use `--transport http --port 8080` if you need the admin console/API.
+
+- The first `[[sources]]` entry becomes the default if no `id` is specified.
+- `readonly = true` is recommended unless write access is required.
+- DBHub configuration priority: CLI args > TOML > env vars > `.env` files. `--config` is mutually exclusive with `--dsn`, `--id`, and `--readonly` (those go in TOML).
+- Default transport is `stdio`; use `--transport http --port 8080` if you need the admin console/API.
 
 After editing `opencode.json`, restart OpenCode so the MCP servers load and the tools (e.g., `mcp__dbhub__...`) appear in the session.
 
 **If opencode.json already exists**, read it and:
+
 - If it has an `mcp` section, add or update the `dbhub` entry (single DSN or `--config` pointing to `dbhub.toml`)
 - If it doesn't have an `mcp` section, add the entire `mcp` block
 - Preserve all other existing configuration (theme, keybinds, other mcp servers, etc.)
-
 
 Replace `CONNECTION_STRING_HERE` with the actual connection string constructed in Step 3.
 
@@ -203,12 +218,15 @@ IMPORTANT: Automatically add `opencode.json` to `.gitignore` to prevent committi
 Check if `.gitignore` exists in the project root:
 
 **If .gitignore exists:**
+
 - Read the file and check if `opencode.json` is already listed
 - If NOT listed, append `opencode.json` to the end of the file (with a newline before it if needed)
 - Add a comment above it: `# OpenCode config (contains database credentials)`
 
 **If .gitignore does NOT exist:**
+
 - Create `.gitignore` with:
+
 ```
 # OpenCode config (contains database credentials)
 opencode.json
@@ -217,13 +235,14 @@ opencode.json
 **Step 6: Inform the user about the config change**
 
 Tell the user:
+
 ```
 OpenCode Project Config Updated
 ================================
 File: opencode.json
 Added: Database MCP configuration
 
-Connection String: postgresql://[user]:[hidden]@[host]:[port]/[database]
+Connection String: postgresql://[user]:[hidden]@[host]:[port]/[database] (redacted)
 (or sqlite:///absolute/path/to/database.sqlite3)
 
 Security: Added opencode.json to .gitignore
@@ -252,6 +271,7 @@ Run: exit and re-run opencode in this directory
 **Step 8: Report final summary**
 
 Present a summary:
+
 ```
 Database Initialization Complete
 ================================
@@ -294,5 +314,6 @@ If connection cannot be tested (MCP not yet loaded), remind user to restart Open
 ## Security Notes
 
 The command automatically:
+
 - Adds `opencode.json` to `.gitignore` to prevent committing credentials
 - Alternative: Use `{env:DATABASE_URL}` syntax if you set DATABASE_URL in your shell environment

@@ -5,6 +5,7 @@ prompt: "{file:../prompts/refactor.txt}"
 temperature: 0.2
 permission:
   edit: ask
+  write: ask
 ---
 
 Refactor agent for improving code quality while preserving behavior.

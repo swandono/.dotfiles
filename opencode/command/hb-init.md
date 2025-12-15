@@ -20,7 +20,7 @@ Add a `chrome-devtools` MCP entry to the project's `opencode.json` (not the glob
       "chrome-devtools": {
         "type": "local",
         "command": ["npx", "-y", "chrome-devtools-mcp@latest", "--headless"],
-        "enabled": false
+        "enabled": true
       }
     }
   }
@@ -40,12 +40,12 @@ Add a `chrome-devtools` MCP entry to the project's `opencode.json` (not the glob
           "--chrome-arg=--no-sandbox",
           "--chrome-arg=--disable-setuid-sandbox"
         ],
-        "enabled": false
+        "enabled": true
       }
     }
   }
   ```
-After editing `opencode.json`, restart OpenCode so the `chrome-devtools` tool appears.
+  After editing `opencode.json`, restart OpenCode so the `chrome-devtools` tool appears.
 
 **Step 4: Update AGENTS.md**
 Add a screenshots section to `AGENTS.md` if not already present:

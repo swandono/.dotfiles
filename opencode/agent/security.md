@@ -6,7 +6,8 @@ temperature: 0.1
 tools:
   write: false
   edit: false
-  bash: false
+permission:
+  bash: ask
 ---
 
 Security agent for identifying vulnerabilities and security best practices.

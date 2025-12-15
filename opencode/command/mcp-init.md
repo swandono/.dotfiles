@@ -2,12 +2,16 @@
 description: Initialize all MCP connections (database + headless browser)
 ---
 
-Run both MCP initialization commands in sequence:
+Run MCP initialization commands as needed:
 
-1. First, execute the database initialization: `/db-init`
-2. Then, execute the headless browser initialization: `/hb-init`
+1. If the project uses a database and you want DB access: run `/db-init`
+2. If you want screenshots/headless browser tools: run `/hb-init`
 
-After both complete, provide a combined summary:
+If unsure, ask the user which ones they want enabled.
+
+After running the selected commands, provide a combined summary.
+
+Note: If a command updates project `opencode.json`, OpenCode needs a restart for new MCP tools to appear.
 
 ```
 MCP Initialization Complete
