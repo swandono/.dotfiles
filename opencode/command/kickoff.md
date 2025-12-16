@@ -11,11 +11,19 @@ While doing this:
 - Use `memory` to persist **stable, non-sensitive** facts you discover (project name, how to run tests, key directories, important conventions, special safety constraints).
 - Do NOT store secrets in `memory` (API keys, tokens, passwords, full connection strings). Store redacted forms only.
 
+**Step 0: Confirm the project root**
+This command assumes you are running inside a single project root.
+
+- If the current folder contains multiple repos/projects, ask the user which subfolder to initialize and re-run `/kickoff` from there.
+- If the current folder is not a git repo, that’s OK:
+  - Prefer running `/kickoff` from the actual project folder (even if it’s not git), but be explicit that `.gitignore` is still used to prevent accidental commits later.
+  - If you want this folder treated as a repo root, initialize git (`git init`) before proceeding.
+
 **Step 1: Run OpenCode project initialization (`/init`)**
 Run the built-in OpenCode initializer to generate a baseline `AGENTS.md`.
 
 - Execute: `/init`
-- If you are currently in a subdirectory, run it from the project root.
+- If you are currently in a subdirectory, run it from the confirmed project root.
 
 **Step 2: Verify (and only if needed, supplement) `AGENTS.md`**
 
@@ -30,14 +38,25 @@ Run the built-in OpenCode initializer to generate a baseline `AGENTS.md`.
 
 Use `memory` to store the final, verified project facts (eg. test commands, lint commands, key directories) so future sessions start faster.
 
-**Plan artifacts (optional)**
-If you create a detailed plan (especially for multi-day work), save it as a Markdown file in the repo:
+**OpenCode artifacts (optional)**
+If you create agent artifacts you want to keep in-repo (especially for multi-day work), save them under `.opencode/`:
 
-- Directory: `.opencode/plans/`
-- Filename: `YYYYMMDD-HHMM_short-title.md` (example: `20251216-0930_auth-refactor.md`)
-- Prefer adding `.opencode/` to `.gitignore` unless the team explicitly wants to commit these files.
+- Plans: `.opencode/plans/YYYYMMDD-HHMM_short-title.md` (example: `20251216-0930_auth-refactor.md`)
+- Tool config: `.opencode/config/` (example: `.opencode/config/dbhub.toml`)
+- Screenshots: `.opencode/screenshots/` (example: `.opencode/screenshots/homepage.png`)
+- Note: project `opencode.json` must live in the project root.
 
-**Step 3: Add safe rules + MCP tools to `AGENTS.md` (idempotent)**
+**Step 3: Create or update `.gitignore` (required)**
+Ensure the project root `.gitignore` contains both `opencode.json` and `.opencode/`.
+
+- If `.gitignore` exists, append entries if missing:
+  - `# OpenCode config (contains credentials)`
+  - `opencode.json`
+  - `# OpenCode artifacts (may contain credentials)`
+  - `.opencode/`
+- If `.gitignore` does not exist, create it with those entries.
+
+**Step 4: Add safe rules + MCP tools to `AGENTS.md` (idempotent)**
 
 Update `AGENTS.md` as follows (append new sections at the end of the file):
 
@@ -138,13 +157,14 @@ Note: This is the standard MCP toolset. Tools may require enabling/configuring i
 | **dbhub**               | Universal DB MCP (Postgres/MySQL/SQLite/MariaDB/SQL Server). Run `/db-init` to configure. |
 ```
 
-**Step 4: Inform the user**
+**Step 5: Inform the user**
 After creating/updating the file:
 
 - Use `memory` to store stable, reusable details you just learned (especially test/lint/typecheck commands and CI entrypoints), without secrets.
-- Tell the user:
+  - Tell the user:
   - What you learned/confirmed about the project
   - That `AGENTS.md` has been created/updated with both project info and safe rules
-  - They should commit `AGENTS.md` to Git so the whole team benefits
+  - That `.gitignore` was created/updated to include both `opencode.json` and `.opencode/`
+  - If this is a git repo, they should commit `AGENTS.md` (and `.gitignore` if changed) so the whole team benefits
   - These rules will now apply to ALL agents in this project
   - They can modify `AGENTS.md` for project-specific customization

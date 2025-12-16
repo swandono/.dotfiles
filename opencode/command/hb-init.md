@@ -5,10 +5,10 @@ description: Initialize headless browser environment for screenshots
 Initialize headless browser environment for the current project:
 
 **Step 1: Create screenshots directory**
-Create a `screenshots/` directory in the current working directory if it doesn't exist.
+Create a `.opencode/screenshots/` directory in the current working directory if it doesn't exist.
 
 **Step 2: Update .gitignore**
-Add `screenshots/` to `.gitignore` if not already present (create `.gitignore` if it doesn't exist).
+Add `opencode.json` and `.opencode/` to `.gitignore` if not already present (create `.gitignore` if it doesn't exist).
 
 **Step 3: Add project MCP config (chrome-devtools)**
 Add a `chrome-devtools` MCP entry to the project's `opencode.json` (not the global one). Use platform-appropriate commands:
@@ -53,15 +53,15 @@ Add a screenshots section to `AGENTS.md` if not already present:
 ```markdown
 ## Screenshots
 
-The `screenshots/` directory is used by the headless browser for storing screenshots.
+The `.opencode/screenshots/` directory is used by the headless browser for storing screenshots.
 This folder is git-ignored.
 
 ### Taking Screenshots
 
 When using chrome-devtools MCP, always specify the full path to save screenshots in this folder:
 
-- Use: `screenshots/screenshot-name.png` or `{cwd}/screenshots/screenshot-name.png`
-- Example names: `screenshots/homepage.png`, `screenshots/error-state.png`, `screenshots/2024-01-15-bug.png`
+- Use: `.opencode/screenshots/screenshot-name.png` or `{cwd}/.opencode/screenshots/screenshot-name.png`
+- Example names: `.opencode/screenshots/homepage.png`, `.opencode/screenshots/error-state.png`, `.opencode/screenshots/2024-01-15-bug.png`
 ```
 
 **Step 5: Report status**
@@ -75,8 +75,8 @@ After initialization, report:
 **Important Notes:**
 
 - The chrome-devtools `take_screenshot` tool requires a `path` parameter
-- Always use relative paths from project root: `screenshots/filename.png`
+- Always use relative paths from project root: `.opencode/screenshots/filename.png`
 - Use descriptive filenames that indicate what the screenshot shows
-- For debugging sessions, include timestamps: `screenshots/2024-01-15-issue-123.png`
+- For debugging sessions, include timestamps: `.opencode/screenshots/2024-01-15-issue-123.png`
 
 If the browser connection fails, suggest troubleshooting steps like restarting OpenCode or checking the MCP configuration.

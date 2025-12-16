@@ -106,6 +106,10 @@ services.*.environment.DATABASE_URL
 
 IMPORTANT: This step creates a project-specific MCP configuration so the database connection works for this folder.
 
+Convention:
+- `opencode.json` is the only file this command should create/update at the project root (besides `.gitignore` in Step 5).
+- Any additional generated artifacts (for example `dbhub.toml`) should go under `.opencode/` (recommended: `.opencode/config/dbhub.toml`).
+
 Check if `opencode.json` exists in the current project directory:
 
 **If opencode.json does NOT exist**, create it using DBHub (handles Postgres, MySQL, SQLite, SQL Server, MariaDB) with either a single DSN or a TOML config:
@@ -157,7 +161,7 @@ Check if `opencode.json` exists in the current project directory:
 }
 ```
 
-- Multiple databases with `dbhub.toml` (absolute path recommended):
+- Multiple databases with `dbhub.toml` (recommended location: `.opencode/config/dbhub.toml`; use `{cwd}/.opencode/config/dbhub.toml` in `opencode.json` to avoid hardcoding a machine-specific absolute path):
 
 ```toml
 [[sources]]
@@ -188,7 +192,7 @@ dsn = "sqlite:///Users/you/path/to/app.db"
         "--transport",
         "stdio",
         "--config",
-        "/ABSOLUTE/PATH/TO/dbhub.toml"
+        "{cwd}/.opencode/config/dbhub.toml"
       ],
       "enabled": true
     }
@@ -215,13 +219,16 @@ Replace `CONNECTION_STRING_HERE` with the actual connection string constructed i
 
 IMPORTANT: Automatically add `opencode.json` to `.gitignore` to prevent committing sensitive credentials.
 
+If you created a DBHub TOML config (recommended location: `.opencode/config/dbhub.toml`), add that to `.gitignore` too (either ignore `.opencode/` or the specific file).
+
 Check if `.gitignore` exists in the project root:
 
 **If .gitignore exists:**
 
 - Read the file and check if `opencode.json` is already listed
-- If NOT listed, append `opencode.json` to the end of the file (with a newline before it if needed)
+- If NOT listed, append it to the end of the file (with a newline before it if needed)
 - Add a comment above it: `# OpenCode config (contains database credentials)`
+- If you created `.opencode/config/dbhub.toml`, also add `.opencode/` (preferred) or `.opencode/config/dbhub.toml`
 
 **If .gitignore does NOT exist:**
 
@@ -230,6 +237,9 @@ Check if `.gitignore` exists in the project root:
 ```
 # OpenCode config (contains database credentials)
 opencode.json
+
+# OpenCode artifacts (may contain credentials)
+.opencode/
 ```
 
 **Step 6: Inform the user about the config change**

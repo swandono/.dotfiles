@@ -37,3 +37,5 @@ These rules apply in every repository unless overridden by a repo-specific `AGEN
 
 - Configuration lives in `~/.config/opencode/opencode.json`.
 - This file is loaded via `instructions` so it is always available.
+- When creating repo-local artifacts, prefer `.opencode/` (plans, screenshots, tool configs).
+- Project `opencode.json` must live at repo root; ensure `.gitignore` includes both `opencode.json` and `.opencode/`.
