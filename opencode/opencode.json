@@ -9,31 +9,6 @@
     "session_child_cycle_reverse": "<leader>["
   },
   "mcp": {
-    "context7": {
-      "type": "remote",
-      "url": "https://mcp.context7.com/mcp",
-      "enabled": false
-    },
-    "gh_grep": {
-      "type": "remote",
-      "url": "https://mcp.grep.app",
-      "enabled": true
-    },
-    "filesystem": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "/Users/swandono/Work"
-      ],
-      "enabled": false
-    },
-    "github": {
-      "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
-      "enabled": false
-    },
     "sequential-thinking": {
       "type": "local",
       "command": [
@@ -42,19 +17,7 @@
         "@modelcontextprotocol/server-sequential-thinking"
       ],
       "enabled": true
-    },
-    "memory": {
-      "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-memory"],
-      "enabled": true
-    },
-    "docker": {
-      "type": "local",
-      "command": ["npx", "-y", "docker-mcp"],
-      "enabled": true,
-      "environment": {
-        "DOCKER_MCP_LOCAL": "true"
-      }
     }
-  }
+  },
+  "plugin": ["opencode-gemini-auth@latest"]
 }
