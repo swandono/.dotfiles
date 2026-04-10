@@ -58,5 +58,24 @@ return {
 		end
 		require("nvim-treesitter.configs").setup(opts)
 		require("treesitter-context").setup({})
+
+		-- Neovim 0.12+ bundles parsers for markdown/markdown_inline.
+		-- nvim-treesitter's query files conflict with the bundled parsers,
+		-- so replace them with "; extends" stubs that defer to the bundled queries.
+		local ts_path = vim.fn.stdpath("data") .. "/lazy/nvim-treesitter/queries"
+		for _, lang in ipairs({ "markdown", "markdown_inline" }) do
+			local qdir = ts_path .. "/" .. lang
+			if vim.fn.isdirectory(qdir) == 1 then
+				for name, t in vim.fs.dir(qdir) do
+					if t == "file" and name:match("%.scm$") then
+						local f = io.open(qdir .. "/" .. name, "w")
+						if f then
+							f:write("; extends\n")
+							f:close()
+						end
+					end
+				end
+			end
+		end
 	end,
 }
