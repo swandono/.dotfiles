@@ -22,6 +22,12 @@ return {
 
 		sources = {
 			default = { "lsp", "path", "snippets", "buffer" },
+			providers = {
+				lsp = {
+					timeout_ms = 500, -- Don't wait more than 500ms for LSP
+					max_items = 20, -- Limit LSP items
+				},
+			},
 		},
 
 		cmdline = {
