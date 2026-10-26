@@ -349,6 +349,25 @@ test_go_main_mod_match_is_exact() {
 
 # --------------------------------------------------------------------- zsh
 
+test_java_pick_fallbacks() {
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/steps/70-full-lang.sh"
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/steps/75-full-java.sh"
+    _mise_global_has() { return 1; }
+    log_warn() { :; }
+    _mise() { printf '%s\n' "$LISTING"; }
+    LISTING=$'oracle-21.0.7\noracle-21.0.8\ntemurin-21.0.9+10.0.LTS\noracle-210.0.1'
+    assert_eq oracle-21.0.7 "$(_java_pick oracle-21.0.7)" "exact oracle"
+    LISTING=$'oracle-21.0.8\noracle-21.0.10\noracle-210.0.1\noracle-17.0.9\ntemurin-21.0.9+10.0.LTS'
+    assert_eq oracle-21.0.10 "$(_java_pick oracle-21.0.7)" "newest same-major oracle"
+    LISTING=$'temurin-21.0.7+6.0.LTS\ntemurin-21.0.10+7.0.LTS\ntemurin-21.0.9+10.0.LTS\ntemurin-210.0.1\ntemurin-17.0.9+9.0.LTS'
+    assert_eq 'temurin-21.0.10+7.0.LTS' "$(_java_pick oracle-21.0.7)" "temurin fallback with LTS suffix"
+    LISTING=$'temurin-17.0.9+9.0.LTS'
+    _java_pick oracle-21.0.7 >/dev/null && fail "no java 21 at all should fail"
+    return 0
+}
+
 test_linux_configs_have_no_private_data() {
     local rel file hits
     for rel in zsh/.zshrc-linux tmux/tmux-linux.conf zellij/config.kdl lazygit/config-linux.yml starship/starship.toml; do

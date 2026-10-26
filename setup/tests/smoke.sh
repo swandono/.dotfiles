@@ -381,7 +381,7 @@ _smoke_java_id() { # MAJOR
 }
 
 check_java() {
-    local v id21 id24 jd=$HOME/.local/share/jdtls tmp n
+    local v cand id21 id24 jd=$HOME/.local/share/jdtls tmp n
     [[ -f $jd/plugins/$JDTLS_LAUNCHER ]] || { echo "missing $jd/plugins/$JDTLS_LAUNCHER"; return 1; }
     [[ -f $jd/lombok.jar ]] || { echo "missing $jd/lombok.jar"; return 1; }
     [[ -f $HOME/.local/share/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-$JAVA_DEBUG_VERSION.jar ]] ||
@@ -392,14 +392,18 @@ check_java() {
     v=$(_mise current java 2>&1)
     [[ $v == "$id24"* ]] || { echo "mise current java says '$v', want it to start with $id24"; return 1; }
     "$HOME/.local/share/mise/installs/java/$id21/bin/java" -version >/dev/null 2>&1 || { echo "java $id21 -version failed"; return 1; }
+    cand=$(grep -m1 -o '"[^"]*/installs/java/[^"]*/bin/java"' "$REPO_PATH/ftplugin/java.lua" | tr -d '"')
+    cand=${cand/\/root\//$HOME/}
+    [[ -n $cand && $cand == */installs/java/$id21/bin/java && -x $cand ]] ||
+        { echo "java.lua mise candidate '$cand' is not the executable $id21 java"; return 1; }
     v=$(unzip -p "$jd/lombok.jar" META-INF/MANIFEST.MF 2>&1)
     [[ $v == *"Lombok-Version: $LOMBOK_VERSION"* ]] || { echo "lombok.jar is not $LOMBOK_VERSION"; return 1; }
     tmp=$(mktemp -d)
     mkdir "$tmp/.git"
     printf 'public class Main {}\n' >"$tmp/Main.java"
-    n=$(cd "$tmp" && nvim --headless Main.java -c 'sleep 8' -c 'lua io.write(#vim.lsp.get_clients({name="jdtls"}))' -c 'qa!' 2>/dev/null)
+    n=$(cd "$tmp" && nvim --headless Main.java -c 'lua vim.wait(30000, function() return #vim.lsp.get_clients({name="jdtls"}) > 0 end, 200); io.write(#vim.lsp.get_clients({name="jdtls"}))' -c 'qa!' 2>/dev/null)
     rm -rf "$tmp" "$jd/workspace/gps-${tmp##*/}"
-    [[ $n == *1 ]] || { echo "jdtls did not attach (clients: '$n')"; return 1; }
+    [[ $n == 1 ]] || { echo "jdtls did not attach (clients: '$n')"; return 1; }
     check_repo_clean
 }
 

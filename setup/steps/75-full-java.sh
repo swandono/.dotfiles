@@ -24,13 +24,17 @@ _java_pick() { # SPEC
         printf '%s\n' "$spec"
         return 0
     fi
-    pick=$(grep -E "^$vendor-$major\\.[0-9.]+\$" <<<"$listing" | sort -V | tail -n1 || true)
-    if [[ -z $pick ]]; then
-        pick=$(grep -E "^temurin-$major\\.[0-9.]+\$" <<<"$listing" | sort -V | tail -n1 || true)
-    fi
+    pick=$(_java_newest "$vendor" "$major" "$listing")
+    if [[ -z $pick ]]; then pick=$(_java_newest temurin "$major" "$listing"); fi
     [[ -n $pick ]] || return 1
     log_warn "mise has no $spec; using $pick instead"
     printf '%s\n' "$pick"
+}
+
+# Newest identifier of VENDOR and exact MAJOR in LISTING. Build suffixes such as
+# 21.0.7+6.0.LTS are accepted; 210.x is not a 21.
+_java_newest() { # VENDOR MAJOR LISTING
+    grep -E "^$1-$2(\\.[0-9]+)*(\\+[0-9A-Za-z._+-]*)?\$" <<<"$3" | sort -V | tail -n1 || true
 }
 
 _java_runtimes() { # IDENTIFIER...

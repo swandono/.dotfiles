@@ -19,7 +19,7 @@ local jdtls = require("jdtls")
 
 -- Java 21 runs jdtls: mise first (new servers), then sdkman (older hosts).
 local java_candidates = {
-	"/root/.local/share/mise/installs/java/oracle-21.0.7/bin/java",
+	"/root/.local/share/mise/installs/java/oracle-21.0.7/bin/java", -- must match the Java-21 entry of MISE_JAVA in setup/versions.env
 	"/root/.sdkman/candidates/java/21.0.7-oracle/bin/java",
 }
 local java_bin = vim.iter(java_candidates):find(function(path)
