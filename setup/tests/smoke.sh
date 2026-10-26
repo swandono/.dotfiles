@@ -5,22 +5,17 @@
 set -uo pipefail
 
 REPO_PATH=/root/.config/nvim
+# shellcheck source=../lib/common.sh
+source "$REPO_PATH/setup/lib/common.sh"
+# shellcheck source=../lib/choices.sh
+source "$REPO_PATH/setup/lib/choices.sh"
 
 # Saved tool choice for KEY; falls back to the install default when unsaved.
 smoke_choice() { # KEY
-    local key=$1 line default
-    case $key in
-    container) default=docker ;;
-    prompt) default=p10k ;;
-    mux) default=tmux ;;
-    git_tui) default=lazygit ;;
-    ls) default=eza ;;
-    monitor) default=both ;;
-    ai) default=claude+codex+opencode+gemini+copilot ;;
-    *) return 1 ;;
-    esac
-    line=$(grep -m1 "^$key=" /var/lib/dotfiles-bootstrap/choices 2>/dev/null || true)
-    if [[ -n $line ]]; then printf '%s\n' "${line#*=}"; else printf '%s\n' "$default"; fi
+    local key=$1 line
+    [[ -n ${CHOICE_DEFAULTS[$key]+x} ]] || return 1
+    line=$(grep -m1 "^$key=" "$(_stamp_dir)/choices" 2>/dev/null || true)
+    if [[ -n $line ]]; then printf '%s\n' "${line#*=}"; else printf '%s\n' "${CHOICE_DEFAULTS[$key]}"; fi
 }
 
 check_repo_clean() {
@@ -53,4 +48,6 @@ smoke_main() {
     return "$failed"
 }
 
-smoke_main "$@"
+if [[ ${BASH_SOURCE[0]} == "$0" ]]; then
+    smoke_main "$@"
+fi

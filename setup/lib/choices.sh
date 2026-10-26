@@ -167,20 +167,27 @@ _choices_render_zsh() {
     done
 }
 
-# Write CONTENT to FILE when it differs; status 0 when the file was changed.
+# Write CONTENT to FILE when it differs.
+# Status: 0 changed, 1 unchanged, 2 the write failed.
 _write_if_changed() { # FILE CONTENT
     local file=$1 content=$2
     if [[ -f $file && $(cat "$file") == "$content" ]]; then
         return 1
     fi
-    mkdir -p "$(dirname "$file")"
-    printf '%s\n' "$content" >"$file"
+    mkdir -p "$(dirname "$file")" || return 2
+    printf '%s\n' "$content" >"$file" || return 2
 }
 
 choices_save() {
-    local changed=0
-    _write_if_changed "$(_stamp_dir)/choices" "$(_choices_render)" && changed=1
-    _write_if_changed "$HOME/.config/dotfiles-bootstrap/choices.zsh" "$(_choices_render_zsh)" && changed=1
+    local changed=0 rc
+    rc=0
+    _write_if_changed "$(_stamp_dir)/choices" "$(_choices_render)" || rc=$?
+    [[ $rc -ne 2 ]] || die "cannot save tool choices to $(_stamp_dir)/choices"
+    [[ $rc -ne 0 ]] || changed=1
+    rc=0
+    _write_if_changed "$HOME/.config/dotfiles-bootstrap/choices.zsh" "$(_choices_render_zsh)" || rc=$?
+    [[ $rc -ne 2 ]] || die "cannot save tool choices to $HOME/.config/dotfiles-bootstrap/choices.zsh"
+    [[ $rc -ne 0 ]] || changed=1
     if [[ $changed -eq 1 ]]; then
         mark_changed "saved tool choices"
     fi

@@ -171,6 +171,24 @@ test_choices_warn_switch() {
     assert_contains "$out" zellij "switch warning"
 }
 
+test_choices_save_fails_loudly() {
+    : >blocker
+    choices_init
+    local out rc=0
+    out=$( (BOOTSTRAP_STATE_DIR=$PWD/blocker/state choices_save) 2>&1) || rc=$?
+    [[ $rc -ne 0 ]] || fail "choices_save should fail when the state dir cannot be created"
+    assert_contains "$out" ERROR "stderr"
+}
+
+test_smoke_choice_saved_and_default() {
+    mkdir -p "$BOOTSTRAP_STATE_DIR"
+    echo mux=zellij >"$BOOTSTRAP_STATE_DIR/choices"
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/tests/smoke.sh"
+    assert_eq zellij "$(smoke_choice mux)" "saved choice"
+    assert_eq eza "$(smoke_choice ls)" "default choice"
+}
+
 test_step_allowed_by_choices() {
     choices_init
     step_allowed_by_choices docker || fail "docker allowed by default"
