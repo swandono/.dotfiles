@@ -388,14 +388,48 @@ test_java_pick_fallbacks() {
     return 0
 }
 
+# The private patterns (one ERE per line) live outside the repo: by default in the untracked
+# .local/private-patterns, which .git/info/exclude keeps out of git. Publishing them in this
+# file would publish exactly what they guard.
+private_patterns_file() {
+    printf '%s\n' "${BOOTSTRAP_PRIVATE_PATTERNS:-$REPO_DIR/.local/private-patterns}"
+}
+
+# Print "file:line" for every line of the bootstrap-owned tracked files that matches a pattern
+# of PATTERNS. Only the location is printed: neither the matched text nor the patterns.
+private_hits() { # PATTERNS
+    local clean=$PWD/private-patterns.clean files
+    # A blank line in a -f file would match every line; comments are allowed.
+    grep -vE '^[[:space:]]*(#|$)' "$1" >"$clean" || true
+    [[ -s $clean ]] || return 0
+    mapfile -t files < <(git -C "$REPO_DIR" ls-files -- setup zsh/.zshrc-linux tmux/tmux-linux.conf \
+        zellij starship lazygit/config-linux.yml README.md)
+    [[ ${#files[@]} -gt 0 ]] || fail "no tracked bootstrap files found in $REPO_DIR"
+    (
+        cd "$REPO_DIR" || exit 1
+        grep -iEHn -f "$clean" -- "${files[@]}" || true
+    ) | cut -d: -f1,2
+}
+
 test_linux_configs_have_no_private_data() {
-    local rel file hits
-    for rel in zsh/.zshrc-linux tmux/tmux-linux.conf zellij/config.kdl lazygit/config-linux.yml starship/starship.toml; do
-        file=$REPO_DIR/$rel
-        [[ -f $file ]] || fail "$rel is missing"
-        hits=$(grep -iEn -f "${BOOTSTRAP_PRIVATE_PATTERNS:-/dev/null}" "$file" || true)
-        [[ -z $hits ]] || fail "private data in $rel: $hits"
-    done
+    local patterns hits
+    patterns=$(private_patterns_file)
+    if [[ ! -f $patterns ]]; then
+        echo "    skipped: no private pattern file (set BOOTSTRAP_PRIVATE_PATTERNS or create .local/private-patterns)"
+        return 0
+    fi
+    hits=$(private_hits "$patterns")
+    [[ -z $hits ]] || fail "private data at: $(tr '\n' ' ' <<<"$hits")"
+}
+
+test_private_hits_reports_locations_only() {
+    printf '# a comment\n\n%s\n' '^set -euo pipefail$' >patterns
+    local hits
+    hits=$(private_hits "$PWD/patterns")
+    assert_contains "$hits" "setup/install.sh:" "a known line is found"
+    [[ $hits != *pipefail* ]] || fail "the matched text was printed: $hits"
+    printf '\n# only a comment\n' >patterns
+    assert_eq "" "$(private_hits "$PWD/patterns")" "blank and comment lines match nothing"
 }
 
 # ---------------------------------------------------------------- install.sh
