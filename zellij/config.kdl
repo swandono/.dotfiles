@@ -1,0 +1,21 @@
+// Zellij config for the server profile. Linked to ~/.config/zellij/config.kdl
+// by setup/steps/40-tmux.sh. Everything not set here keeps zellij's defaults.
+
+theme "nord"
+default_shell "zsh"
+mouse_mode true
+scroll_buffer_size 50000
+
+keybinds {
+    // Ctrl a is the tmux-style prefix: it enters zellij's tmux mode.
+    // Ctrl b (the default entry key) is released.
+    shared_except "tmux" "locked" {
+        unbind "Ctrl b"
+        bind "Ctrl a" { SwitchToMode "Tmux"; }
+    }
+    tmux {
+        unbind "Ctrl b"
+        // Ctrl a Ctrl a sends a literal Ctrl a to the pane (tmux send-prefix).
+        bind "Ctrl a" { Write 1; SwitchToMode "Normal"; }
+    }
+}

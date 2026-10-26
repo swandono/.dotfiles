@@ -200,6 +200,38 @@ check_prompt_starship() {
     [[ -z $v ]] || { echo "starship prompt wrote to stderr: $v"; return 1; }
 }
 
+check_tmux_config() {
+    local dir sha head plug=$HOME/.config/tmux/plugins out
+    [[ $(readlink "$HOME/.config/tmux/tmux.conf") == "$REPO_PATH/tmux/tmux-linux.conf" ]] ||
+        { echo "tmux.conf link is wrong"; return 1; }
+    [[ $(readlink /usr/local/bin/tmux-sessionizer) == "$REPO_PATH/tmux/tmux-sessionizer" ]] ||
+        { echo "tmux-sessionizer link is wrong"; return 1; }
+    [[ -f $HOME/.config/tmux/local.conf ]] || { echo "$HOME/.config/tmux/local.conf is missing"; return 1; }
+    [[ ! -e $HOME/.tmux.conf && ! -L $HOME/.tmux.conf ]] || { echo "$HOME/.tmux.conf still exists"; return 1; }
+    while read -r dir sha; do
+        head=$(git -C "$plug/$dir" rev-parse HEAD 2>/dev/null || true)
+        [[ $head == "$sha" ]] || { echo "plugin $dir is at '$head', want $sha"; return 1; }
+    done < <(printf '%s %s\n' tpm "$TPM_SHA" tmux-sensible "$TMUX_SENSIBLE_SHA" tmux-yank "$TMUX_YANK_SHA" \
+        tmux-resurrect "$TMUX_RESURRECT_SHA" tmux "$TMUX_NORD_SHA")
+    tmux -L t kill-server >/dev/null 2>&1 || true
+    tmux -L t new -d -s probe || { echo "tmux new failed"; return 1; }
+    out=$(tmux -L t show -g history-limit 2>&1)
+    [[ $out == "history-limit 50000" ]] || { tmux -L t kill-server; echo "history-limit is '$out'"; return 1; }
+    out=$(tmux -L t show -g @plugin 2>&1)
+    [[ $out == *nordtheme/tmux* ]] || { tmux -L t kill-server; echo "@plugin lacks nordtheme/tmux: '$out'"; return 1; }
+    tmux -L t kill-server
+}
+
+check_zellij() {
+    local v
+    v=$(zellij --version 2>&1)
+    [[ $v == "zellij $ZELLIJ_VERSION" ]] || { echo "zellij says '$v', want zellij $ZELLIJ_VERSION"; return 1; }
+    [[ $(readlink "$HOME/.config/zellij/config.kdl") == "$REPO_PATH/zellij/config.kdl" ]] ||
+        { echo "zellij config link is wrong"; return 1; }
+    [[ -f $HOME/.config/zellij/config.kdl ]] || { echo "zellij config link does not resolve"; return 1; }
+    zellij setup --check >/dev/null 2>&1 || { echo "zellij setup --check failed"; return 1; }
+}
+
 # New check_<step> functions go above this line (one per step, in task order).
 
 smoke_main() {

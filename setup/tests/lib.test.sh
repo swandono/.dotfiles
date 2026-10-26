@@ -313,7 +313,7 @@ test_cli_asset_urls_resolve() {
     # shellcheck source=/dev/null
     source "$SETUP_DIR/steps/20-cli.sh"
     local tool vname ver arch url
-    for tool in nvim fzf lazygit lazydocker eza gitui starship; do
+    for tool in nvim fzf lazygit lazydocker eza gitui starship zellij; do
         vname=${tool^^}_VERSION
         ver=${!vname}
         for arch in x86_64 aarch64; do
@@ -325,11 +325,14 @@ test_cli_asset_urls_resolve() {
 
 # --------------------------------------------------------------------- zsh
 
-test_zshrc_linux_has_no_private_data() {
-    local file=$REPO_DIR/zsh/.zshrc-linux hits
-    [[ -f $file ]] || fail "zsh/.zshrc-linux is missing"
-    hits=$(grep -iEn -f "${BOOTSTRAP_PRIVATE_PATTERNS:-/dev/null}" "$file" || true)
-    [[ -z $hits ]] || fail "private data in zsh/.zshrc-linux: $hits"
+test_linux_configs_have_no_private_data() {
+    local rel file hits
+    for rel in zsh/.zshrc-linux tmux/tmux-linux.conf zellij/config.kdl lazygit/config-linux.yml starship/starship.toml; do
+        file=$REPO_DIR/$rel
+        [[ -f $file ]] || fail "$rel is missing"
+        hits=$(grep -iEn -f "${BOOTSTRAP_PRIVATE_PATTERNS:-/dev/null}" "$file" || true)
+        [[ -z $hits ]] || fail "private data in $rel: $hits"
+    done
 }
 
 # ---------------------------------------------------------------- install.sh

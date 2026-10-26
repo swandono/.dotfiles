@@ -17,6 +17,7 @@ cli_asset_url() { # TOOL VERSION ARCH
     lazydocker) printf '%s/jesseduffield/lazydocker/releases/download/v%s/lazydocker_%s_Linux_%s.tar.gz\n' "$gh" "$ver" "$ver" "$lg_arch" ;;
     eza) printf '%s/eza-community/eza/releases/download/v%s/eza_%s-unknown-linux-gnu.tar.gz\n' "$gh" "$ver" "$arch" ;;
     gitui) printf '%s/gitui-org/gitui/releases/download/v%s/gitui-linux-%s.tar.gz\n' "$gh" "$ver" "$arch" ;;
+    zellij) printf '%s/zellij-org/zellij/releases/download/v%s/zellij-%s-unknown-linux-musl.tar.gz\n' "$gh" "$ver" "$arch" ;;
     starship) printf '%s/starship/starship/releases/download/v%s/starship-%s-unknown-linux-musl.tar.gz\n' "$gh" "$ver" "$arch" ;;
     *)
         log_warn "cli_asset_url: unknown tool '$tool'"
@@ -40,13 +41,17 @@ _cli_single_sha() { # URL
 # binary BIN from it and install it as /usr/local/bin/BIN. SUMS_URL is a
 # checksum list, or any URL ending in ".sha256": then the file
 # "<asset>.sha256" next to it holds a single bare hash (starship publishes one
-# per asset).
+# per asset). A URL ending in ".sha256sum" is zellij's: the file
+# "<asset minus .tar.gz>.sha256sum" next to it holds the hash of the extracted
+# binary (not of the tarball), so that is what gets verified.
 _cli_install_tarball() { # TOOL VERSION BIN [SUMS_URL]
-    local tool=$1 ver=$2 bin=$3 sums=${4:-} url asset sha="" tmp arch
+    local tool=$1 ver=$2 bin=$3 sums=${4:-} url asset sha="" binsha="" tmp arch
     arch=$(bootstrap_arch)
     url=$(cli_asset_url "$tool" "$ver" "$arch") || return 1
     asset=${url##*/}
-    if [[ $sums == *.sha256 ]]; then
+    if [[ $sums == *.sha256sum ]]; then
+        binsha=$(_cli_single_sha "${sums%/*}/${asset%.tar.gz}.sha256sum") || return 1
+    elif [[ $sums == *.sha256 ]]; then
         sha=$(_cli_single_sha "${sums%/*}/$asset.sha256") || return 1
     elif [[ -n $sums ]]; then
         sha=$(sha256_from_sums "$sums" "$asset") || return 1
@@ -56,6 +61,11 @@ _cli_install_tarball() { # TOOL VERSION BIN [SUMS_URL]
     mkdir "$tmp/x" || { rm -rf "$tmp"; return 1; }
     tar -xzf "$tmp/asset.tar.gz" -C "$tmp/x" || { rm -rf "$tmp"; return 1; }
     [[ -f $tmp/x/$bin ]] || { rm -rf "$tmp"; log_warn "$bin not found in $asset"; return 1; }
+    if [[ -n $binsha && $(sha256sum "$tmp/x/$bin" | cut -d' ' -f1) != "$binsha" ]]; then
+        rm -rf "$tmp"
+        log_warn "sha256 mismatch for $bin extracted from $asset"
+        return 1
+    fi
     install_bin "$tmp/x/$bin" "$bin" || { rm -rf "$tmp"; return 1; }
     rm -rf "$tmp"
 }
