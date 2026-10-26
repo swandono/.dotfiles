@@ -33,11 +33,13 @@ plugins+=(command-not-found git fzf-tab zsh-autosuggestions zsh-syntax-highlight
 
 # PATH entries, only for directories that exist (first entry wins)
 _path_pre=()
-for _d in $HOME/.opencode/bin $HOME/.local/bin /snap/bin $HOME/lua51/bin $HOME/go/bin; do
+for _d in $HOME/.opencode/bin $HOME/.local/bin $HOME/lua51/bin $HOME/go/bin; do
   [[ -d $_d ]] && _path_pre+=($_d)
 done
 path=($_path_pre $path)
 unset _path_pre _d
+# /snap/bin goes last: the pinned copies in /usr/local/bin must win over snap's.
+[[ -d /snap/bin && ${path[(Ie)/snap/bin]} -eq 0 ]] && path+=(/snap/bin)
 
 export EDITOR='nvim'
 
