@@ -282,7 +282,7 @@ check_monitor() {
 }
 
 check_configs_full() {
-    local pair dest
+    local pair dest themes
     for pair in bat:bat yazi:yazi; do
         dest=$HOME/.config/${pair%%:*}
         [[ $(readlink "$dest") == "$REPO_PATH/${pair#*:}" ]] || { echo "$dest link is wrong"; return 1; }
@@ -295,8 +295,17 @@ check_configs_full() {
         echo "eza config is linked but ls=ls"
         return 1
     fi
-    batcat --list-themes 2>&1 | grep -q 'Catppuccin Mocha' || { echo "batcat does not list Catppuccin Mocha"; return 1; }
+    themes=$(batcat --list-themes 2>&1 || true)
+    [[ $themes == *'Catppuccin Mocha'* ]] || { echo "batcat does not list Catppuccin Mocha"; return 1; }
     yazi --version >/dev/null 2>&1 || { echo "yazi --version failed"; return 1; }
+    # --version never reads the config. Start yazi in a throwaway tmux pty: a config
+    # that does not parse makes it print "Failed to parse config" and exit.
+    tmux -L yz kill-server >/dev/null 2>&1 || true
+    tmux -L yz new -d -s yz -x 100 -y 12 'yazi /tmp 2>&1; sleep 10' || { echo "could not start yazi in tmux"; return 1; }
+    sleep 3
+    themes=$(tmux -L yz capture-pane -p -t yz 2>&1 || true)
+    tmux -L yz kill-server >/dev/null 2>&1 || true
+    [[ $themes != *'Failed to parse'* ]] || { echo "yazi rejects its config: $themes"; return 1; }
     ya --version >/dev/null 2>&1 || { echo "ya --version failed"; return 1; }
 }
 

@@ -65,14 +65,19 @@ step_monitor() {
 }
 
 step_configs_full() {
+    local themes
     # lazygit and gitui configs are linked by git_tui; eza's only matters when eza is installed.
     link_file "$REPO_DIR/bat" "$HOME/.config/bat"
     link_file "$REPO_DIR/yazi" "$HOME/.config/yazi"
     if choice_has ls eza; then link_file "$REPO_DIR/eza" "$HOME/.config/eza"; fi
     # The bat cache lives in ~/.cache, so it must be rebuilt on every fresh machine.
     # Only rebuild when the custom themes are not in it yet, to keep reruns silent.
-    if command -v batcat >/dev/null 2>&1 && ! batcat --list-themes 2>/dev/null | grep -q 'Catppuccin Mocha'; then
-        batcat cache --build >/dev/null
-        mark_changed "built the bat cache"
+    # Capture the list first: grep -q on a pipe can SIGPIPE batcat and fail under pipefail.
+    if command -v batcat >/dev/null 2>&1; then
+        themes=$(batcat --list-themes 2>/dev/null || true)
+        if [[ $themes != *'Catppuccin Mocha'* ]]; then
+            batcat cache --build >/dev/null
+            mark_changed "built the bat cache"
+        fi
     fi
 }

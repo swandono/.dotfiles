@@ -171,7 +171,7 @@ sha256_from_sums() { # SUMS_URL ASSET_NAME
 install_bin() { # SRC NAME
     local src=$1 dest=/usr/local/bin/$2
     cmp -s "$src" "$dest" && return 0
-    install -m 0755 "$src" "$dest"
+    install -m 0755 "$src" "$dest" || return 1
     mark_changed "installed $dest"
 }
 

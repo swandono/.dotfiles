@@ -305,6 +305,18 @@ test_warn_shadowed() {
     assert_contains "$out" "$PWD/bin/nvim" "warning"
 }
 
+# -------------------------------------------------------------- install_bin
+
+test_install_bin_reports_failure_in_or_context() {
+    printf '#!/bin/sh\n' >src
+    local before=$BOOTSTRAP_CHANGED rc=0
+    # The destination's parent does not exist, so nothing is ever created.
+    if ! install_bin "$PWD/src" no-such-dir/x 2>/dev/null; then rc=1; fi
+    assert_eq 1 "$rc" "install_bin status when install fails"
+    assert_eq "$before" "$BOOTSTRAP_CHANGED" "BOOTSTRAP_CHANGED after failed install"
+    [[ ! -e /usr/local/bin/no-such-dir ]] || fail "test touched /usr/local/bin"
+}
+
 # ----------------------------------------------------------------- cli tools
 
 test_cli_asset_urls_resolve() {
