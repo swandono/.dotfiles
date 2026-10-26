@@ -60,7 +60,7 @@ alias ducks='du -cksh * | sort -h'
   --exclude-dir="^/proc|^/sys|^/dev|^/run"'
 alias pc='pkill -9 -f "chrome-devtools" 2>/dev/null; pkill -9 -f chromium 2>/dev/null; pkill -9 -f chrome 2>/dev/null; rm -rf ~/.cache/chrome-devtools-mcp/chrome-profile/SingletonLock 2>/dev/null; (setopt null_glob; rm -rf /tmp/mcp-chrome* 2>/dev/null); echo "Chrome cleanup done"'
 (( $+commands[claude] )) && alias assistant='claude --resume "assistant" --channels plugin:telegram@claude-plugins-official'
-alias gemini='source ~/.gemini_env && npx https://github.com/google-gemini/gemini-cli'
+[[ -f ~/.gemini_env ]] && alias gemini='source ~/.gemini_env && command gemini'
 
 case $BOOTSTRAP_CONTAINER in
   podman)

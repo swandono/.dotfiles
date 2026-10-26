@@ -455,6 +455,15 @@ check_ai_clis() {
             ! command -v "$bin" >/dev/null 2>&1 || { echo "$bin is installed but not chosen"; return 1; }
         fi
     done
+    # Without ~/.gemini_env the zshrc defines no gemini alias, so the installed CLI (or nothing) runs.
+    if [[ ! -e $HOME/.gemini_env ]]; then
+        out=$(zsh -i -c 'whence -w gemini' 2>&1 </dev/null) || true
+        if [[ $(smoke_choice ai) == *gemini* ]]; then
+            [[ $out == "gemini: command" ]] || { echo "whence -w gemini says '$out', want the installed command"; return 1; }
+        else
+            [[ $out == "gemini: none" ]] || { echo "whence -w gemini says '$out', want none"; return 1; }
+        fi
+    fi
     out=$(bd --version 2>&1) || { echo "bd --version failed: $out"; return 1; }
     [[ $out == *"$BD_VERSION"* ]] || { echo "bd --version: $out"; return 1; }
     out=$(/usr/bin/npm ls -g --depth=0 --json 2>/dev/null || true)
