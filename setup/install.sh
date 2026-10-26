@@ -88,6 +88,16 @@ for name in "${ONLY[@]}" "${SKIP[@]}"; do
         die "unknown step '$name'; valid steps for $PROFILE: ${VALID_STEPS[*]}"
 done
 
+# Refuse before the menu, so nobody answers it only to be turned away. --list and --dry-run
+# change nothing and need no privileges.
+if [[ $LIST -eq 0 && $DRY_RUN -eq 0 ]]; then
+    require_root
+    require_supported_os
+    if [[ $REPO_DIR != "$(cd "$HOME/.config/nvim" 2>/dev/null && pwd -P)" ]]; then
+        die "repo must live at \$HOME/.config/nvim (it is at $REPO_DIR)"
+    fi
+fi
+
 selected() { # STEP: true when the step should run; records --skip in BOOTSTRAP_SKIPPED
     local step=$1
     step_allowed_by_choices "$step" || return 1
@@ -137,11 +147,6 @@ if [[ $LIST -eq 1 || $DRY_RUN -eq 1 ]]; then
     exit 0
 fi
 
-require_root
-require_supported_os
-if [[ $REPO_DIR != "$(cd "$HOME/.config/nvim" 2>/dev/null && pwd -P)" ]]; then
-    die "repo must live at \$HOME/.config/nvim (it is at $REPO_DIR)"
-fi
 choices_warn_switch
 choices_save
 

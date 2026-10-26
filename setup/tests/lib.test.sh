@@ -702,6 +702,22 @@ test_dry_run_arg_form() {
     assert_file_missing "$BOOTSTRAP_STATE_DIR/choices"
 }
 
+test_menu_refuses_non_root_before_asking() {
+    local out rc=0
+    out=$(printf '1\n\n\n\n\n\n\ny\n' | BOOTSTRAP_UI=plain BOOTSTRAP_EUID=1000 bash "$SETUP_DIR/install.sh" 2>&1) || rc=$?
+    [[ $rc -ne 0 ]] || fail "a non-root menu run must fail"
+    assert_contains "$out" "must run as root" "message"
+    [[ $out != *"Server bootstrap"* && $out != *"Choice ["* ]] || fail "the menu started: $out"
+}
+
+test_list_and_dry_run_need_no_root() {
+    BOOTSTRAP_EUID=1000 bash "$SETUP_DIR/install.sh" essential --list >/dev/null 2>&1 || fail "--list as non-root"
+    BOOTSTRAP_EUID=1000 bash "$SETUP_DIR/install.sh" full --dry-run >/dev/null 2>&1 || fail "--dry-run as non-root"
+    menu_dry_run '1\n\n\n\n\n\n\ny\n' >/dev/null || fail "menu --dry-run as root"
+    printf '1\n\n\n\n\n\n\ny\n' | BOOTSTRAP_UI=plain BOOTSTRAP_EUID=1000 bash "$SETUP_DIR/install.sh" --dry-run \
+        >/dev/null 2>&1 || fail "menu --dry-run as non-root"
+}
+
 test_no_args_no_tty() {
     local out rc=0
     out=$(bash "$SETUP_DIR/install.sh" </dev/null 2>&1) || rc=$?
