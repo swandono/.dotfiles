@@ -10,8 +10,8 @@ set -euo pipefail
 SETUP_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 REPO_ROOT=$(dirname "$SETUP_DIR")
 SHELLCHECK_IMAGE=koalaman/shellcheck:v0.10.0
-UBUNTU_IMAGE=ubuntu:24.04
-SNAPSHOT_IMAGE=dotfiles-bootstrap:essential
+UBUNTU_IMAGE=${BOOTSTRAP_TEST_IMAGE:-ubuntu:24.04}
+SNAPSHOT_IMAGE=dotfiles-bootstrap:essential-${UBUNTU_IMAGE##*:}
 TEST_LABEL=dotfiles-bootstrap-test
 CTR_REPO=/root/.config/nvim
 MIN_FREE_GB_ESSENTIAL=8

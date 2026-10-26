@@ -86,7 +86,7 @@ _mise_uv_tool() { # NAME WANT INSTALL_ARGS...
 step_mise_runtimes() {
     # shellcheck disable=SC2206  # the pins are space separated lists
     local node=($MISE_NODE) go=($MISE_GO)
-    apt_install curl ca-certificates git jq build-essential python3-pip python3.12-venv
+    apt_install curl ca-certificates git jq build-essential python3-pip python3-venv
     if ! _cli_has_version mise "$MISE_VERSION"; then _mise_install_binary; fi
     warn_shadowed mise /usr/local/bin/mise
     mkdir -p "$HOME/.config/mise" "$HOME/go/bin"

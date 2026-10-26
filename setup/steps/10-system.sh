@@ -20,12 +20,13 @@ step_base_packages() {
 }
 
 step_docker() {
-    local arch
+    local arch codename
     # gnupg is needed to dearmor repo keys.
     apt_install ca-certificates curl gnupg
     arch=$(dpkg --print-architecture)
+    codename=$(os_codename)
     apt_add_repo docker https://download.docker.com/linux/ubuntu/gpg \
-        "deb [arch=$arch signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu noble stable"
+        "deb [arch=$arch signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $codename stable"
     apt_install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     _enable_unit docker.service
 }
@@ -36,9 +37,11 @@ step_podman() {
 }
 
 step_tailscale() {
+    local codename
     apt_install ca-certificates curl gnupg
-    apt_add_repo tailscale https://pkgs.tailscale.com/stable/ubuntu/noble.noarmor.gpg \
-        "deb [signed-by=/etc/apt/keyrings/tailscale.gpg] https://pkgs.tailscale.com/stable/ubuntu noble main"
+    codename=$(os_codename)
+    apt_add_repo tailscale "https://pkgs.tailscale.com/stable/ubuntu/$codename.noarmor.gpg" \
+        "deb [signed-by=/etc/apt/keyrings/tailscale.gpg] https://pkgs.tailscale.com/stable/ubuntu $codename main"
     apt_install tailscale
     # Never run `tailscale up`: joining the tailnet is the owner's call.
     _enable_unit tailscaled.service

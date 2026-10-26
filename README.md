@@ -12,7 +12,7 @@ After that you can create `nvim` folder in `~/.config`, then git clone this repo
 
 ## Server setup
 
-`setup/install.sh` turns a freshly hardened Ubuntu 24.04 VPS into a box with this shell, editor and toolset. It is plain bash, runs as root only (`EUID` 0, `HOME=/root`), and the `essential` profile works on x86_64 and aarch64 (`full` skips a tool with a warning where upstream has no aarch64 build).
+`setup/install.sh` turns a freshly hardened Ubuntu 24.04 or 26.04 VPS into a box with this shell, editor and toolset. It is plain bash, runs as root only (`EUID` 0, `HOME=/root`), and the `essential` profile works on x86_64 and aarch64 (`full` skips a tool with a warning where upstream has no aarch64 build).
 
 Hardening is done by hand first and is never touched by the installer: the sudo user, sshd, UFW, fail2ban, the ufw-docker rules and the locale. The installer starts no containers and changes nothing about SSH or the firewall.
 
@@ -71,7 +71,7 @@ Every pinned version and plugin commit lives in `setup/versions.env`. To bump on
 
 ### Testing
 
-`setup/test.sh` runs the installer in throwaway `ubuntu:24.04` containers (never on the host):
+`setup/test.sh` runs the installer in throwaway `ubuntu:24.04` containers (set `BOOTSTRAP_TEST_IMAGE=ubuntu:26.04` for 26.04; never on the host):
 
 - `lint`: shellcheck on everything under `setup/`.
 - `lib`: unit tests of the helper libraries. Needs network: some tests check that every pinned download URL resolves. One test scans the bootstrap's tracked files for private data, with patterns (one extended regex per line) read from `.local/private-patterns` or the file named by `BOOTSTRAP_PRIVATE_PATTERNS`. That file is optional and never committed (`.git/info/exclude` keeps `.local/` out of git); without it the test prints a skip notice and passes.

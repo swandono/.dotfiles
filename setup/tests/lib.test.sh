@@ -63,6 +63,27 @@ test_require_root_rejects_non_root() {
     [[ $rc -ne 0 ]] || fail "require_root should fail for uid 1000"
 }
 
+# ------------------------------------------------------------- supported os
+
+test_supported_os_accepts_24_04_and_26_04() {
+    local v rc
+    for v in 24.04:noble 26.04:resolute; do
+        printf 'ID=ubuntu\nVERSION_ID="%s"\nVERSION_CODENAME=%s\n' "${v%%:*}" "${v#*:}" >os-release
+        rc=0
+        (BOOTSTRAP_OS_RELEASE=$PWD/os-release require_supported_os) >/dev/null 2>&1 || rc=$?
+        assert_eq 0 "$rc" "require_supported_os on ${v%%:*}"
+        assert_eq "${v#*:}" "$(BOOTSTRAP_OS_RELEASE=$PWD/os-release os_codename)" "codename on ${v%%:*}"
+    done
+}
+
+test_supported_os_rejects_other_releases() {
+    local out rc=0
+    printf 'ID=ubuntu\nVERSION_ID="25.10"\nVERSION_CODENAME=questing\n' >os-release
+    out=$(BOOTSTRAP_OS_RELEASE=$PWD/os-release require_supported_os 2>&1) || rc=$?
+    [[ $rc -ne 0 ]] || fail "require_supported_os should refuse 25.10"
+    assert_contains "$out" "24.04 26.04" "error names the supported releases"
+}
+
 # -------------------------------------------------------------------- fetch
 
 test_fetch_bad_checksum_leaves_nothing() {

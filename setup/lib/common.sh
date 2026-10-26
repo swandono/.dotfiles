@@ -30,20 +30,35 @@ require_root() {
     [[ ${HOME:-} == /root ]] || die "HOME must be /root (it is '${HOME:-}')"
 }
 
+SUPPORTED_UBUNTU=(24.04 26.04)
+
+# BOOTSTRAP_OS_RELEASE points tests at a fake os-release file.
 _os_field() {
-    { grep -m1 "^$1=" /etc/os-release 2>/dev/null || true; } | cut -d= -f2- | tr -d '"'
+    { grep -m1 "^$1=" "${BOOTSTRAP_OS_RELEASE:-/etc/os-release}" 2>/dev/null || true; } | cut -d= -f2- | tr -d '"'
+}
+
+# Release codename (noble, resolute, ...) for vendor apt repos.
+os_codename() {
+    local codename
+    codename=$(_os_field VERSION_CODENAME)
+    [[ -n $codename ]] || die "VERSION_CODENAME is missing from os-release"
+    printf '%s\n' "$codename"
 }
 
 require_supported_os() {
-    local id version
+    local id version v
     id=$(_os_field ID)
     version=$(_os_field VERSION_ID)
-    [[ $id == ubuntu && $version == 24.04 ]] && return 0
+    if [[ $id == ubuntu ]]; then
+        for v in "${SUPPORTED_UBUNTU[@]}"; do
+            [[ $version == "$v" ]] && return 0
+        done
+    fi
     if [[ ${BOOTSTRAP_FORCE:-0} == 1 ]]; then
         log_warn "unsupported OS '$id $version', continuing because BOOTSTRAP_FORCE=1"
         return 0
     fi
-    die "only Ubuntu 24.04 is supported (found '$id $version'); set BOOTSTRAP_FORCE=1 to override"
+    die "only Ubuntu ${SUPPORTED_UBUNTU[*]} are supported (found '$id $version'); set BOOTSTRAP_FORCE=1 to override"
 }
 
 bootstrap_arch() {
