@@ -12,6 +12,8 @@ source "$REPO_PATH/setup/lib/choices.sh"
 
 # shellcheck source=../versions.env
 source "$REPO_PATH/setup/versions.env"
+# shellcheck source=../steps/70-full-lang.sh
+source "$REPO_PATH/setup/steps/70-full-lang.sh"
 
 # Saved tool choice for KEY; falls back to the install default when unsaved.
 smoke_choice() { # KEY
@@ -322,9 +324,9 @@ check_mise_runtimes() {
     v=$("$m" exec -- uv --version 2>&1)
     [[ $v == "uv $MISE_UV"* ]] || { echo "uv says '$v'"; return 1; }
     v=$("$m" exec -- go version -m "$HOME/go/bin/chisel" 2>&1)
-    [[ $v == *"v$CHISEL_VERSION"* ]] || { echo "chisel is not v$CHISEL_VERSION: $v"; return 1; }
+    _go_main_mod_is "$v" github.com/jpillora/chisel "$CHISEL_VERSION" || { echo "chisel is not v$CHISEL_VERSION: $v"; return 1; }
     v=$("$m" exec -- go version -m "$HOME/go/bin/sqlc" 2>&1)
-    [[ $v == *"v$SQLC_VERSION"* ]] || { echo "sqlc is not v$SQLC_VERSION: $v"; return 1; }
+    _go_main_mod_is "$v" github.com/sqlc-dev/sqlc "$SQLC_VERSION" || { echo "sqlc is not v$SQLC_VERSION: $v"; return 1; }
     "$HOME/.local/bin/posting" --help >/dev/null 2>&1 || { echo "posting --help failed"; return 1; }
     "$HOME/.local/bin/specify" --help >/dev/null 2>&1 || { echo "specify --help failed"; return 1; }
     v=$(zsh -i -c 'node -v' 2>/dev/null </dev/null)

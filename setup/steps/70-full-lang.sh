@@ -45,13 +45,25 @@ _mise_global() { # TOOL VERSION...
     mark_changed "mise installed ${specs[*]}"
 }
 
-_mise_go_tool() { # BINARY MODULE VERSION
-    local bin=$1 module=$2 ver=$3 go=${MISE_GO%% *}
-    if _mise exec "go@$go" -- go version -m "$HOME/go/bin/$bin" 2>/dev/null | grep -q "v$ver"; then
+_mise_go_tool() { # BINARY PACKAGE MODULE VERSION
+    local bin=$1 pkg=$2 mod=$3 ver=$4 go=${MISE_GO%% *} out
+    # Capture first: a pipe into grep -q can SIGPIPE the writer under pipefail.
+    out=$(_mise exec "go@$go" -- go version -m "$HOME/go/bin/$bin" 2>/dev/null || true)
+    if _go_main_mod_is "$out" "$mod" "$ver"; then
         return 0
     fi
-    GOBIN=$HOME/go/bin _mise exec "go@$go" -- go install "$module@v$ver"
+    GOBIN=$HOME/go/bin _mise exec "go@$go" -- go install "$pkg@v$ver"
     mark_changed "go installed $bin $ver"
+}
+
+# True when `go version -m` OUTPUT shows MODULE (the binary's own main module) at VERSION.
+# Only the `mod` line counts: dependency lines (`dep`) at the same version must not match.
+_go_main_mod_is() { # OUTPUT MODULE VERSION
+    local kind mod ver _rest
+    while IFS=$'\t' read -r kind mod ver _rest; do
+        [[ $kind == mod && $mod == "$2" && $ver == "v$3" ]] && return 0
+    done <<<"$1"
+    return 1
 }
 
 # Install a uv tool NAME unless WANT is already in `uv tool list` or in the tool's
@@ -86,8 +98,8 @@ step_mise_runtimes() {
     try_tool mise-pnpm _mise_global pnpm "$MISE_PNPM"
     try_tool mise-uv _mise_global uv "$MISE_UV"
 
-    try_tool chisel _mise_go_tool chisel github.com/jpillora/chisel "$CHISEL_VERSION"
-    try_tool sqlc _mise_go_tool sqlc github.com/sqlc-dev/sqlc/cmd/sqlc "$SQLC_VERSION"
+    try_tool chisel _mise_go_tool chisel github.com/jpillora/chisel github.com/jpillora/chisel "$CHISEL_VERSION"
+    try_tool sqlc _mise_go_tool sqlc github.com/sqlc-dev/sqlc/cmd/sqlc github.com/sqlc-dev/sqlc "$SQLC_VERSION"
     # posting 2.3.0 pins textual-autocomplete==3.0.0a13, a pre-release.
     try_tool posting _mise_uv_tool posting "posting v$POSTING_VERSION" \
         --prerelease=allow "posting==$POSTING_VERSION"
@@ -138,7 +150,7 @@ _rust_cargo_tool() { # CRATE VERSION
     local crate=$1 ver=$2 known
     known=$(cargo install --list 2>/dev/null || true)
     [[ $known == *"$crate v$ver:"* ]] && return 0
-    cargo binstall --no-confirm --locked "$crate@$ver"
+    cargo binstall --no-confirm --locked --disable-telemetry --disable-strategies quick-install "$crate@$ver"
     mark_changed "cargo installed $crate $ver"
 }
 

@@ -335,6 +335,18 @@ test_cli_asset_urls_resolve() {
     done
 }
 
+test_go_main_mod_match_is_exact() {
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/steps/70-full-lang.sh"
+    local out
+    # Main module at v1.0.0, a dependency (with a prefix-like path) at the pinned v1.11.3.
+    out=$'/root/go/bin/chisel: go1.27.3\n\tpath\tgithub.com/jpillora/chisel\n\tmod\tgithub.com/jpillora/chisel\tv1.0.0\th1:abc=\n\tdep\tgithub.com/other/lib\tv1.11.3\th1:def=\n\tdep\tgithub.com/jpillora/chisel-extra\tv1.11.3\th1:ghi='
+    _go_main_mod_is "$out" github.com/jpillora/chisel 1.11.3 && fail "dependency at the pin matched"
+    _go_main_mod_is "$out" github.com/jpillora/chisel 1.0.0 || fail "main module version did not match"
+    _go_main_mod_is "$out" github.com/jpillora/chisel 1.0 && fail "version prefix matched"
+    return 0
+}
+
 # --------------------------------------------------------------------- zsh
 
 test_linux_configs_have_no_private_data() {
