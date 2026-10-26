@@ -301,6 +301,77 @@ check_configs_full() {
     ya --version >/dev/null 2>&1 || { echo "ya --version failed"; return 1; }
 }
 
+check_mise_runtimes() {
+    local v cfg=$HOME/.config/mise/config.toml m=/usr/local/bin/mise
+    v=$("$m" --version 2>&1)
+    [[ $v == *"$MISE_VERSION"* ]] || { echo "mise says '$v', want $MISE_VERSION"; return 1; }
+    [[ -f $cfg && ! -L $cfg ]] || { echo "$cfg is not a regular file"; return 1; }
+    v=$("$m" exec -- node -v 2>&1)
+    [[ $v == v22.* ]] || { echo "default node is '$v', want v22.x"; return 1; }
+    v=$("$m" ls node 2>&1)
+    [[ $v == *" 24."* ]] || { echo "mise ls node lists no 24.x: $v"; return 1; }
+    v=$("$m" exec -- python --version 2>&1)
+    [[ $v == "Python $MISE_PYTHON" ]] || { echo "python says '$v'"; return 1; }
+    v=$("$m" exec -- go version 2>&1)
+    [[ $v == *"go${MISE_GO%% *}"* ]] || { echo "default go says '$v'"; return 1; }
+    "$m" where "go@${MISE_GO##* }" >/dev/null 2>&1 || { echo "go ${MISE_GO##* } is not installed"; return 1; }
+    v=$("$m" exec -- bun --version 2>&1)
+    [[ $v == "$MISE_BUN" ]] || { echo "bun says '$v'"; return 1; }
+    v=$("$m" exec -- pnpm --version 2>&1)
+    [[ $v == "$MISE_PNPM" ]] || { echo "pnpm says '$v'"; return 1; }
+    v=$("$m" exec -- uv --version 2>&1)
+    [[ $v == "uv $MISE_UV"* ]] || { echo "uv says '$v'"; return 1; }
+    v=$("$m" exec -- go version -m "$HOME/go/bin/chisel" 2>&1)
+    [[ $v == *"v$CHISEL_VERSION"* ]] || { echo "chisel is not v$CHISEL_VERSION: $v"; return 1; }
+    v=$("$m" exec -- go version -m "$HOME/go/bin/sqlc" 2>&1)
+    [[ $v == *"v$SQLC_VERSION"* ]] || { echo "sqlc is not v$SQLC_VERSION: $v"; return 1; }
+    "$HOME/.local/bin/posting" --help >/dev/null 2>&1 || { echo "posting --help failed"; return 1; }
+    "$HOME/.local/bin/specify" --help >/dev/null 2>&1 || { echo "specify --help failed"; return 1; }
+    v=$(zsh -i -c 'node -v' 2>/dev/null </dev/null)
+    [[ $v == v22.* ]] || { echo "zsh -i node -v says '$v'"; return 1; }
+    v=$(zsh -i -c 'alias nxx' 2>/dev/null </dev/null)
+    [[ $v == "nxx='mise current node'" ]] || { echo "alias nxx is '$v'"; return 1; }
+    v=$(zsh -i -c exit 2>&1 >/dev/null </dev/null)
+    [[ -z $v ]] || { echo "zsh -i -c exit printed to stderr: $v"; return 1; }
+    check_rc_files_untouched
+}
+
+# The runtime installers must not write to the shell startup files. The container's
+# own ~/.bashrc and ~/.profile never mention these tools, so any hit is an installer.
+check_rc_files_untouched() {
+    local f hits
+    for f in .bashrc .profile .bash_profile .bash_login .zshenv .zprofile .zlogin; do
+        [[ -f $HOME/$f ]] || continue
+        hits=$(grep -nE 'mise|cargo|rustup|\.local/bin/env' "$HOME/$f" || true)
+        [[ -z $hits ]] || { echo "$HOME/$f mentions an installed tool: $hits"; return 1; }
+    done
+}
+
+check_rust() {
+    local v pair bin want
+    export PATH="$HOME/.cargo/bin:$PATH"
+    v=$(rustc --version 2>&1)
+    [[ $v == *"$RUST_VERSION"* ]] || { echo "rustc says '$v', want $RUST_VERSION"; return 1; }
+    for pair in "cargo-binstall -V|$CARGO_BINSTALL_VERSION" "sccache --version|$SCCACHE_VERSION" \
+        "cargo nextest --version|$NEXTEST_VERSION" "cargo deny --version|$CARGO_DENY_VERSION" \
+        "watchexec --version|$WATCHEXEC_VERSION" "oha --version|$OHA_VERSION" \
+        "sqlx --version|$SQLX_CLI_VERSION"; do
+        bin=${pair%%|*}
+        want=${pair#*|}
+        # shellcheck disable=SC2086  # BIN is a command line, split on purpose
+        v=$($bin 2>&1)
+        [[ $v == *"$want"* ]] || { echo "'$bin' says '$v', want $want"; return 1; }
+    done
+    v=$(cargo install --list 2>&1)
+    [[ $v == *"tauri-driver v$TAURI_DRIVER_VERSION:"* ]] || { echo "tauri-driver $TAURI_DRIVER_VERSION is not installed"; return 1; }
+    cargo clippy --version >/dev/null 2>&1 || { echo "clippy is missing"; return 1; }
+    rustfmt --version >/dev/null 2>&1 || { echo "rustfmt is missing"; return 1; }
+    rust-analyzer --version >/dev/null 2>&1 || { echo "rust-analyzer is missing"; return 1; }
+    v=$(zsh -i -c exit 2>&1 >/dev/null </dev/null)
+    [[ -z $v ]] || { echo "zsh -i -c exit printed to stderr: $v"; return 1; }
+    check_rc_files_untouched
+}
+
 # New check_<step> functions go above this line (one per step, in task order).
 
 smoke_main() {

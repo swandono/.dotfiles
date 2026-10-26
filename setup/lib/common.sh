@@ -159,7 +159,7 @@ sha256_from_sums() { # SUMS_URL ASSET_NAME
         rm -f "$tmp"
         return 1
     fi
-    sha=$(awk -v n="$asset" '{ f = $2; sub(/^\*/, "", f); if (f == n) { print $1; exit } }' "$tmp")
+    sha=$(awk -v n="$asset" '{ f = $2; sub(/^\*/, "", f); sub(/^\.\//, "", f); if (f == n) { print $1; exit } }' "$tmp")
     rm -f "$tmp"
     [[ -n $sha ]] || {
         log_warn "no checksum for $asset in $url"
