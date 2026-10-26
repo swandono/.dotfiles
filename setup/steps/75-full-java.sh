@@ -41,17 +41,20 @@ _java_runtimes() { # IDENTIFIER...
     _mise_global java "$@"
 }
 
-_java_jdtls_ok() {
-    local jd
-    jd=$(_jdtls_home)
+# True when DIR (default: the install) holds the pinned jdtls with the launcher jar.
+_java_jdtls_ok() { # [DIR]
+    local jd=${1:-$(_jdtls_home)}
     [[ -f $jd/plugins/$JDTLS_LAUNCHER ]] || return 1
     compgen -G "$jd/plugins/org.eclipse.jdt.ls.core_$JDTLS_VERSION.*.jar" >/dev/null
 }
 
-# jdtls milestone tarball into ~/.local/share/jdtls. Only the directories that belong to the
-# tarball are replaced: workspace/ and lombok.jar are the owner's and stay.
+# jdtls milestone tarball into ~/.local/share/jdtls. Only the entries that belong to the tarball
+# are replaced: workspace/ and lombok.jar are the owner's and stay. The tarball is unpacked into
+# a staging dir next to the install and checked there first, so a failed download or extraction
+# leaves a working install untouched; the swap is renames only, and the old entries are put back
+# if one of them fails.
 _java_jdtls() {
-    local jd base tmp sha d
+    local jd base tmp sha stage e entries=() moved=() ok=1
     jd=$(_jdtls_home)
     _java_jdtls_ok && return 0
     base=https://download.eclipse.org/jdtls/milestones/$JDTLS_VERSION
@@ -63,14 +66,41 @@ _java_jdtls() {
     [[ $sha =~ ^[0-9a-f]{64}$ ]] || { log_warn "no sha256 for $JDTLS_TARBALL"; return 1; }
     tmp=$(mktemp -d)
     fetch "$base/$JDTLS_TARBALL" "$tmp/jdtls.tgz" "$sha" || { rm -rf "$tmp"; return 1; }
-    mkdir -p "$tmp/x"
-    tar -xzf "$tmp/jdtls.tgz" -C "$tmp/x" || { rm -rf "$tmp"; return 1; }
-    mkdir -p "$jd"
-    for d in plugins features config_linux config_linux_arm bin; do rm -rf "${jd:?}/$d"; done
-    cp -a "$tmp/x/." "$jd/" || { rm -rf "$tmp"; return 1; }
+    mkdir -p "$jd" || { rm -rf "$tmp"; return 1; }
+    stage=$(mktemp -d "${jd%/*}/.jdtls-stage.XXXXXX") || { rm -rf "$tmp"; return 1; }
+    mkdir "$stage/new" "$stage/old" || { rm -rf "$tmp" "$stage"; return 1; }
+    # ftplugin/java.lua hardcodes the launcher jar, so a tarball without it is a failure.
+    if ! tar -xzf "$tmp/jdtls.tgz" -C "$stage/new" || ! _java_jdtls_ok "$stage/new"; then
+        log_warn "the jdtls $JDTLS_VERSION tarball lacks plugins/$JDTLS_LAUNCHER or its core jar"
+        rm -rf "$tmp" "$stage"
+        return 1
+    fi
     rm -rf "$tmp"
-    # ftplugin/java.lua hardcodes this launcher jar, so a tarball without it is a failure.
-    [[ -f $jd/plugins/$JDTLS_LAUNCHER ]] || { log_warn "jdtls $JDTLS_VERSION has no plugins/$JDTLS_LAUNCHER"; return 1; }
+    # The tarball's top-level entries, plus the ones older tarballs had, so none of those is left
+    # behind from a previous version.
+    mapfile -t entries < <({
+        find "$stage/new" -mindepth 1 -maxdepth 1 -printf '%f\n'
+        printf '%s\n' plugins features config_linux config_linux_arm bin
+    } | sort -u)
+    for e in "${entries[@]}"; do
+        if [[ -e $jd/$e || -L $jd/$e ]]; then
+            mv "$jd/$e" "$stage/old/$e" || { ok=0; break; }
+        fi
+        moved+=("$e")
+        if [[ -e $stage/new/$e ]]; then
+            mv "$stage/new/$e" "$jd/$e" || { ok=0; break; }
+        fi
+    done
+    if [[ $ok -eq 0 ]]; then
+        for e in "${moved[@]}"; do
+            rm -rf "${jd:?}/$e"
+            if [[ -e $stage/old/$e || -L $stage/old/$e ]]; then mv "$stage/old/$e" "$jd/$e"; fi
+        done
+        log_warn "replacing jdtls failed; the previous install was put back"
+        rm -rf "$stage"
+        return 1
+    fi
+    rm -rf "$stage"
     mark_changed "installed jdtls $JDTLS_VERSION"
 }
 

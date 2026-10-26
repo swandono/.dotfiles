@@ -523,6 +523,74 @@ private_hits() { # PATTERNS
     ) | cut -d: -f1,2
 }
 
+# _java_jdtls against a local fake tarball (with or without the launcher jar) and an existing
+# install that holds the owner's workspace/ and lombok.jar.
+jdtls_fixture() { # WITH_LAUNCHER
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/steps/70-full-lang.sh"
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/steps/75-full-java.sh"
+    JDTLS_VERSION=9.9.9 JDTLS_TARBALL=jdtls.tgz JDTLS_LAUNCHER=launcher.jar
+    mkdir -p pkg/plugins pkg/features pkg/config_linux pkg/bin
+    echo new >pkg/plugins/org.eclipse.jdt.ls.core_9.9.9.v1.jar
+    echo new >pkg/features/f
+    if [[ $1 -eq 1 ]]; then echo new >pkg/plugins/launcher.jar; fi
+    tar -czf jdtls.tgz -C pkg .
+    sha256_from_sums() { sha256sum "$PWD/jdtls.tgz" | cut -d' ' -f1; }
+    fetch() { cp "$PWD/jdtls.tgz" "$2"; }
+    JD=$HOME/.local/share/jdtls
+    mkdir -p "$JD/workspace" "$JD/plugins" "$JD/features" "$JD/config_linux_arm"
+    echo mine >"$JD/workspace/w"
+    echo mine >"$JD/lombok.jar"
+    echo old >"$JD/plugins/old.jar"
+    echo old >"$JD/features/f"
+}
+
+jdtls_assert_owner_files_kept() {
+    assert_eq mine "$(cat "$JD/workspace/w")" "workspace kept"
+    assert_eq mine "$(cat "$JD/lombok.jar")" "lombok.jar kept"
+    local left=("$HOME"/.local/share/.jdtls-stage.*)
+    [[ ! -e ${left[0]} ]] || fail "staging dir left behind: ${left[*]}"
+}
+
+test_jdtls_replaces_tarball_entries_only() {
+    jdtls_fixture 1
+    _java_jdtls 2>/dev/null || fail "_java_jdtls failed"
+    [[ -f $JD/plugins/launcher.jar ]] || fail "new launcher missing"
+    assert_file_missing "$JD/plugins/old.jar"
+    assert_file_missing "$JD/config_linux_arm"
+    assert_eq new "$(cat "$JD/features/f")" "features replaced"
+    jdtls_assert_owner_files_kept
+    assert_eq 1 "$BOOTSTRAP_CHANGED" "BOOTSTRAP_CHANGED"
+}
+
+test_jdtls_bad_tarball_keeps_old_install() {
+    jdtls_fixture 0
+    _java_jdtls 2>/dev/null && fail "a tarball without the launcher must fail"
+    assert_eq old "$(cat "$JD/plugins/old.jar")" "old plugins kept"
+    [[ -d $JD/config_linux_arm ]] || fail "old config_linux_arm removed"
+    jdtls_assert_owner_files_kept
+    assert_eq 0 "$BOOTSTRAP_CHANGED" "BOOTSTRAP_CHANGED"
+}
+
+test_jdtls_failed_swap_restores_old_install() {
+    jdtls_fixture 1
+    # The rename of the new features/ into place fails half way through the swap.
+    mv() {
+        if [[ $1 == */new/features ]]; then return 1; fi
+        command mv "$@"
+    }
+    _java_jdtls 2>/dev/null && fail "a failed rename must fail"
+    assert_eq old "$(cat "$JD/plugins/old.jar")" "old plugins restored"
+    assert_file_missing "$JD/plugins/launcher.jar"
+    assert_eq old "$(cat "$JD/features/f")" "old features restored"
+    [[ -d $JD/config_linux_arm ]] || fail "old config_linux_arm not restored"
+    assert_file_missing "$JD/bin"
+    assert_file_missing "$JD/config_linux"
+    jdtls_assert_owner_files_kept
+    assert_eq 0 "$BOOTSTRAP_CHANGED" "BOOTSTRAP_CHANGED"
+}
+
 test_linux_configs_have_no_private_data() {
     local patterns hits
     patterns=$(private_patterns_file)
