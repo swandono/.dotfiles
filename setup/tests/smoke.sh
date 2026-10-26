@@ -30,6 +30,45 @@ check_repo_clean() {
     }
 }
 
+check_base_packages() {
+    local pkg
+    for pkg in curl wget git unzip zip jq build-essential ca-certificates gnupg xclip xsel; do
+        dpkg -s "$pkg" >/dev/null 2>&1 || {
+            echo "package $pkg is not installed"
+            return 1
+        }
+    done
+}
+
+check_docker() {
+    docker --version >/dev/null 2>&1 || { echo "docker --version failed"; return 1; }
+    docker compose version >/dev/null 2>&1 || { echo "docker compose version failed"; return 1; }
+    docker buildx version >/dev/null 2>&1 || { echo "docker buildx version failed"; return 1; }
+}
+
+check_podman() {
+    podman --version >/dev/null 2>&1 || { echo "podman --version failed"; return 1; }
+    podman-compose --version >/dev/null 2>&1 || { echo "podman-compose --version failed"; return 1; }
+    if dpkg -s docker-ce >/dev/null 2>&1; then
+        echo "docker-ce is installed next to podman"
+        return 1
+    fi
+}
+
+check_tailscale() {
+    tailscale version >/dev/null 2>&1 || { echo "tailscale version failed"; return 1; }
+    if [[ -e /var/lib/tailscale/tailscaled.state ]]; then
+        echo "tailscaled.state exists (tailscale was brought up)"
+        return 1
+    fi
+}
+
+check_node() {
+    local v
+    v=$(/usr/bin/node -v 2>&1) || { echo "/usr/bin/node -v failed"; return 1; }
+    [[ $v =~ ^v22\. ]] || { echo "node version is $v, want v22.x"; return 1; }
+}
+
 # New check_<step> functions go above this line (one per step, in task order).
 
 smoke_main() {
