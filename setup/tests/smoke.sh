@@ -440,6 +440,39 @@ check_browser() {
     [[ $out != *"configured multiple times"* ]] || { echo "duplicate apt source: $out"; return 1; }
 }
 
+check_ai_clis() {
+    local tool out bin
+    for tool in claude:claude opencode:opencode codex:codex gemini:gemini copilot:copilot; do
+        bin=${tool#*:}
+        if [[ $(smoke_choice ai) == *"${tool%%:*}"* ]]; then
+            "$bin" --version >/dev/null 2>&1 || { echo "$bin --version failed"; return 1; }
+        else
+            ! command -v "$bin" >/dev/null 2>&1 || { echo "$bin is installed but not chosen"; return 1; }
+        fi
+    done
+    out=$(bd --version 2>&1) || { echo "bd --version failed: $out"; return 1; }
+    [[ $out == *"$BD_VERSION"* ]] || { echo "bd --version: $out"; return 1; }
+    out=$(/usr/bin/npm ls -g --depth=0 --json 2>/dev/null || true)
+    for tool in "@playwright/mcp@$PLAYWRIGHT_MCP_VERSION" "@modelcontextprotocol/server-postgres@$MCP_SERVER_POSTGRES_VERSION" \
+        "playwright@$PLAYWRIGHT_VERSION" "yarn@$YARN_VERSION"; do
+        [[ $(jq -r --arg n "${tool%@*}" '.dependencies[$n].version // empty' <<<"$out") == "${tool##*@}" ]] ||
+            { echo "npm global $tool missing"; return 1; }
+    done
+    for bin in .bashrc .profile; do
+        [[ ! -f $HOME/$bin ]] || ! grep -qE 'claude|opencode' "$HOME/$bin" || { echo "$HOME/$bin was modified by an installer"; return 1; }
+    done
+    check_repo_clean
+}
+
+check_ollama() {
+    local out
+    out=$(ollama --version 2>&1) || true
+    [[ $out == *"$OLLAMA_VERSION"* ]] || { echo "ollama --version: $out"; return 1; }
+    [[ -d /usr/local/lib/ollama ]] || { echo "/usr/local/lib/ollama is missing"; return 1; }
+    ! getent passwd ollama >/dev/null || { echo "an ollama user exists"; return 1; }
+    [[ ! -e /etc/systemd/system/ollama.service ]] || { echo "an ollama unit exists"; return 1; }
+}
+
 # New check_<step> functions go above this line (one per step, in task order).
 
 smoke_main() {
