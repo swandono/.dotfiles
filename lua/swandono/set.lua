@@ -1,16 +1,27 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
--- vim.g.clipboard = {
--- 	name = "OSC 52",
--- 	copy = {
--- 		["+"] = require("vim.ui.clipboard.osc52").copy("+"),
--- 		["*"] = require("vim.ui.clipboard.osc52").copy("*"),
--- 	},
--- 	paste = {
--- 		["+"] = require("vim.ui.clipboard.osc52").paste("+"),
--- 		["*"] = require("vim.ui.clipboard.osc52").paste("*"),
--- 	},
--- }
+
+-- Servers need OSC 52 to reach the local clipboard: root's shell comes from
+-- `sudo -i`, which drops SSH_TTY, so Neovim's own SSH detection never kicks in,
+-- and xclip/xsel have no DISPLAY. On macOS, leave vim.g.clipboard unset so
+-- Neovim uses pbcopy/pbpaste (an OSC 52 paste would hang or be refused).
+local function use_osc52_clipboard()
+	return vim.fn.has("mac") == 0
+end
+
+if use_osc52_clipboard() then
+	vim.g.clipboard = {
+		name = "OSC 52",
+		copy = {
+			["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+			["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+		},
+		paste = {
+			["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+			["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+		},
+	}
+end
 
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
