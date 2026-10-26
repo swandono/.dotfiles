@@ -103,23 +103,22 @@ apt_add_repo() { # NAME KEY_URL DEB_LINE
     local name=$1 key_url=$2 deb_line=$3 changed=0 tmp
     local keyring=/etc/apt/keyrings/$name.gpg list=/etc/apt/sources.list.d/$name.list
     tmp=$(mktemp -d)
-    if ! fetch "$key_url" "$tmp/key"; then
-        rm -rf "$tmp"
-        return 1
-    fi
+    # No EXIT trap (steps run in an isolated subshell that owns it): every
+    # command that can fail cleans up explicitly.
+    fetch "$key_url" "$tmp/key" || { rm -rf "$tmp"; return 1; }
     if grep -q 'BEGIN PGP' "$tmp/key"; then
-        gpg --batch --yes --dearmor -o "$tmp/key.gpg" "$tmp/key"
+        gpg --batch --yes --dearmor -o "$tmp/key.gpg" "$tmp/key" || { rm -rf "$tmp"; return 1; }
     else
-        mv "$tmp/key" "$tmp/key.gpg"
+        mv "$tmp/key" "$tmp/key.gpg" || { rm -rf "$tmp"; return 1; }
     fi
-    printf '%s\n' "$deb_line" >"$tmp/list"
-    install -d -m 0755 /etc/apt/keyrings
+    printf '%s\n' "$deb_line" >"$tmp/list" || { rm -rf "$tmp"; return 1; }
+    install -d -m 0755 /etc/apt/keyrings || { rm -rf "$tmp"; return 1; }
     if ! cmp -s "$tmp/key.gpg" "$keyring"; then
-        install -m 0644 "$tmp/key.gpg" "$keyring"
+        install -m 0644 "$tmp/key.gpg" "$keyring" || { rm -rf "$tmp"; return 1; }
         changed=1
     fi
     if ! cmp -s "$tmp/list" "$list"; then
-        install -m 0644 "$tmp/list" "$list"
+        install -m 0644 "$tmp/list" "$list" || { rm -rf "$tmp"; return 1; }
         changed=1
     fi
     rm -rf "$tmp"
@@ -208,8 +207,9 @@ link_file() { # SRC DEST
 
 git_pin() { # URL DIR SHA
     local url=$1 dir=$2 sha=$3 head
+    [[ $sha =~ ^[0-9a-f]{40}$ ]] || die "git_pin needs a full 40 character SHA for $dir (got '$sha')"
     head=$(git -C "$dir" rev-parse HEAD 2>/dev/null || true)
-    if [[ -n $head && $head == "$sha"* ]]; then
+    if [[ $head == "$sha" ]]; then
         return 0
     fi
     if [[ ! -d $dir/.git ]]; then

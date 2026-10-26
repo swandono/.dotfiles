@@ -6,6 +6,23 @@ set -uo pipefail
 
 REPO_PATH=/root/.config/nvim
 
+# Saved tool choice for KEY; falls back to the install default when unsaved.
+smoke_choice() { # KEY
+    local key=$1 line default
+    case $key in
+    container) default=docker ;;
+    prompt) default=p10k ;;
+    mux) default=tmux ;;
+    git_tui) default=lazygit ;;
+    ls) default=eza ;;
+    monitor) default=both ;;
+    ai) default=claude+codex+opencode+gemini+copilot ;;
+    *) return 1 ;;
+    esac
+    line=$(grep -m1 "^$key=" /var/lib/dotfiles-bootstrap/choices 2>/dev/null || true)
+    if [[ -n $line ]]; then printf '%s\n' "${line#*=}"; else printf '%s\n' "$default"; fi
+}
+
 check_repo_clean() {
     local out
     out=$(git -C "$REPO_PATH" status --porcelain) || {

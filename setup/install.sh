@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Server bootstrap. Usage: install.sh essential|full [--only a,b] [--skip a,b] [--list]
+# Server bootstrap. Usage: install.sh essential|full [--only a,b] [--skip a,b] [--choose k=v,...] [--list]
 # essential steps abort on the first failure; full steps continue and are
 # listed in the summary (exit 1 if any failed).
 set -euo pipefail
@@ -7,6 +7,8 @@ set -euo pipefail
 SETUP_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 # shellcheck source=lib/common.sh
 source "$SETUP_DIR/lib/common.sh"
+# shellcheck source=lib/choices.sh
+source "$SETUP_DIR/lib/choices.sh"
 # shellcheck source=/dev/null
 source "$SETUP_DIR/versions.env"
 for step_file in "$SETUP_DIR"/steps/*.sh; do
@@ -15,11 +17,11 @@ for step_file in "$SETUP_DIR"/steps/*.sh; do
     source "$step_file"
 done
 
-ESSENTIAL_STEPS=(base_packages docker tailscale node cli_tools tmux_build zsh tmux_config nvim_config)
-FULL_STEPS=(cli_extras configs_full mise_runtimes rust java ops net_sec browser ai_clis ollama)
+ESSENTIAL_STEPS=(base_packages docker podman tailscale node cli_tools git_tui tmux_build zellij zsh prompt_p10k prompt_starship tmux_config nvim_config)
+FULL_STEPS=(cli_extras monitor configs_full mise_runtimes rust java ops net_sec browser ai_clis ollama)
 
 usage() {
-    die "usage: install.sh essential|full [--only a,b] [--skip a,b] [--list]"
+    die "usage: install.sh essential|full [--only a,b] [--skip a,b] [--choose k=v,...] [--list]"
 }
 
 in_list() { # NAME ITEM...
@@ -40,6 +42,7 @@ full) VALID_STEPS=("${ESSENTIAL_STEPS[@]}" "${FULL_STEPS[@]}") ;;
 *) usage ;;
 esac
 
+choices_init
 ONLY=()
 SKIP=()
 LIST=0
@@ -49,6 +52,11 @@ while [[ $# -gt 0 ]]; do
         [[ $# -ge 2 ]] || die "$1 needs a comma separated list"
         IFS=, read -r -a names <<<"$2"
         if [[ $1 == --only ]]; then ONLY+=("${names[@]}"); else SKIP+=("${names[@]}"); fi
+        shift
+        ;;
+    --choose)
+        [[ $# -ge 2 ]] || die "--choose needs key=value[,key=value]"
+        choices_apply_cli "$2"
         shift
         ;;
     --list) LIST=1 ;;
@@ -64,6 +72,7 @@ done
 
 selected() { # STEP: true when the step should run; records --skip in BOOTSTRAP_SKIPPED
     local step=$1
+    step_allowed_by_choices "$step" || return 1
     if [[ ${#ONLY[@]} -gt 0 ]] && ! in_list "$step" "${ONLY[@]}"; then
         return 1
     fi
@@ -86,7 +95,8 @@ if [[ $PROFILE == full ]]; then
 fi
 
 if [[ $LIST -eq 1 ]]; then
-    printf '%s\n' "${SEL_ESSENTIAL[@]}" "${SEL_FULL[@]}"
+    SEL_ALL=("${SEL_ESSENTIAL[@]}" "${SEL_FULL[@]}")
+    if [[ ${#SEL_ALL[@]} -gt 0 ]]; then printf '%s\n' "${SEL_ALL[@]}"; fi
     exit 0
 fi
 
@@ -95,6 +105,8 @@ require_supported_os
 if [[ $REPO_DIR != "$(cd "$HOME/.config/nvim" 2>/dev/null && pwd -P)" ]]; then
     die "repo must live at \$HOME/.config/nvim (it is at $REPO_DIR)"
 fi
+choices_warn_switch
+choices_save
 
 # shellcheck disable=SC2034  # read by run_step in common.sh
 BOOTSTRAP_MODE=strict

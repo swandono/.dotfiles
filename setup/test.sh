@@ -2,8 +2,8 @@
 # Test harness for the server bootstrap.
 #   test.sh lint
 #   test.sh lib
-#   test.sh essential [--snapshot] [--only a,b] [--skip a,b]
-#   test.sh full [--only a,b] [--skip a,b]
+#   test.sh essential [--snapshot] [--only a,b] [--skip a,b] [--choose k=v,...]
+#   test.sh full [--only a,b] [--skip a,b] [--choose k=v,...]
 #   test.sh clean
 set -euo pipefail
 
@@ -59,7 +59,7 @@ sync_tree() {
     docker exec "$CTR" bash -c "mkdir -p $CTR_REPO && find $CTR_REPO -mindepth 1 -delete"
     (cd "$REPO_ROOT" && git ls-files -co --exclude-standard -z --deduplicate |
         tar --null -T - --ignore-failed-read -cf -) |
-        docker exec -i "$CTR" tar -xf - -C "$CTR_REPO"
+        docker exec -i "$CTR" tar --no-same-owner -xf - -C "$CTR_REPO"
     docker exec "$CTR" bash -c "cd $CTR_REPO && git init -q -b main && git add -A &&
         git -c user.name=baseline -c user.email=baseline@localhost commit -q -m baseline"
 }
@@ -96,7 +96,7 @@ parse_filters() { # sets SNAPSHOT and FILTERS from the arguments
     while (($#)); do
         case $1 in
         --snapshot) SNAPSHOT=1 ;;
-        --only | --skip)
+        --only | --skip | --choose)
             [[ $# -ge 2 ]] || die "$1 needs a value"
             FILTERS+=("$1" "$2")
             shift
@@ -105,6 +105,9 @@ parse_filters() { # sets SNAPSHOT and FILTERS from the arguments
         esac
         shift
     done
+    if ((SNAPSHOT && ${#FILTERS[@]})); then
+        die "--snapshot cannot be combined with --only, --skip or --choose (the snapshot is a default essential install)"
+    fi
 }
 
 # ----------------------------------------------------------------- commands
@@ -189,7 +192,7 @@ main() {
     essential) cmd_essential "$@" ;;
     full) cmd_full "$@" ;;
     clean) cmd_clean ;;
-    *) die "usage: test.sh lint|lib|essential [--snapshot] [--only a,b] [--skip a,b]|full [--only a,b] [--skip a,b]|clean" ;;
+    *) die "usage: test.sh lint|lib|essential [--snapshot] [--only a,b] [--skip a,b] [--choose k=v,...]|full [--only a,b] [--skip a,b] [--choose k=v,...]|clean" ;;
     esac
 }
 
