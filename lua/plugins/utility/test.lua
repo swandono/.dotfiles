@@ -1,19 +1,5 @@
 return {
 	{
-		"rcasia/neotest-java",
-		ft = "java",
-		dependencies = {
-			"mfussenegger/nvim-jdtls",
-			"mfussenegger/nvim-dap", -- for the debugger
-			"rcarriga/nvim-dap-ui", -- recommended
-			"theHamsta/nvim-dap-virtual-text", -- recommended
-		},
-	},
-	{
-		"marilari88/neotest-vitest",
-		ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-	},
-	{
 		"nvim-neotest/neotest-go",
 		ft = "go",
 	},
@@ -36,9 +22,7 @@ return {
 			local neotest = require("neotest")
 			neotest.setup({
 				adapters = {
-					require("neotest-vitest"),
 					require("neotest-go"),
-					require("neotest-java"),
 				},
 			})
 			vim.keymap.set("n", "<leader>to", function()
