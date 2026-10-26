@@ -232,6 +232,20 @@ check_zellij() {
     zellij setup --check >/dev/null 2>&1 || { echo "zellij setup --check failed"; return 1; }
 }
 
+check_nvim_config() {
+    local out rc=0 name lock=$REPO_PATH/lazy-lock.json keep
+    # lazy.nvim rewrites lazy-lock.json on restore; keep the committed copy so repo_clean stays meaningful.
+    keep=$(mktemp)
+    cp -p "$lock" "$keep"
+    out=$(nvim --headless "+Lazy! restore" +qa 2>&1 >/dev/null </dev/null) || rc=$?
+    cp -p "$keep" "$lock"
+    rm -f "$keep"
+    [[ $rc -eq 0 ]] || { echo "nvim headless restore exited $rc: $out"; return 1; }
+    [[ $out != *Error* ]] || { echo "nvim headless restore wrote an Error to stderr: $out"; return 1; }
+    name=$(nvim --headless -c 'lua io.write(vim.g.clipboard and vim.g.clipboard.name or "none")' -c q 2>&1 </dev/null)
+    [[ $name == "OSC 52" ]] || { echo "vim.g.clipboard.name is '$name', want 'OSC 52'"; return 1; }
+}
+
 # New check_<step> functions go above this line (one per step, in task order).
 
 smoke_main() {
