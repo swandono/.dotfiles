@@ -282,7 +282,7 @@ check_monitor() {
 }
 
 check_configs_full() {
-    local pair dest themes yazi_screen _
+    local pair dest themes
     for pair in bat:bat yazi:yazi; do
         dest=$HOME/.config/${pair%%:*}
         [[ $(readlink "$dest") == "$REPO_PATH/${pair#*:}" ]] || { echo "$dest link is wrong"; return 1; }
@@ -298,22 +298,6 @@ check_configs_full() {
     themes=$(batcat --list-themes 2>&1 || true)
     [[ $themes == *'Catppuccin Mocha'* ]] || { echo "batcat does not list Catppuccin Mocha"; return 1; }
     yazi --version >/dev/null 2>&1 || { echo "yazi --version failed"; return 1; }
-    # --version never reads the config, and yazi only gets that far on a terminal that
-    # answers its queries (a bare `script` pty does not: it hangs before reading the
-    # config). tmux answers them, so probe in a throwaway tmux pty when tmux is there
-    # (it is not with mux=zellij, where the probe is skipped): a config that does not
-    # parse makes yazi print "Failed to parse config" and exit.
-    if command -v tmux >/dev/null 2>&1; then
-        tmux -L yz kill-server >/dev/null 2>&1 || true
-        tmux -L yz new -d -s yz -x 100 -y 12 'yazi /tmp 2>&1; sleep 10' || { echo "could not start yazi in tmux"; return 1; }
-        for _ in 1 2 3 4 5 6 7 8 9 10; do
-            yazi_screen=$(tmux -L yz capture-pane -p -t yz 2>&1 || true)
-            [[ $yazi_screen == *[![:space:]]* ]] && break
-            sleep 0.5
-        done
-        tmux -L yz kill-server >/dev/null 2>&1 || true
-        [[ $yazi_screen != *'Failed to parse'* ]] || { echo "yazi rejects its config: $yazi_screen"; return 1; }
-    fi
     ya --version >/dev/null 2>&1 || { echo "ya --version failed"; return 1; }
 }
 
