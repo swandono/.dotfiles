@@ -523,6 +523,32 @@ private_hits() { # PATTERNS
     ) | cut -d: -f1,2
 }
 
+test_java_lua_names_the_pinned_java21() {
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/versions.env"
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/steps/75-full-java.sh"
+    local id id21=""
+    for id in $MISE_JAVA; do
+        if [[ $id == *-21.* ]]; then id21=$id; fi
+    done
+    assert_eq "$id21" "$(_java_lua_id)" "java.lua's mise candidate"
+}
+
+test_java_check_lua_fails_on_fallback() {
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/steps/75-full-java.sh"
+    local want out
+    want=$(_java_lua_id)
+    _java_check_lua "$want" 2>/dev/null
+    assert_eq 0 "${#BOOTSTRAP_FAILED[@]}" "no failure when the identifiers match"
+    out=$(_java_check_lua 'temurin-21.0.10+7.0.LTS' 2>&1)
+    _java_check_lua 'temurin-21.0.10+7.0.LTS' 2>/dev/null
+    assert_eq java "${BOOTSTRAP_FAILED[*]}" "BOOTSTRAP_FAILED"
+    assert_contains "$out" ftplugin/java.lua "message names the file"
+    assert_contains "$out" 'temurin-21.0.10+7.0.LTS' "message names the identifier"
+}
+
 # _java_jdtls against a local fake tarball (with or without the launcher jar) and an existing
 # install that holds the owner's workspace/ and lombok.jar.
 jdtls_fixture() { # WITH_LAUNCHER

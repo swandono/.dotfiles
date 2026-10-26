@@ -9,7 +9,8 @@ _jdtls_home() { printf '%s\n' "$HOME/.local/share/jdtls"; }
 # Print the mise identifier to install for the wanted SPEC (vendor-MAJOR.MINOR.PATCH).
 # The exact identifier is used when it is installed or listed by mise. Otherwise the newest
 # version of the same major and vendor is used, and when mise has no such vendor at all, the
-# newest temurin of that major. Every fallback is a warning: record it in the commit body.
+# newest temurin of that major. Every fallback is a warning, and a Java 21 fallback also fails
+# the java tool (_java_check_lua).
 _java_pick() { # SPEC
     local spec=$1 vendor major listing pick
     vendor=${spec%%-*}
@@ -35,6 +36,24 @@ _java_pick() { # SPEC
 # 21.0.7+6.0.LTS are accepted; 210.x is not a 21.
 _java_newest() { # VENDOR MAJOR LISTING
     grep -E "^$1-$2(\\.[0-9]+)*(\\+[0-9A-Za-z._+-]*)?\$" <<<"$3" | sort -V | tail -n1 || true
+}
+
+# The mise Java identifier in the mise candidate path of ftplugin/java.lua (empty when none).
+_java_lua_id() {
+    local path
+    path=$(grep -m1 -o '/installs/java/[^/"]*/bin/java' "$REPO_DIR/ftplugin/java.lua" 2>/dev/null || true)
+    path=${path#/installs/java/}
+    printf '%s\n' "${path%/bin/java}"
+}
+
+# ftplugin/java.lua starts jdtls with one hardcoded Java 21 from mise. When mise had to fall back
+# to another identifier, jdtls cannot start from it: the java tool fails, naming the fix.
+_java_check_lua() { # JAVA21_IDENTIFIER
+    local want
+    want=$(_java_lua_id)
+    [[ $want == "$1" ]] && return 0
+    BOOTSTRAP_FAILED+=("java")
+    log_warn "ftplugin/java.lua names mise java '${want:-none}' but this machine got '$1': put $1 in the mise candidate path of ftplugin/java.lua"
 }
 
 _java_runtimes() { # IDENTIFIER...
@@ -140,6 +159,7 @@ step_java() {
         fi
     done
     if [[ ${#ids[@]} -gt 0 ]]; then try_tool mise-java _java_runtimes "${ids[@]}"; fi
+    if [[ -n $id21 ]]; then _java_check_lua "$id21"; fi
     try_tool jdtls _java_jdtls
     try_tool lombok _java_lombok
     if [[ -n $id21 ]]; then
