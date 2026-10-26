@@ -6,9 +6,9 @@
 # Release asset URL for TOOL at VERSION (no leading "v") for ARCH (x86_64|aarch64).
 cli_asset_url() { # TOOL VERSION ARCH
     local tool=$1 ver=$2 arch=$3 gh=https://github.com
-    local deb_arch=amd64 nvim_arch=x86_64 lg_arch=x86_64
+    local deb_arch=amd64 nvim_arch=x86_64 lg_arch=x86_64 ff_arch=amd64
     if [[ $arch == aarch64 ]]; then
-        deb_arch=arm64 nvim_arch=arm64 lg_arch=arm64
+        deb_arch=arm64 nvim_arch=arm64 lg_arch=arm64 ff_arch=aarch64
     fi
     case $tool in
     nvim) printf '%s/neovim/neovim/releases/download/v%s/nvim-linux-%s.tar.gz\n' "$gh" "$ver" "$nvim_arch" ;;
@@ -19,6 +19,9 @@ cli_asset_url() { # TOOL VERSION ARCH
     gitui) printf '%s/gitui-org/gitui/releases/download/v%s/gitui-linux-%s.tar.gz\n' "$gh" "$ver" "$arch" ;;
     zellij) printf '%s/zellij-org/zellij/releases/download/v%s/zellij-%s-unknown-linux-musl.tar.gz\n' "$gh" "$ver" "$arch" ;;
     starship) printf '%s/starship/starship/releases/download/v%s/starship-%s-unknown-linux-musl.tar.gz\n' "$gh" "$ver" "$arch" ;;
+    xh) printf '%s/ducaale/xh/releases/download/v%s/xh-v%s-%s-unknown-linux-musl.tar.gz\n' "$gh" "$ver" "$ver" "$arch" ;;
+    fastfetch) printf '%s/fastfetch-cli/fastfetch/releases/download/%s/fastfetch-linux-%s.tar.gz\n' "$gh" "$ver" "$ff_arch" ;;
+    yazi) printf '%s/sxyazi/yazi/releases/download/v%s/yazi-%s-unknown-linux-musl.zip\n' "$gh" "$ver" "$arch" ;;
     *)
         log_warn "cli_asset_url: unknown tool '$tool'"
         return 1

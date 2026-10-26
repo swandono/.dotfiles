@@ -313,7 +313,7 @@ test_cli_asset_urls_resolve() {
     # shellcheck source=/dev/null
     source "$SETUP_DIR/steps/20-cli.sh"
     local tool vname ver arch url
-    for tool in nvim fzf lazygit lazydocker eza gitui starship zellij; do
+    for tool in nvim fzf lazygit lazydocker eza gitui starship zellij xh fastfetch yazi; do
         vname=${tool^^}_VERSION
         ver=${!vname}
         for arch in x86_64 aarch64; do

@@ -251,6 +251,55 @@ check_nvim_config() {
     [[ $name == "OSC 52" ]] || { echo "vim.g.clipboard.name is '$name', want 'OSC 52'"; return 1; }
 }
 
+check_cli_extras() {
+    local v bin
+    v=$(xh --version 2>&1)
+    [[ $v == "xh $XH_VERSION"* ]] || { echo "xh says '$v', want xh $XH_VERSION"; return 1; }
+    v=$(fastfetch --version 2>&1)
+    [[ $v == "fastfetch $FASTFETCH_VERSION"* ]] || { echo "fastfetch says '$v'"; return 1; }
+    v=$(yazi --version 2>&1)
+    [[ $v == *"Version: $YAZI_VERSION"* ]] || { echo "yazi says '$v'"; return 1; }
+    v=$(ya --version 2>&1)
+    [[ $v == *"Version: $YAZI_VERSION"* ]] || { echo "ya says '$v'"; return 1; }
+    gh --version >/dev/null 2>&1 || { echo "gh --version failed"; return 1; }
+    batcat --version >/dev/null 2>&1 || { echo "batcat --version failed"; return 1; }
+    for bin in ncdu direnv qrencode pdftotext screen git-flow; do
+        command -v "$bin" >/dev/null 2>&1 || { echo "$bin is not installed"; return 1; }
+    done
+}
+
+check_monitor() {
+    local tool
+    choices_init
+    for tool in btop htop; do
+        if choice_has monitor "$tool"; then
+            command -v "$tool" >/dev/null 2>&1 || { echo "$tool is not installed"; return 1; }
+        elif command -v "$tool" >/dev/null 2>&1; then
+            echo "$tool is installed but monitor=$(smoke_choice monitor)"
+            return 1
+        fi
+    done
+}
+
+check_configs_full() {
+    local pair dest
+    for pair in bat:bat yazi:yazi; do
+        dest=$HOME/.config/${pair%%:*}
+        [[ $(readlink "$dest") == "$REPO_PATH/${pair#*:}" ]] || { echo "$dest link is wrong"; return 1; }
+        [[ -d $dest ]] || { echo "$dest link does not resolve"; return 1; }
+    done
+    choices_init
+    if choice_has ls eza; then
+        [[ $(readlink "$HOME/.config/eza") == "$REPO_PATH/eza" ]] || { echo "eza config link is wrong"; return 1; }
+    elif [[ -L $HOME/.config/eza ]]; then
+        echo "eza config is linked but ls=ls"
+        return 1
+    fi
+    batcat --list-themes 2>&1 | grep -q 'Catppuccin Mocha' || { echo "batcat does not list Catppuccin Mocha"; return 1; }
+    yazi --version >/dev/null 2>&1 || { echo "yazi --version failed"; return 1; }
+    ya --version >/dev/null 2>&1 || { echo "ya --version failed"; return 1; }
+}
+
 # New check_<step> functions go above this line (one per step, in task order).
 
 smoke_main() {
