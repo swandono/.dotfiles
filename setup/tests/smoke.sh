@@ -175,9 +175,12 @@ check_zsh() {
     podman) [[ $out == "dco='podman compose'" ]] || { echo "alias dco is '$out'"; return 1; } ;;
     *) [[ -z $out ]] || { echo "alias dco is '$out' although container=none"; return 1; } ;;
     esac
-    out=$(zsh -i -c 'whence -w awv' 2>&1 </dev/null) || true
-    [[ $out == "awv: none" ]] || { echo "whence -w awv says '$out'"; return 1; }
-    if zsh -i -c 'alias nxx' >/dev/null 2>&1 </dev/null; then
+    # The guarded full-profile lines must stay out of the shell while their tool is absent.
+    if ! command -v aws-vault >/dev/null 2>&1; then
+        out=$(zsh -i -c 'whence -w awv' 2>&1 </dev/null) || true
+        [[ $out == "awv: none" ]] || { echo "whence -w awv says '$out'"; return 1; }
+    fi
+    if ! zsh -i -c 'command -v mise' >/dev/null 2>&1 </dev/null && zsh -i -c 'alias nxx' >/dev/null 2>&1 </dev/null; then
         echo "alias nxx exists although mise is absent"
         return 1
     fi
