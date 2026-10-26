@@ -17,9 +17,18 @@ local debug_jars = vim.split(
 
 local jdtls = require("jdtls")
 
+-- Java 21 runs jdtls: mise first (new servers), then sdkman (older hosts).
+local java_candidates = {
+	"/root/.local/share/mise/installs/java/oracle-21.0.7/bin/java",
+	"/root/.sdkman/candidates/java/21.0.7-oracle/bin/java",
+}
+local java_bin = vim.iter(java_candidates):find(function(path)
+	return vim.fn.executable(path) == 1
+end) or java_candidates[#java_candidates]
+
 local config = {
 	cmd = {
-		"/root/.sdkman/candidates/java/21.0.7-oracle/bin/java",
+		java_bin,
 		"-Declipse.application=org.eclipse.jdt.ls.core.id1",
 		"-Dosgi.bundles.defaultStartLevel=4",
 		"-Declipse.product=org.eclipse.jdt.ls.core.product",

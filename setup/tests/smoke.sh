@@ -374,6 +374,35 @@ check_rust() {
     check_rc_files_untouched
 }
 
+# Requested mise Java identifier for MAJOR (vendor-MAJOR.x) in the global config.
+_smoke_java_id() { # MAJOR
+    _mise ls --global --json 2>/dev/null |
+        jq -r --arg p "-$1." '(.java // []) | map(.requested_version) | map(select(contains($p))) | first // empty'
+}
+
+check_java() {
+    local v id21 id24 jd=$HOME/.local/share/jdtls tmp n
+    [[ -f $jd/plugins/$JDTLS_LAUNCHER ]] || { echo "missing $jd/plugins/$JDTLS_LAUNCHER"; return 1; }
+    [[ -f $jd/lombok.jar ]] || { echo "missing $jd/lombok.jar"; return 1; }
+    [[ -f $HOME/.local/share/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-$JAVA_DEBUG_VERSION.jar ]] ||
+        { echo "missing the java-debug plugin jar $JAVA_DEBUG_VERSION"; return 1; }
+    id24=$(_smoke_java_id 24)
+    id21=$(_smoke_java_id 21)
+    [[ -n $id24 && -n $id21 ]] || { echo "global mise config lacks java 24 or 21 (24='$id24' 21='$id21')"; return 1; }
+    v=$(_mise current java 2>&1)
+    [[ $v == "$id24"* ]] || { echo "mise current java says '$v', want it to start with $id24"; return 1; }
+    "$HOME/.local/share/mise/installs/java/$id21/bin/java" -version >/dev/null 2>&1 || { echo "java $id21 -version failed"; return 1; }
+    v=$(unzip -p "$jd/lombok.jar" META-INF/MANIFEST.MF 2>&1)
+    [[ $v == *"Lombok-Version: $LOMBOK_VERSION"* ]] || { echo "lombok.jar is not $LOMBOK_VERSION"; return 1; }
+    tmp=$(mktemp -d)
+    mkdir "$tmp/.git"
+    printf 'public class Main {}\n' >"$tmp/Main.java"
+    n=$(cd "$tmp" && nvim --headless Main.java -c 'sleep 8' -c 'lua io.write(#vim.lsp.get_clients({name="jdtls"}))' -c 'qa!' 2>/dev/null)
+    rm -rf "$tmp" "$jd/workspace/gps-${tmp##*/}"
+    [[ $n == *1 ]] || { echo "jdtls did not attach (clients: '$n')"; return 1; }
+    check_repo_clean
+}
+
 # New check_<step> functions go above this line (one per step, in task order).
 
 smoke_main() {
