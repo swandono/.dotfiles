@@ -408,6 +408,126 @@ test_install_unknown_step() {
     assert_contains "$out" nvim_config "valid step list"
 }
 
+# ------------------------------------------------------- interactive selection
+
+# Plain-mode dry run: input on stdin, stdout only (the steps and choice lines).
+menu_dry_run() { # INPUT [install.sh args...]
+    local input=$1
+    shift
+    printf '%b' "$input" | BOOTSTRAP_UI=plain bash "$SETUP_DIR/install.sh" --dry-run "$@" 2>/dev/null
+}
+
+# Index of STEP in the plain-mode checklist (1-based).
+checklist_index() { # STEP
+    local i=0 s
+    for s in $(checklist_steps); do
+        i=$((i + 1))
+        if [[ $s == "$1" ]]; then
+            echo "$i"
+            return 0
+        fi
+    done
+    return 1
+}
+
+test_resolve_adds_deps_in_order() {
+    local out
+    out=$(resolve_steps nvim_config)
+    assert_eq "base_packages node cli_tools nvim_config" "$(tr '\n' ' ' <<<"$out" | sed 's/ $//')" "resolved order"
+    assert_eq 4 "$(wc -l <<<"$out")" "one step per line"
+}
+
+test_resolve_java_pulls_mise() {
+    local out
+    out=$(resolve_steps java | tr '\n' ' ')
+    assert_contains "$out" "mise_runtimes java" "mise before java"
+}
+
+test_resolve_unknown_fails() {
+    local rc=0
+    resolve_steps nope >/dev/null 2>&1 || rc=$?
+    [[ $rc -ne 0 ]] || fail "resolve_steps should reject an unknown step"
+}
+
+test_resolve_prompt_and_tmux_deps() {
+    local out
+    out=$(resolve_steps prompt_starship tmux_config | tr '\n' ' ')
+    assert_contains "$out" "cli_tools " "zsh needs cli_tools"
+    assert_contains "$out" " zsh prompt_starship " "prompt needs zsh"
+    assert_contains "$out" "tmux_build " "tmux_config needs tmux_build"
+}
+
+test_checklist_excludes_alternatives() {
+    local out s
+    out=" $(checklist_steps | tr '\n' ' ')"
+    for s in docker podman tmux_build tmux_config zellij prompt_p10k prompt_starship; do
+        [[ $out != *" $s "* ]] || fail "checklist should not contain $s"
+    done
+    assert_contains "$out" " tailscale " "checklist"
+    assert_contains "$out" " ollama " "checklist"
+}
+
+test_plain_menu_essential_default() {
+    # preset, checklist, container, mux, prompt, git_tui, ls, confirm
+    local out expected
+    out=$(menu_dry_run '1\n\n\n\n\n\n\ny\n' | grep -v '^choice ')
+    expected=$(bash "$SETUP_DIR/install.sh" essential --list)
+    assert_eq "$expected" "$out" "essential steps"
+}
+
+test_plain_menu_full_default() {
+    # full adds the monitor and ai screens
+    local out expected
+    out=$(menu_dry_run '2\n\n\n\n\n\n\n\n\ny\n' | grep -v '^choice ')
+    expected=$(bash "$SETUP_DIR/install.sh" full --list)
+    assert_eq "$expected" "$out" "full steps"
+}
+
+test_plain_menu_custom_pick() {
+    local n out
+    n=$(checklist_index java)
+    # container=none (3), keep mux and prompt; java adds no further screens
+    out=$(menu_dry_run "3\n$n\n3\n\n\ny\n" | grep -v '^choice ' | tr '\n' ' ')
+    assert_contains "$out" "base_packages " "custom list starts with base_packages"
+    assert_contains "$out" " mise_runtimes java " "mise before java"
+    assert_contains "$out" "tmux_build tmux_config" "default mux steps"
+    [[ $out != *docker* && $out != *podman* ]] || fail "container none must drop docker and podman"
+    [[ $out != *prompt_* ]] || fail "prompt step needs zsh"
+}
+
+test_plain_menu_alternatives() {
+    local out s
+    # essential, keep checklist, container=podman, mux=zellij, prompt=starship, git_tui, ls, confirm
+    out=$(menu_dry_run '1\n\n2\n2\n2\n\n\ny\n')
+    for s in podman zellij prompt_starship 'choice container=podman' 'choice mux=zellij' 'choice prompt=starship'; do
+        assert_contains "$out" "$s" "alternatives"
+    done
+    for s in docker tmux_build prompt_p10k; do
+        [[ $out != *"$s"* ]] || fail "alternatives output should not contain $s"
+    done
+}
+
+test_plain_menu_cancel_at_confirm() {
+    local rc=0
+    menu_dry_run '1\n\n\n\n\n\n\nn\n' >/dev/null || rc=$?
+    assert_eq 1 "$rc" "declined confirmation exits 1"
+}
+
+test_dry_run_arg_form() {
+    local out
+    out=$(bash "$SETUP_DIR/install.sh" essential --dry-run --only zellij --choose mux=zellij)
+    assert_contains "$out" zellij "dry-run step"
+    assert_contains "$out" "choice mux=zellij" "dry-run choice line"
+    assert_file_missing "$BOOTSTRAP_STATE_DIR/choices"
+}
+
+test_no_args_no_tty() {
+    local out rc=0
+    out=$(bash "$SETUP_DIR/install.sh" </dev/null 2>&1) || rc=$?
+    assert_eq 2 "$rc" "exit status"
+    assert_contains "$out" usage "usage text"
+}
+
 # ------------------------------------------------------------------ test.sh
 
 test_full_keeps_filters_when_building_snapshot() {
@@ -466,6 +586,8 @@ run_test() {
         source "$SETUP_DIR/lib/common.sh" || exit 1
         # shellcheck source=/dev/null
         source "$SETUP_DIR/lib/choices.sh" || exit 1
+        # shellcheck source=/dev/null
+        [[ ! -f $SETUP_DIR/lib/select.sh ]] || source "$SETUP_DIR/lib/select.sh" || exit 1
         "$name"
     )
     rc=$?
