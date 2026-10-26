@@ -29,7 +29,6 @@ step_tmux_config() {
     git_pin "$gh/tmux-plugins/tmux-sensible" "$plug/tmux-sensible" "$TMUX_SENSIBLE_SHA"
     git_pin "$gh/tmux-plugins/tmux-yank" "$plug/tmux-yank" "$TMUX_YANK_SHA"
     git_pin "$gh/tmux-plugins/tmux-resurrect" "$plug/tmux-resurrect" "$TMUX_RESURRECT_SHA"
-    git_pin "$gh/nordtheme/tmux" "$plug/tmux" "$TMUX_NORD_SHA"
 }
 
 step_zellij() {

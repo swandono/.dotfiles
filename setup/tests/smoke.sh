@@ -227,13 +227,16 @@ check_tmux_config() {
         head=$(git -C "$plug/$dir" rev-parse HEAD 2>/dev/null || true)
         [[ $head == "$sha" ]] || { echo "plugin $dir is at '$head', want $sha"; return 1; }
     done < <(printf '%s %s\n' tpm "$TPM_SHA" tmux-sensible "$TMUX_SENSIBLE_SHA" tmux-yank "$TMUX_YANK_SHA" \
-        tmux-resurrect "$TMUX_RESURRECT_SHA" tmux "$TMUX_NORD_SHA")
+        tmux-resurrect "$TMUX_RESURRECT_SHA")
     tmux -L t kill-server >/dev/null 2>&1 || true
     tmux -L t new -d -s probe || { echo "tmux new failed"; return 1; }
     out=$(tmux -L t show -g history-limit 2>&1)
     [[ $out == "history-limit 50000" ]] || { tmux -L t kill-server; echo "history-limit is '$out'"; return 1; }
-    out=$(tmux -L t show -g @plugin 2>&1)
-    [[ $out == *nordtheme/tmux* ]] || { tmux -L t kill-server; echo "@plugin lacks nordtheme/tmux: '$out'"; return 1; }
+    # The repo's customised nord (tmux/nord): brightblue session, brightgreen current window.
+    out=$(tmux -L t show -gv status-left 2>&1)
+    [[ $out == *bg=brightblue* ]] || { tmux -L t kill-server; echo "status-left is not the repo's nord: '$out'"; return 1; }
+    out=$(tmux -L t show -gv window-status-current-format 2>&1)
+    [[ $out == *bg=brightgreen* ]] || { tmux -L t kill-server; echo "current window is not the repo's nord: '$out'"; return 1; }
     tmux -L t kill-server
 }
 
