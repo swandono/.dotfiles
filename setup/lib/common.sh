@@ -99,20 +99,76 @@ apt_install() {
     mark_changed "apt installed ${missing[*]}"
 }
 
+# apt's sources and keyrings dirs; tests point them at throwaway dirs.
+_apt_sources_dir() { printf '%s\n' "${BOOTSTRAP_APT_SOURCES_DIR:-/etc/apt/sources.list.d}"; }
+_apt_keyrings_dir() { printf '%s\n' "${BOOTSTRAP_APT_KEYRINGS_DIR:-/etc/apt/keyrings}"; }
+
+# Repository URIs of the apt source FILE, one per line, without trailing slashes. A .sources
+# file is deb822 (its URIs: field); anything else holds one-line "deb [options] URI ..." entries.
+_apt_source_uris() { # FILE
+    awk '
+        function out(u) { sub(/\/+$/, "", u); if (u != "") print u }
+        FILENAME ~ /\.sources$/ {
+            if (tolower($1) == "uris:") for (i = 2; i <= NF; i++) out($i)
+            next
+        }
+        $1 == "deb" || $1 == "deb-src" {
+            line = $0
+            sub(/^[ \t]*deb(-src)?[ \t]+/, "", line)
+            if (line ~ /^\[/) sub(/^\[[^]]*\][ \t]*/, "", line)
+            split(line, f, /[ \t]+/)
+            out(f[1])
+        }
+    ' "$1"
+}
+
+# Print the first .list or .sources file in the sources dir, other than OWN, that already
+# configures URI.
+_apt_foreign_source() { # URI OWN
+    local f u dir
+    dir=$(_apt_sources_dir)
+    for f in "$dir"/*.list "$dir"/*.sources; do
+        [[ -f $f && $f != "$2" ]] || continue
+        while read -r u; do
+            if [[ $u == "$1" ]]; then
+                printf '%s\n' "$f"
+                return 0
+            fi
+        done < <(_apt_source_uris "$f")
+    done
+    return 1
+}
+
+# Add the vendor repo NAME (keyring NAME.gpg, source NAME.list). When another source file
+# already configures the same repository URI (an official install, e.g. GitHub's
+# github-cli.list), nothing is added: a second source with a different Signed-By makes every
+# apt-get update fail. A copy of ours from an earlier run is then removed for the same reason.
 apt_add_repo() { # NAME KEY_URL DEB_LINE
-    local name=$1 key_url=$2 deb_line=$3 changed=0 tmp
-    local keyring=/etc/apt/keyrings/$name.gpg list=/etc/apt/sources.list.d/$name.list
+    local name=$1 key_url=$2 deb_line=$3 changed=0 tmp keyring list uri foreign
+    keyring=$(_apt_keyrings_dir)/$name.gpg
+    list=$(_apt_sources_dir)/$name.list
     tmp=$(mktemp -d)
     # No EXIT trap (steps run in an isolated subshell that owns it): every
     # command that can fail cleans up explicitly.
+    printf '%s\n' "$deb_line" >"$tmp/list" || { rm -rf "$tmp"; return 1; }
+    uri=$(_apt_source_uris "$tmp/list")
+    if foreign=$(_apt_foreign_source "$uri" "$list"); then
+        log_info "apt repo $name: $foreign already configures $uri, not adding another source"
+        if [[ -e $list ]]; then
+            rm -f "$list" || { rm -rf "$tmp"; return 1; }
+            _APT_UPDATED=0
+            mark_changed "removed $list (duplicates $foreign)"
+        fi
+        rm -rf "$tmp"
+        return 0
+    fi
     fetch "$key_url" "$tmp/key" || { rm -rf "$tmp"; return 1; }
     if grep -q 'BEGIN PGP' "$tmp/key"; then
         gpg --batch --yes --dearmor -o "$tmp/key.gpg" "$tmp/key" || { rm -rf "$tmp"; return 1; }
     else
         mv "$tmp/key" "$tmp/key.gpg" || { rm -rf "$tmp"; return 1; }
     fi
-    printf '%s\n' "$deb_line" >"$tmp/list" || { rm -rf "$tmp"; return 1; }
-    install -d -m 0755 /etc/apt/keyrings || { rm -rf "$tmp"; return 1; }
+    install -d -m 0755 "$(_apt_keyrings_dir)" "$(_apt_sources_dir)" || { rm -rf "$tmp"; return 1; }
     if ! cmp -s "$tmp/key.gpg" "$keyring"; then
         install -m 0644 "$tmp/key.gpg" "$keyring" || { rm -rf "$tmp"; return 1; }
         changed=1

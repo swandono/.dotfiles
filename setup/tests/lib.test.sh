@@ -84,6 +84,65 @@ test_fetch_good_checksum() {
     assert_eq hello "$(cat out)" "fetched content"
 }
 
+# ------------------------------------------------------------- apt_add_repo
+
+# Throwaway sources and keyrings dirs (the real /etc/apt is never touched) and a local key.
+apt_repo_fixture() {
+    export BOOTSTRAP_APT_SOURCES_DIR=$PWD/sources BOOTSTRAP_APT_KEYRINGS_DIR=$PWD/keyrings
+    mkdir -p sources
+    printf 'binary key\n' >key
+}
+
+GH_DEB_LINE="deb [arch=amd64 signed-by=/etc/apt/keyrings/gh.gpg] https://cli.github.com/packages stable main"
+
+test_apt_add_repo_skips_uri_in_foreign_list() {
+    apt_repo_fixture
+    echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages/ stable main" \
+        >sources/github-cli.list
+    apt_add_repo gh "file://$PWD/key" "$GH_DEB_LINE" 2>err || fail "apt_add_repo failed: $(cat err)"
+    assert_contains "$(cat err)" "sources/github-cli.list" "log names the existing source"
+    assert_file_missing sources/gh.list
+    assert_file_missing keyrings/gh.gpg
+    assert_eq 0 "$BOOTSTRAP_CHANGED" "BOOTSTRAP_CHANGED"
+}
+
+test_apt_add_repo_skips_uri_in_deb822_sources() {
+    apt_repo_fixture
+    printf '%s\n' 'Types: deb' 'URIs: https://deb.nodesource.com/node_22.x/' 'Suites: nodistro' \
+        'Components: main' 'Signed-By: /usr/share/keyrings/nodesource.gpg' >sources/nodesource.sources
+    apt_add_repo nodesource "file://$PWD/key" \
+        "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" \
+        2>err || fail "apt_add_repo failed: $(cat err)"
+    assert_contains "$(cat err)" "sources/nodesource.sources" "log names the existing source"
+    assert_file_missing sources/nodesource.list
+    assert_file_missing keyrings/nodesource.gpg
+    assert_eq 0 "$BOOTSTRAP_CHANGED" "BOOTSTRAP_CHANGED"
+}
+
+test_apt_add_repo_writes_beside_unrelated_sources() {
+    apt_repo_fixture
+    printf '%s\n' '# deb https://cli.github.com/packages stable main' \
+        'deb [signed-by=/x.gpg] https://cli.github.com/packages-other stable main' >sources/other.list
+    printf '%s\n' 'Types: deb' 'URIs: https://download.docker.com/linux/ubuntu' 'Suites: noble' >sources/docker.sources
+    apt_add_repo gh "file://$PWD/key" "$GH_DEB_LINE" 2>err || fail "apt_add_repo failed: $(cat err)"
+    assert_eq "$GH_DEB_LINE" "$(cat sources/gh.list)" "our source"
+    assert_eq "binary key" "$(cat keyrings/gh.gpg)" "our keyring"
+    assert_eq 1 "$BOOTSTRAP_CHANGED" "BOOTSTRAP_CHANGED"
+    apt_add_repo gh "file://$PWD/key" "$GH_DEB_LINE" 2>err || fail "second apt_add_repo failed: $(cat err)"
+    assert_eq 1 "$BOOTSTRAP_CHANGED" "BOOTSTRAP_CHANGED after a second call"
+}
+
+test_apt_add_repo_removes_own_duplicate() {
+    apt_repo_fixture
+    echo "$GH_DEB_LINE" >sources/gh.list
+    echo "deb [signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+        >sources/github-cli.list
+    apt_add_repo gh "file://$PWD/key" "$GH_DEB_LINE" 2>err || fail "apt_add_repo failed: $(cat err)"
+    assert_file_missing sources/gh.list
+    [[ -f sources/github-cli.list ]] || fail "the other source must stay"
+    assert_eq 1 "$BOOTSTRAP_CHANGED" "BOOTSTRAP_CHANGED"
+}
+
 # -------------------------------------------------------------------- stamps
 
 test_stamp_roundtrip() {
