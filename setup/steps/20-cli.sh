@@ -31,6 +31,19 @@ cli_asset_url() { # TOOL VERSION ARCH
     esac
 }
 
+# Print the sha256 pinned in versions.env for TOOL's release asset on this machine's
+# architecture: <TOOL>_SHA256_X86_64 or <TOOL>_SHA256_AARCH64 (TOOL upper-cased).
+_cli_pinned_sha() { # TOOL
+    local arch var
+    arch=$(bootstrap_arch)
+    var=${1^^}_SHA256_${arch^^}
+    if [[ ! ${!var:-} =~ ^[0-9a-f]{64}$ ]]; then
+        log_warn "no sha256 pinned for $1 on $arch ($var in versions.env)"
+        return 1
+    fi
+    printf '%s\n' "${!var}"
+}
+
 # Print the hash from a per-asset ".sha256" file (first field of its first line).
 _cli_single_sha() { # URL
     local tmp sha
@@ -42,9 +55,10 @@ _cli_single_sha() { # URL
     printf '%s\n' "$sha"
 }
 
-# Download a release tarball, verify it when SUMS_URL is given, extract the
-# binary BIN from it and install it as /usr/local/bin/BIN. SUMS_URL is a
-# checksum list, or any URL ending in ".sha256": then the file
+# Download a release tarball, verify it, extract the binary BIN from it and
+# install it as /usr/local/bin/BIN. Without SUMS_URL the tarball must match the
+# sha256 pinned in versions.env (_cli_pinned_sha). SUMS_URL is a checksum
+# list, or any URL ending in ".sha256": then the file
 # "<asset>.sha256" next to it holds a single bare hash (starship publishes one
 # per asset). A URL ending in ".sha256sum" is zellij's: the file
 # "<asset minus .tar.gz>.sha256sum" next to it holds the hash of the extracted
@@ -60,6 +74,8 @@ _cli_install_tarball() { # TOOL VERSION BIN [SUMS_URL]
         sha=$(_cli_single_sha "${sums%/*}/$asset.sha256") || return 1
     elif [[ -n $sums ]]; then
         sha=$(sha256_from_sums "$sums" "$asset") || return 1
+    else
+        sha=$(_cli_pinned_sha "$tool") || return 1
     fi
     tmp=$(mktemp -d)
     fetch "$url" "$tmp/asset.tar.gz" "$sha" || { rm -rf "$tmp"; return 1; }
@@ -84,14 +100,14 @@ _cli_has_version() { # BIN NEEDLE
 }
 
 _cli_install_nvim() {
-    local dir=/opt/nvim-$NVIM_VERSION url tmp
+    local dir=/opt/nvim-$NVIM_VERSION url sha tmp
     if [[ ! -x $dir/bin/nvim ]]; then
         url=$(cli_asset_url nvim "$NVIM_VERSION" "$(bootstrap_arch)") || return 1
-        # No upstream checksum is published for the neovim release tarballs
-        # (v0.12.2 ships none), so this download is pinned by URL only.
+        # Neovim publishes no checksum file; the sha256 is pinned in versions.env.
+        sha=$(_cli_pinned_sha nvim) || return 1
         mkdir -p /opt
         tmp=$(mktemp -d /opt/.nvim-extract.XXXXXX)
-        fetch "$url" "$tmp/nvim.tar.gz" || { rm -rf "$tmp"; return 1; }
+        fetch "$url" "$tmp/nvim.tar.gz" "$sha" || { rm -rf "$tmp"; return 1; }
         tar -xzf "$tmp/nvim.tar.gz" -C "$tmp" || { rm -rf "$tmp"; return 1; }
         rm -rf "$dir"
         mv "$tmp"/nvim-linux-* "$dir" || { rm -rf "$tmp"; return 1; }
@@ -117,7 +133,7 @@ step_cli_tools() {
             "$gh/jesseduffield/lazydocker/releases/download/v$LAZYDOCKER_VERSION/checksums.txt"
     fi
     # eza comes from its release, not apt: apt's 0.18 cannot read eza/theme.yml
-    # (needs >= 0.20). Upstream publishes no checksum for eza.
+    # (needs >= 0.20). eza publishes no checksum; the sha256 is pinned in versions.env.
     if choice_has ls eza && ! _cli_has_version eza "v$EZA_VERSION"; then
         _cli_install_tarball eza "$EZA_VERSION" eza
     fi
@@ -143,7 +159,7 @@ step_git_tui() {
         warn_shadowed lazygit /usr/local/bin/lazygit
     fi
     if choice_has git_tui gitui; then
-        # Upstream publishes no checksum for gitui release tarballs.
+        # gitui publishes no checksum; the sha256 is pinned in versions.env.
         if ! _cli_has_version gitui "$GITUI_VERSION"; then
             _cli_install_tarball gitui "$GITUI_VERSION" gitui
         fi
@@ -161,9 +177,10 @@ step_tmux_build() {
     fi
     apt_install curl ca-certificates build-essential libevent-dev libncurses-dev bison pkg-config
     url=https://github.com/tmux/tmux/releases/download/$TMUX_VERSION/tmux-$TMUX_VERSION.tar.gz
+    # tmux publishes no checksum file; the source tarball's sha256 is pinned in versions.env.
+    [[ ${TMUX_SHA256:-} =~ ^[0-9a-f]{64}$ ]] || { log_warn "no sha256 pinned for tmux (TMUX_SHA256 in versions.env)"; return 1; }
     tmp=$(mktemp -d)
-    # tmux publishes no checksum for its release tarball, so none is verified.
-    fetch "$url" "$tmp/tmux.tar.gz" || { rm -rf "$tmp"; return 1; }
+    fetch "$url" "$tmp/tmux.tar.gz" "$TMUX_SHA256" || { rm -rf "$tmp"; return 1; }
     tar -xzf "$tmp/tmux.tar.gz" -C "$tmp" || { rm -rf "$tmp"; return 1; }
     (
         cd "$tmp/tmux-$TMUX_VERSION" &&

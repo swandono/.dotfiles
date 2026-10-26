@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Full profile: language runtimes through mise, and Rust through rustup.
 # Sourced by install.sh, never executed. Steps run inside _run_isolated, so no
-# EXIT traps here. Needs 20-cli.sh (cli_asset_url, _cli_has_version) as well.
+# EXIT traps here. Needs 20-cli.sh (cli_asset_url, _cli_pinned_sha, _cli_has_version) too.
 # Nothing here may touch ~/.zshrc, ~/.bashrc or ~/.profile: mise is only ever
 # called by absolute path or `mise exec`, and rustup runs with --no-modify-path.
 
@@ -128,13 +128,14 @@ _rust_toolchain_ok() {
     [[ $("$cargo/rustc" --version 2>&1 || true) == *"rustc $RUST_VERSION "* ]]
 }
 
-# cargo-binstall's release tarball. It publishes minisign signatures only, so
-# the download is pinned by URL.
+# cargo-binstall's release tarball. It publishes minisign signatures but no
+# checksum file, so the tarball must match the sha256 pinned in versions.env.
 _rust_install_binstall() {
-    local url tmp dest=$HOME/.cargo/bin/cargo-binstall
+    local url sha tmp dest=$HOME/.cargo/bin/cargo-binstall
     url=$(cli_asset_url cargo_binstall "$CARGO_BINSTALL_VERSION" "$(bootstrap_arch)") || return 1
+    sha=$(_cli_pinned_sha cargo_binstall) || return 1
     tmp=$(mktemp -d)
-    fetch "$url" "$tmp/asset.tgz" || { rm -rf "$tmp"; return 1; }
+    fetch "$url" "$tmp/asset.tgz" "$sha" || { rm -rf "$tmp"; return 1; }
     tar -xzf "$tmp/asset.tgz" -C "$tmp" || { rm -rf "$tmp"; return 1; }
     [[ -f $tmp/cargo-binstall ]] || { rm -rf "$tmp"; log_warn "cargo-binstall not found in $url"; return 1; }
     mkdir -p "$HOME/.cargo/bin"

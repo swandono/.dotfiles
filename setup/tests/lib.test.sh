@@ -392,6 +392,46 @@ test_cli_asset_urls_resolve() {
             curl -fsIL "$url" >/dev/null || fail "asset does not resolve: $url"
         done
     done
+    url=https://github.com/tmux/tmux/releases/download/$TMUX_VERSION/tmux-$TMUX_VERSION.tar.gz
+    curl -fsIL "$url" >/dev/null || fail "asset does not resolve: $url"
+}
+
+# Every release download without an upstream checksum file has a sha256 pin per architecture.
+test_release_pins_present() {
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/versions.env"
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/steps/20-cli.sh"
+    local tool arch var
+    for tool in nvim eza gitui xh fastfetch yazi cargo_binstall; do
+        for arch in x86_64 aarch64; do
+            var=${tool^^}_SHA256_${arch^^}
+            [[ ${!var:-} =~ ^[0-9a-f]{64}$ ]] || fail "$var is not a sha256"
+            assert_eq "${!var}" "$(BOOTSTRAP_ARCH=$arch _cli_pinned_sha "$tool")" "_cli_pinned_sha $tool $arch"
+        done
+    done
+    [[ $TMUX_SHA256 =~ ^[0-9a-f]{64}$ ]] || fail "TMUX_SHA256 is not a sha256"
+    _cli_pinned_sha fzf 2>/dev/null && fail "fzf has no pin, _cli_pinned_sha must fail"
+    return 0
+}
+
+test_cli_tarball_enforces_the_pin() {
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/steps/20-cli.sh"
+    export BOOTSTRAP_ARCH=x86_64
+    mkdir pkg
+    printf '#!/bin/sh\n' >pkg/eza
+    tar -czf eza.tar.gz -C pkg eza
+    cli_asset_url() { printf 'file://%s/eza.tar.gz\n' "$PWD"; }
+    install_bin() { touch "$PWD/installed"; }
+    local rc=0
+    EZA_SHA256_X86_64=0000000000000000000000000000000000000000000000000000000000000000
+    _cli_install_tarball eza 0.0.0 eza 2>/dev/null || rc=$?
+    [[ $rc -ne 0 ]] || fail "a tarball that does not match its pin must fail"
+    assert_file_missing installed
+    EZA_SHA256_X86_64=$(sha256sum eza.tar.gz | cut -d' ' -f1)
+    _cli_install_tarball eza 0.0.0 eza || fail "a tarball that matches its pin must install"
+    [[ -e installed ]] || fail "install_bin was not called"
 }
 
 test_ops_download_urls_resolve() {

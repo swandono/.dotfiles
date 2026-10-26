@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
 # Full profile: CLI extras, the monitor choice and the tool configs.
 # Sourced by install.sh, never executed. Steps run inside _run_isolated, so no
-# EXIT traps here. Needs 20-cli.sh (cli_asset_url) to be sourced as well.
+# EXIT traps here. Needs 20-cli.sh (cli_asset_url, _cli_pinned_sha) as well.
 
 # Install the binaries BINS (space separated) from a release archive of TOOL.
 # The archive is a .tar.gz or a .zip, chosen by the asset name; the binaries may
-# sit at any depth inside it. None of these tools publishes a checksum.
+# sit at any depth inside it. None of these tools publishes a checksum file, so
+# the archive must match the sha256 pinned in versions.env (_cli_pinned_sha).
 _full_install_archive() { # TOOL VERSION BINS
-    local tool=$1 ver=$2 bins=$3 url asset tmp bin src
+    local tool=$1 ver=$2 bins=$3 url asset sha tmp bin src
     url=$(cli_asset_url "$tool" "$ver" "$(bootstrap_arch)") || return 1
     asset=${url##*/}
+    sha=$(_cli_pinned_sha "$tool") || return 1
     tmp=$(mktemp -d)
-    fetch "$url" "$tmp/$asset" || { rm -rf "$tmp"; return 1; }
+    fetch "$url" "$tmp/$asset" "$sha" || { rm -rf "$tmp"; return 1; }
     mkdir "$tmp/x" || { rm -rf "$tmp"; return 1; }
     if [[ $asset == *.zip ]]; then
         unzip -q "$tmp/$asset" -d "$tmp/x" || { rm -rf "$tmp"; return 1; }
