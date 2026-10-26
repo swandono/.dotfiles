@@ -17,6 +17,17 @@ _enable_unit() { # UNIT
 
 step_base_packages() {
     apt_install curl wget git unzip zip jq build-essential ca-certificates gnupg xclip xsel
+    _install_ghostty_terminfo
+}
+
+# Ghostty sends TERM=xterm-ghostty, which Ubuntu does not ship (ncurses-term has only "ghostty").
+# Without it zsh cannot move the cursor and redraws garble the line. /etc/terminfo is searched
+# before the packaged databases and covers every user, including root under `sudo -i`.
+_install_ghostty_terminfo() {
+    if infocmp -x xterm-ghostty >/dev/null 2>&1; then return 0; fi
+    install -d -m 0755 /etc/terminfo
+    tic -x -o /etc/terminfo "$REPO_DIR/setup/terminfo/xterm-ghostty.src"
+    mark_changed "installed the xterm-ghostty terminfo in /etc/terminfo"
 }
 
 step_docker() {

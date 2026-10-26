@@ -43,6 +43,14 @@ check_base_packages() {
             return 1
         }
     done
+    TERM=xterm-ghostty infocmp -x xterm-ghostty >/dev/null 2>&1 || {
+        echo "no xterm-ghostty terminfo"
+        return 1
+    }
+    [[ $(TERM=xterm-ghostty tput cub1 2>/dev/null) ]] || {
+        echo "xterm-ghostty has no cursor-left capability"
+        return 1
+    }
 }
 
 check_docker() {

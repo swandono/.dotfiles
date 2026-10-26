@@ -33,7 +33,7 @@ setup/install.sh essential|full [--choose k=v,...] [--only a,b] [--skip a,b] [--
 
 ### Profiles
 
-- **essential**: base packages, container engine, Tailscale (installed, not logged in), zsh with oh-my-zsh, the prompt and plugins, Neovim with this config (plus Node.js 22 from NodeSource, so Mason can install npm-based servers), the terminal multiplexer, and the CLI basics (git TUI, fzf, ripgrep, fd, zoxide, `ls` replacement).
+- **essential**: base packages (plus the `xterm-ghostty` terminfo in `/etc/terminfo`, so Ghostty sessions redraw correctly), container engine, Tailscale (installed, not logged in), zsh with oh-my-zsh, the prompt and plugins, Neovim with this config (plus Node.js 22 from NodeSource, so Mason can install npm-based servers), the terminal multiplexer, and the CLI basics (git TUI, fzf, ripgrep, fd, zoxide, `ls` replacement).
 - **full**: essential plus more CLI tools (bat, btop/htop, ncdu, direnv, yazi, gh, ...), language runtimes through mise (Node, Python, Go, Java, bun, pnpm, uv), Rust with common cargo tools, Java tooling (jdtls, java-debug), cloud and ops tools, network and security packages, a headless-capable Chrome with xvfb and fonts, and the AI/agent CLIs. On aarch64 Chrome is skipped with a warning (Google ships no aarch64 build); xvfb and the fonts still install.
 
 ### Tool choices
