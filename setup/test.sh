@@ -146,7 +146,12 @@ cmd_full() {
     disk_guard "$MIN_FREE_GB_FULL"
     if ! docker image inspect "$SNAPSHOT_IMAGE" >/dev/null 2>&1; then
         log "$SNAPSHOT_IMAGE is missing, building it"
+        # cmd_essential parses its own arguments into the shared FILTERS/SNAPSHOT
+        # globals, so keep this run's filters out of its way.
+        local saved_filters=("${FILTERS[@]}")
         cmd_essential --snapshot
+        FILTERS=("${saved_filters[@]}")
+        SNAPSHOT=0
     fi
     # ollama is too big for this host's disk; the owner's first real run covers it.
     if [[ " ${FILTERS[*]} " != *" --only "* && " ${FILTERS[*]} " != *" --skip ollama"* ]]; then

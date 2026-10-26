@@ -166,6 +166,31 @@ test_install_unknown_step() {
     assert_contains "$out" nvim_config "valid step list"
 }
 
+# ------------------------------------------------------------------ test.sh
+
+test_full_keeps_filters_when_building_snapshot() {
+    # The snapshot image is missing, so cmd_full builds it through cmd_essential.
+    # Docker and the container steps are stubbed; only the filter flow is real.
+    (
+        # shellcheck source=/dev/null
+        source "$SETUP_DIR/test.sh"
+        set +e
+        docker() { return 1; }
+        disk_guard() { :; }
+        start_container() { :; }
+        sync_tree() { :; }
+        remove_container() { :; }
+        cmd_essential() {
+            parse_filters "$@"
+            echo "essential $*" >>"$PWD/calls"
+        }
+        run_profile() { echo "run_profile $*" >>"$PWD/calls"; }
+        cmd_full --only rust >/dev/null 2>&1
+    ) || fail "cmd_full failed"
+    assert_contains "$(cat calls)" "essential --snapshot" "snapshot build"
+    assert_contains "$(cat calls)" "run_profile full --only rust" "filters passed to the full run"
+}
+
 # ------------------------------------------------------------------- runner
 
 run_test() {
