@@ -128,6 +128,78 @@ check_tmux_build() {
     fi
 }
 
+# Pinned git checkouts used by the zsh steps: "DIR SHA" pairs.
+_zsh_pins() {
+    local omz=$HOME/.oh-my-zsh
+    printf '%s %s\n' \
+        "$omz" "$OMZ_SHA" \
+        "$omz/custom/plugins/fzf-tab" "$FZF_TAB_SHA" \
+        "$omz/custom/plugins/zsh-autosuggestions" "$ZSH_AUTOSUGGESTIONS_SHA" \
+        "$omz/custom/plugins/zsh-syntax-highlighting" "$ZSH_SYNTAX_HIGHLIGHTING_SHA" \
+        "$omz/custom/plugins/zsh-vi-mode" "$ZSH_VI_MODE_SHA" \
+        "$omz/custom/plugins/zsh-completions" "$ZSH_COMPLETIONS_SHA"
+}
+
+check_zsh() {
+    local dir sha head out mux ls_choice
+    [[ $(getent passwd root | cut -d: -f7) == /usr/bin/zsh ]] || { echo "root's login shell is not /usr/bin/zsh"; return 1; }
+    [[ $(readlink "$HOME/.zshrc") == "$REPO_PATH/zsh/.zshrc-linux" ]] || { echo "$HOME/.zshrc link is wrong"; return 1; }
+    while read -r dir sha; do
+        head=$(git -C "$dir" rev-parse HEAD 2>/dev/null || true)
+        [[ $head == "$sha" ]] || { echo "$dir is at '$head', want $sha"; return 1; }
+    done < <(_zsh_pins)
+    [[ -f $HOME/.zshrc.local ]] || { echo "$HOME/.zshrc.local is missing"; return 1; }
+    out=$(zsh -i -c exit 2>&1 >/dev/null </dev/null) || true
+    [[ -z $out ]] || { echo "zsh -i -c exit wrote to stderr: $out"; return 1; }
+    mux=$(smoke_choice mux)
+    out=$(zsh -i -c 'alias fj' 2>&1 </dev/null) || true
+    if [[ $mux == tmux ]]; then
+        [[ $out == "fj='tmux a'" ]] || { echo "alias fj is '$out'"; return 1; }
+    else
+        [[ $out == "fj='zellij attach'" ]] || { echo "alias fj is '$out'"; return 1; }
+    fi
+    ls_choice=$(smoke_choice ls)
+    out=$(zsh -i -c 'alias ls' 2>&1 </dev/null) || true
+    if [[ $ls_choice == eza ]]; then
+        [[ $out == *eza* ]] || { echo "alias ls is '$out', want eza"; return 1; }
+    else
+        [[ $out == *eza* || $out != *"ls --color=auto"* ]] && { echo "alias ls is '$out', want plain ls"; return 1; }
+    fi
+    out=$(zsh -i -c 'alias dco' 2>&1 </dev/null) || true
+    case $(smoke_choice container) in
+    docker) [[ $out == "dco='docker compose'" ]] || { echo "alias dco is '$out'"; return 1; } ;;
+    podman) [[ $out == "dco='podman compose'" ]] || { echo "alias dco is '$out'"; return 1; } ;;
+    *) [[ -z $out ]] || { echo "alias dco is '$out' although container=none"; return 1; } ;;
+    esac
+    out=$(zsh -i -c 'whence -w awv' 2>&1 </dev/null) || true
+    [[ $out == "awv: none" ]] || { echo "whence -w awv says '$out'"; return 1; }
+    if zsh -i -c 'alias nxx' >/dev/null 2>&1 </dev/null; then
+        echo "alias nxx exists although mise is absent"
+        return 1
+    fi
+    echo 'alias zz_probe=1' >>"$HOME/.zshrc.local"
+    zsh -i -c 'alias zz_probe' >/dev/null 2>&1 </dev/null || { echo ".zshrc.local is not sourced"; return 1; }
+    sed -i '/^alias zz_probe=1$/d' "$HOME/.zshrc.local"
+}
+
+check_prompt_p10k() {
+    local head
+    head=$(git -C "$HOME/.oh-my-zsh/custom/themes/powerlevel10k" rev-parse HEAD 2>/dev/null || true)
+    [[ $head == "$P10K_SHA" ]] || { echo "powerlevel10k is at '$head', want $P10K_SHA"; return 1; }
+    [[ $(readlink "$HOME/.p10k.zsh") == "$REPO_PATH/zsh/.p10k.zsh" ]] || { echo "$HOME/.p10k.zsh link is wrong"; return 1; }
+}
+
+check_prompt_starship() {
+    local v
+    v=$(starship --version 2>&1 | head -1)
+    [[ $v == "starship $STARSHIP_VERSION" ]] || { echo "starship says '$v', want starship $STARSHIP_VERSION"; return 1; }
+    [[ $(readlink "$HOME/.config/starship.toml") == "$REPO_PATH/starship/starship.toml" ]] || { echo "starship.toml link is wrong"; return 1; }
+    v=$(zsh -i -c 'echo $STARSHIP_SHELL' 2>&1 </dev/null)
+    [[ $v == zsh ]] || { echo "STARSHIP_SHELL is '$v'"; return 1; }
+    v=$(starship prompt 2>&1 >/dev/null </dev/null)
+    [[ -z $v ]] || { echo "starship prompt wrote to stderr: $v"; return 1; }
+}
+
 # New check_<step> functions go above this line (one per step, in task order).
 
 smoke_main() {

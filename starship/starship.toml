@@ -1,0 +1,41 @@
+# Lean one-line prompt, modelled on zsh/.p10k.zsh: directory, git branch and
+# status, then the prompt character; exit status, command duration and a 24h
+# clock on the right. Keep it small.
+add_newline = false
+command_timeout = 500
+
+format = "$directory$git_branch$git_status$character"
+right_format = "$status$cmd_duration$time"
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+
+[git_branch]
+format = "[$branch]($style) "
+style = "green"
+
+[git_status]
+format = "([$all_status$ahead_behind]($style) )"
+style = "yellow"
+
+[character]
+success_symbol = "[❯](green)"
+error_symbol = "[❯](red)"
+vimcmd_symbol = "[❮](green)"
+
+[status]
+disabled = false
+format = "[$symbol$status]($style) "
+style = "red"
+
+[cmd_duration]
+min_time = 3000
+format = "[$duration]($style) "
+style = "yellow"
+
+[time]
+disabled = false
+time_format = "%H:%M:%S"
+format = "[$time]($style)"
+style = "dimmed white"

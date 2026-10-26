@@ -17,6 +17,7 @@ cli_asset_url() { # TOOL VERSION ARCH
     lazydocker) printf '%s/jesseduffield/lazydocker/releases/download/v%s/lazydocker_%s_Linux_%s.tar.gz\n' "$gh" "$ver" "$ver" "$lg_arch" ;;
     eza) printf '%s/eza-community/eza/releases/download/v%s/eza_%s-unknown-linux-gnu.tar.gz\n' "$gh" "$ver" "$arch" ;;
     gitui) printf '%s/gitui-org/gitui/releases/download/v%s/gitui-linux-%s.tar.gz\n' "$gh" "$ver" "$arch" ;;
+    starship) printf '%s/starship/starship/releases/download/v%s/starship-%s-unknown-linux-musl.tar.gz\n' "$gh" "$ver" "$arch" ;;
     *)
         log_warn "cli_asset_url: unknown tool '$tool'"
         return 1
@@ -24,14 +25,30 @@ cli_asset_url() { # TOOL VERSION ARCH
     esac
 }
 
+# Print the hash from a per-asset ".sha256" file (first field of its first line).
+_cli_single_sha() { # URL
+    local tmp sha
+    tmp=$(mktemp)
+    fetch "$1" "$tmp" || { rm -f "$tmp"; return 1; }
+    sha=$(awk 'NR == 1 { print $1 }' "$tmp")
+    rm -f "$tmp"
+    [[ $sha =~ ^[0-9a-f]{64}$ ]] || { log_warn "no sha256 in $1"; return 1; }
+    printf '%s\n' "$sha"
+}
+
 # Download a release tarball, verify it when SUMS_URL is given, extract the
-# binary BIN from it and install it as /usr/local/bin/BIN.
+# binary BIN from it and install it as /usr/local/bin/BIN. SUMS_URL is a
+# checksum list, or any URL ending in ".sha256": then the file
+# "<asset>.sha256" next to it holds a single bare hash (starship publishes one
+# per asset).
 _cli_install_tarball() { # TOOL VERSION BIN [SUMS_URL]
     local tool=$1 ver=$2 bin=$3 sums=${4:-} url asset sha="" tmp arch
     arch=$(bootstrap_arch)
     url=$(cli_asset_url "$tool" "$ver" "$arch") || return 1
     asset=${url##*/}
-    if [[ -n $sums ]]; then
+    if [[ $sums == *.sha256 ]]; then
+        sha=$(_cli_single_sha "${sums%/*}/$asset.sha256") || return 1
+    elif [[ -n $sums ]]; then
         sha=$(sha256_from_sums "$sums" "$asset") || return 1
     fi
     tmp=$(mktemp -d)

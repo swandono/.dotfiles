@@ -1,0 +1,211 @@
+# Portable zshrc for the Linux server bootstrap (setup/install.sh links it to ~/.zshrc).
+# The same file runs on essential and full installs: every line that depends on a tool,
+# a directory or a file is guarded, so a missing piece is skipped silently.
+# Machine-private settings (hosts, project aliases, per-machine variables) live in
+# ~/.zshrc.local, which is sourced on the last line and is not part of the repo.
+
+export XDG_CONFIG_HOME="$HOME/.config"
+
+# Tool choices saved by the installer; the defaults below match setup/lib/choices.sh.
+[[ -f ~/.config/dotfiles-bootstrap/choices.zsh ]] && source ~/.config/dotfiles-bootstrap/choices.zsh
+: ${BOOTSTRAP_CONTAINER:=docker}
+: ${BOOTSTRAP_PROMPT:=p10k}
+: ${BOOTSTRAP_MUX:=tmux}
+: ${BOOTSTRAP_LS:=eza}
+
+# powerlevel10k instant prompt (must stay near the top)
+if [[ $BOOTSTRAP_PROMPT == p10k ]]; then
+  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  fi
+  ZSH_THEME="powerlevel10k/powerlevel10k"
+else
+  ZSH_THEME=""
+fi
+
+ZVM_CURSOR_STYLE_ENABLED=false
+export ZSH="$HOME/.oh-my-zsh"
+# Versions are pinned by setup/versions.env; a self-update would move the pinned commits.
+zstyle ':omz:update' mode disabled
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+plugins+=(command-not-found git fzf-tab zsh-autosuggestions zsh-syntax-highlighting zsh-vi-mode)
+[[ -f $ZSH/oh-my-zsh.sh ]] && source $ZSH/oh-my-zsh.sh
+
+# PATH entries, only for directories that exist (first entry wins)
+_path_pre=()
+for _d in $HOME/.opencode/bin $HOME/.local/bin /snap/bin $HOME/lua51/bin $HOME/go/bin; do
+  [[ -d $_d ]] && _path_pre+=($_d)
+done
+path=($_path_pre $path)
+unset _path_pre _d
+
+export EDITOR='nvim'
+
+# ---- aliases
+alias vim='nvim'
+if [[ $BOOTSTRAP_LS == eza ]] && (( $+commands[eza] )); then
+  alias ls='eza --color=always --icons=always'
+  alias ll='eza -1 --color=always --icons=always -l'
+  alias lla='eza -1 --color=always --icons=always -la'
+else
+  alias ls='ls --color=auto'
+  alias ll='ls -l'
+  alias lla='ls -la'
+fi
+alias ducks='du -cksh * | sort -h'
+(( $+commands[btop] )) && alias btop='sudo btop'
+(( $+commands[batcat] )) && alias bat='batcat'
+(( $+commands[opencode] )) && alias oc='opencode'
+(( $+commands[clamscan] )) && alias clam='freshclam && clamscan -r / \
+  --exclude-dir="^/proc|^/sys|^/dev|^/run"'
+alias pc='pkill -9 -f "chrome-devtools" 2>/dev/null; pkill -9 -f chromium 2>/dev/null; pkill -9 -f chrome 2>/dev/null; rm -rf ~/.cache/chrome-devtools-mcp/chrome-profile/SingletonLock 2>/dev/null; (setopt null_glob; rm -rf /tmp/mcp-chrome* 2>/dev/null); echo "Chrome cleanup done"'
+(( $+commands[claude] )) && alias assistant='claude --resume "assistant" --channels plugin:telegram@claude-plugins-official'
+alias gemini='source ~/.gemini_env && npx https://github.com/google-gemini/gemini-cli'
+
+case $BOOTSTRAP_CONTAINER in
+  podman)
+    alias dco='podman compose'
+    export DOCKER_HOST=unix:///run/podman/podman.sock
+    ;;
+  docker) alias dco='docker compose' ;;
+esac
+
+alias uad='sudo ufw allow from 172.16.0.0/12 proto tcp to 172.17.0.1 && sudo ufw reload'
+alias udd='sudo ufw delete allow from 172.16.0.0/12 proto tcp to 172.17.0.1 && sudo ufw reload'
+alias uam='sudo ufw allow mosh && sudo ufw reload'
+alias udm='sudo ufw delete allow mosh && sudo ufw reload'
+
+alias gs='git status'
+alias gb='git branch'
+alias gl='git log'
+(( $+commands[lazygit] )) && alias lzg='lazygit'
+alias lzd='lazydocker'
+
+alias cdw='cd ~/Work'
+alias cdc='cd ~/.config'
+
+case $BOOTSTRAP_MUX in
+  zellij)
+    alias fj='zellij attach'
+    alias tmn='zellij'
+    alias tmm='zellij attach -c Me'
+    ;;
+  *)
+    alias fj='tmux a'
+    alias tmn='tmux new'
+    alias tmm='tmux new -sMe'
+    alias tms='tmux new tmux-sessionizer'
+    ;;
+esac
+
+if (( $+commands[mvn] )); then
+  alias mvngo='mvncmp && mvnrun'
+  alias mvnres='mvnkill && mvncmp && mvnrun'
+  alias mvnrun='mvn spring-boot::run'
+  alias mvncmp='mvn clean compile'
+  alias mvntest='mvn test'
+  alias mvnstart='mvn spring-boot::start'
+  alias mvnstop='mvn spring-boot::stop'
+  alias mvnkill="lsof -i :8080 | grep 'java' | awk '{print \$2}' | xargs kill -9"
+  alias mvndep='mvn dependency:go-offline'
+  alias mvnbuild='mvn package -Dmaven.test.skip=true'
+  alias mvndev='mvndep && mvnbuild'
+fi
+
+# ---- runtimes (mise replaces nvm, gvm, sdkman and pyenv)
+if (( $+commands[mise] )); then
+  eval "$(mise activate zsh)"
+  alias mxx='mise current'
+  alias nxx='mise current node'
+  alias pxx='mise current python'
+  alias sxx='mise current java'
+  alias gxx='mise ls go'
+  alias sxc='mise shell java@oracle-17.0.9'
+fi
+
+# pnpm
+export PNPM_HOME="$HOME/.local/share/pnpm"
+if [[ -d $PNPM_HOME && ":$PATH:" != *":$PNPM_HOME:"* ]]; then
+  export PATH="$PNPM_HOME:$PATH"
+fi
+
+# zoxide
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
+
+# prompt
+if [[ $BOOTSTRAP_PROMPT == p10k ]]; then
+  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+elif [[ $BOOTSTRAP_PROMPT == starship ]] && (( $+commands[starship] )); then
+  eval "$(starship init zsh)"
+fi
+
+# ---- history
+HISTSIZE=10000
+SAVEHIST=$HISTSIZE
+HISTFILE=~/.zsh_history
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_find_no_dups
+
+# force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+zstyle ':completion:*' menu no
+# preview directory's content when completing cd
+if [[ $BOOTSTRAP_LS == eza ]] && (( $+commands[eza] )); then
+  zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons=always $realpath'
+else
+  zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls -1 --color=always $realpath'
+fi
+(( $+commands[fzf] )) && zvm_after_init_commands+=('source <(fzf --zsh)')
+
+[[ -f ~/.local/bin/env ]] && . ~/.local/bin/env
+[[ -f ~/.cargo/env ]] && . ~/.cargo/env
+
+# bun
+[[ -s ~/.bun/_bun ]] && source ~/.bun/_bun
+if [[ -d ~/.bun ]]; then
+  export BUN_INSTALL="$HOME/.bun"
+  export PATH="$BUN_INSTALL/bin:$PATH"
+fi
+
+# aws-vault
+if (( $+commands[aws-vault] )); then
+  export AWS_VAULT_BACKEND=file
+
+  # aws-vault subshell: passphrase and MFA once, then a shell holding temporary credentials.
+  # usage: awv [PROFILE [DURATION]]
+  # Set AWV_DEFAULT_PROFILE (and optionally AWV_DEFAULT_DURATION) in ~/.zshrc.local to make
+  # PROFILE optional. Other profiles default to 1h (assumed-role sessions are capped at 1 hour).
+  awv() {
+    if [[ -n "$AWS_VAULT" ]]; then
+      echo "already inside an aws-vault subshell ($AWS_VAULT), exit first" >&2
+      return 1
+    fi
+    local profile=${1:-$AWV_DEFAULT_PROFILE}
+    if [[ -z "$profile" ]]; then
+      echo "usage: awv PROFILE [DURATION]; or set AWV_DEFAULT_PROFILE in ~/.zshrc.local" >&2
+      return 1
+    fi
+    local duration=${2:-}
+    if [[ -z "$duration" ]]; then
+      if [[ "$profile" == "$AWV_DEFAULT_PROFILE" ]]; then
+        duration=${AWV_DEFAULT_DURATION:-1h}
+      else
+        duration=1h
+      fi
+    fi
+    aws-vault exec "$profile" --duration="$duration" -- zsh
+  }
+fi
+
+# clhere: per-folder Claude profile via direnv (see ~/.clhere); set CLHERE_PROFILE in ~/.zshrc.local
+[[ -f ~/.clhere ]] && source ~/.clhere
+
+# direnv: per-folder env from .envrc (keep near the end)
+(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
+
+# machine-local settings, not in the repo
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
