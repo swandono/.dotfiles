@@ -90,12 +90,13 @@ case $BOOTSTRAP_MUX in
     alias tmn='zellij'
     alias tmm='zellij attach -c Me'
     ;;
-  *)
+  tmux)
     alias fj='tmux a'
     alias tmn='tmux new'
     alias tmm='tmux new -sMe'
     alias tms='tmux new tmux-sessionizer'
     ;;
+  none) ;;
 esac
 
 if (( $+commands[mvn] )); then

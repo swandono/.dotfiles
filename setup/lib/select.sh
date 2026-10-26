@@ -10,30 +10,30 @@ ESSENTIAL_STEPS=(base_packages docker podman tailscale node cli_tools git_tui tm
 FULL_STEPS=(cli_extras monitor configs_full mise_runtimes rust java ops net_sec browser ai_clis ollama)
 
 declare -A STEP_TITLES=(
-    [base_packages]="Base apt packages and system settings"
-    [docker]="Docker engine"
-    [podman]="Podman"
-    [tailscale]="Tailscale VPN"
-    [node]="Node.js"
-    [cli_tools]="Everyday CLI tools (ripgrep, fd, fzf, eza, ...)"
+    [base_packages]="Base apt packages (curl, git, jq, build tools, ...)"
+    [docker]="Docker engine and compose"
+    [podman]="Podman and podman-compose"
+    [tailscale]="Tailscale (installed, never joined to a tailnet)"
+    [node]="Node.js 22 (NodeSource)"
+    [cli_tools]="Neovim, ripgrep, fd, fzf, zoxide, lazydocker, eza"
     [git_tui]="Git terminal UI (lazygit / gitui)"
     [tmux_build]="tmux built from source"
     [zellij]="Zellij"
-    [zsh]="zsh with oh-my-zsh and plugins"
+    [zsh]="zsh, oh-my-zsh plugins, root login shell"
     [prompt_p10k]="Powerlevel10k prompt"
     [prompt_starship]="Starship prompt"
-    [tmux_config]="tmux configuration"
-    [nvim_config]="Neovim and this config"
-    [cli_extras]="Extra CLI tools"
+    [tmux_config]="tmux config, plugins and sessionizer"
+    [nvim_config]="Neovim config and plugins (restored from the lock file)"
+    [cli_extras]="Extra CLI tools (gh, xh, fastfetch, yazi, bat, ncdu, direnv, ...)"
     [monitor]="System monitors (btop / htop)"
-    [configs_full]="Extra tool configs"
-    [mise_runtimes]="mise with language runtimes"
-    [rust]="Rust toolchain"
-    [java]="Java (JDK, Maven, Gradle)"
-    [ops]="Ops tools (cloud and Kubernetes CLIs)"
-    [net_sec]="Network and security tools"
-    [browser]="Headless browser tooling"
-    [ai_clis]="AI coding CLIs"
+    [configs_full]="bat, yazi and eza configs"
+    [mise_runtimes]="mise with node, python, go, bun, pnpm, uv and a few tools"
+    [rust]="Rust toolchain (rustup) and cargo tools"
+    [java]="JDK 17 and mise JDKs, Maven, jdtls, lombok, java-debug"
+    [ops]="AWS CLI, session-manager-plugin, aws-vault, mkcert, rclone, PostgreSQL and Redis clients"
+    [net_sec]="Network and security tools (openvpn, wireguard, clamav, rkhunter, lynis)"
+    [browser]="Google Chrome, fonts and xvfb (x86_64 only)"
+    [ai_clis]="AI coding CLIs, MCP helpers, bd, Playwright"
     [ollama]="Ollama"
 )
 
@@ -54,7 +54,7 @@ declare -A CHOICE_TITLES=(
     [mux]="Terminal multiplexer"
     [prompt]="Shell prompt (needs zsh)"
     [git_tui]="Git terminal UI"
-    [ls]="ls replacement"
+    [ls]="ls replacement (eza or plain ls)"
     [monitor]="System monitor"
     [ai]="AI coding CLIs to install"
 )
@@ -92,11 +92,11 @@ resolve_steps() { # STEP...
     done
 }
 
-# The steps the checklist offers: all but the alternative steps.
+# The steps the checklist offers: all but base_packages (always installed) and the alternative steps.
 checklist_steps() {
     local s
     for s in "${ESSENTIAL_STEPS[@]}" "${FULL_STEPS[@]}"; do
-        if [[ -z ${STEP_CHOICE[$s]-} ]]; then printf '%s\n' "$s"; fi
+        if [[ $s != base_packages && -z ${STEP_CHOICE[$s]-} ]]; then printf '%s\n' "$s"; fi
     done
 }
 
@@ -162,6 +162,16 @@ selection_profile() {
         CHOICES[$key]=${saved[$key]}
     done
     printf '%s\n' "$profile"
+}
+
+# Print " (ignored: ...)" when choice KEY has no effect for the given steps.
+choice_note() { # KEY STEP...
+    local key=$1
+    shift
+    if [[ $key == prompt ]] && ! _choice_in_words zsh "$@"; then
+        printf ' (ignored: zsh not selected)'
+    fi
+    return 0
 }
 
 # ------------------------------------------------------------------ UI mode
@@ -397,7 +407,7 @@ _summary_text() { # CHECKED_LIST ; reads SELECTED_STEPS and CHOICES
     done
     printf '\nTool choices:\n'
     for key in "${CHOICE_KEYS[@]}"; do
-        printf '  %s=%s\n' "$key" "${CHOICES[$key]}"
+        printf '  %s=%s%s\n' "$key" "${CHOICES[$key]}" "$(choice_note "$key" "${SELECTED_STEPS[@]}")"
     done
 }
 
@@ -414,7 +424,7 @@ _summary_compact() { # CHECKED_LIST ; reads SELECTED_STEPS and CHOICES
     if [[ -n $deps ]]; then printf '\nAdded as dependencies: %s\n' "$deps"; fi
     printf '\nTool choices:'
     for key in "${CHOICE_KEYS[@]}"; do
-        printf ' %s=%s' "$key" "${CHOICES[$key]}"
+        printf ' %s=%s%s' "$key" "${CHOICES[$key]}" "$(choice_note "$key" "${SELECTED_STEPS[@]}")"
     done
     printf '\n\nProceed?\n'
 }
@@ -435,7 +445,7 @@ _ask_choice() { # KEY ; status 1 on cancel
 # SELECTED_PROFILE (essential, full or custom) and the answers in CHOICES.
 # Status 1 on cancel, with nothing changed on disk.
 select_steps_interactive() {
-    MENU_UI=$(_ui_mode)
+    MENU_UI=$(_ui_mode) || return 1
     local ui=$MENU_UI preset default key
     local -a names=() titles=() checked closure
     local s
@@ -450,6 +460,12 @@ select_steps_interactive() {
     full) default=$(printf '%s\n' "${names[@]}") ;;
     *) default="" ;;
     esac
+
+    if [[ $preset == custom ]]; then
+        # Start from nothing: no container runtime and no multiplexer either.
+        choice_set container none
+        choice_set mux none
+    fi
 
     local heading="Steps to install (dependencies are added for you)"
     local picked
@@ -480,8 +496,8 @@ select_steps_interactive() {
 
     mapfile -t SELECTED_STEPS < <(_assemble_steps "${checked[@]}")
     if [[ ${#SELECTED_STEPS[@]} -eq 0 ]]; then
-        log_warn "nothing selected"
-        return 1
+        SELECTED_PROFILE=custom
+        return 0
     fi
     SELECTED_PROFILE=$(selection_profile)
 

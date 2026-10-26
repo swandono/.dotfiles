@@ -157,6 +157,8 @@ check_zsh() {
     out=$(zsh -i -c 'alias fj' 2>&1 </dev/null) || true
     if [[ $mux == tmux ]]; then
         [[ $out == "fj='tmux a'" ]] || { echo "alias fj is '$out'"; return 1; }
+    elif [[ $mux == none ]]; then
+        [[ $out != fj=* ]] || { echo "alias fj is '$out' although mux=none"; return 1; }
     else
         [[ $out == "fj='zellij attach'" ]] || { echo "alias fj is '$out'"; return 1; }
     fi

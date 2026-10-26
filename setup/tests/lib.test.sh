@@ -486,13 +486,61 @@ test_plain_menu_full_default() {
 test_plain_menu_custom_pick() {
     local n out
     n=$(checklist_index java)
-    # container=none (3), keep mux and prompt; java adds no further screens
-    out=$(menu_dry_run "3\n$n\n3\n\n\ny\n" | grep -v '^choice ' | tr '\n' ' ')
-    assert_contains "$out" "base_packages " "custom list starts with base_packages"
-    assert_contains "$out" " mise_runtimes java " "mise before java"
-    assert_contains "$out" "tmux_build tmux_config" "default mux steps"
-    [[ $out != *docker* && $out != *podman* ]] || fail "container none must drop docker and podman"
-    [[ $out != *prompt_* ]] || fail "prompt step needs zsh"
+    # container and mux start at none in Custom; java adds no further screens
+    out=$(menu_dry_run "3\n$n\n\n\n\ny\n" | grep -v '^choice ' | tr '\n' ' ')
+    assert_eq "base_packages mise_runtimes java " "$out" "custom list"
+}
+
+test_plain_menu_custom_empty_runs_nothing() {
+    local out err rc=0
+    # preset, empty checklist, container, mux, prompt (all left at their pre-selection)
+    out=$(printf '3\n\n\n\n\n' | BOOTSTRAP_UI=plain bash "$SETUP_DIR/install.sh" --dry-run 2>"$PWD/err") || rc=$?
+    err=$(<"$PWD/err")
+    assert_eq 0 "$rc" "empty custom selection exits cleanly"
+    assert_eq "" "$out" "nothing on stdout"
+    assert_contains "$err" "nothing to install" "clear message"
+    [[ $err != *ERROR* ]] || fail "no error expected: $err"
+}
+
+test_checklist_hides_base_packages() {
+    [[ " $(checklist_steps | tr '\n' ' ') " != *" base_packages "* ]] || fail "base_packages is implied, not listed"
+}
+
+test_dry_run_prompt_ignored_without_zsh() {
+    local out
+    out=$(bash "$SETUP_DIR/install.sh" essential --dry-run --only node)
+    assert_contains "$out" "choice prompt=p10k (ignored: zsh not selected)" "note after the value"
+    out=$(bash "$SETUP_DIR/install.sh" essential --dry-run --only zsh,prompt_p10k)
+    assert_contains "$out" "choice prompt=p10k"$'\n' "no note with zsh"
+}
+
+test_mux_none_runs_no_mux_steps() {
+    local out
+    out=$(bash "$SETUP_DIR/install.sh" essential --list --choose mux=none)
+    local s
+    for s in tmux_build tmux_config zellij; do
+        [[ $out != *"$s"* ]] || fail "mux=none must not run $s"
+    done
+}
+
+test_bogus_ui_fails() {
+    local rc=0 out
+    out=$(printf '1\n' | BOOTSTRAP_UI=bogus bash "$SETUP_DIR/install.sh" --dry-run 2>&1) || rc=$?
+    [[ $rc -ne 0 ]] || fail "bad BOOTSTRAP_UI must fail"
+    assert_contains "$out" BOOTSTRAP_UI "message"
+    [[ $out != *"Server bootstrap"* && $out != *"Choice ["* ]] || fail "no menu may start: $out"
+}
+
+test_whiptail_forced_but_missing_fails() {
+    local rc=0 out f bin=$PWD/nowt
+    mkdir -p "$bin"
+    for f in /usr/bin/* /bin/*; do
+        [[ ${f##*/} == whiptail ]] || ln -sf "$f" "$bin/${f##*/}" 2>/dev/null || true
+    done
+    out=$(printf '1\n' | PATH=$bin BOOTSTRAP_UI=whiptail /usr/bin/bash "$SETUP_DIR/install.sh" --dry-run 2>&1) || rc=$?
+    [[ $rc -ne 0 ]] || fail "forced whiptail without whiptail must fail"
+    assert_contains "$out" whiptail "message"
+    [[ $out != *"Choice ["* ]] || fail "no menu may start: $out"
 }
 
 test_plain_menu_alternatives() {

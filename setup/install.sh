@@ -106,6 +106,10 @@ SEL_FULL=()
 if [[ $MENU -eq 1 ]]; then
     # Sets SELECTED_STEPS, SELECTED_PROFILE and CHOICES; nothing is written yet.
     select_steps_interactive || die "cancelled, nothing was changed"
+    if [[ ${#SELECTED_STEPS[@]} -eq 0 ]]; then
+        log_info "nothing selected, nothing to install"
+        exit 0
+    fi
     PROFILE=$SELECTED_PROFILE
     for step in "${SELECTED_STEPS[@]}"; do
         if in_list "$step" "${ESSENTIAL_STEPS[@]}"; then SEL_ESSENTIAL+=("$step"); else SEL_FULL+=("$step"); fi
@@ -127,7 +131,7 @@ if [[ $LIST -eq 1 || $DRY_RUN -eq 1 ]]; then
     if [[ $DRY_RUN -eq 1 ]]; then
         log_info "dry run, profile=$PROFILE"
         for key in "${CHOICE_KEYS[@]}"; do
-            printf 'choice %s=%s\n' "$key" "$(choice_get "$key")"
+            printf 'choice %s=%s%s\n' "$key" "$(choice_get "$key")" "$(choice_note "$key" "${SEL_ALL[@]}")"
         done
     fi
     exit 0
