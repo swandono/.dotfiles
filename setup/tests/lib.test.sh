@@ -305,6 +305,24 @@ test_warn_shadowed() {
     assert_contains "$out" "$PWD/bin/nvim" "warning"
 }
 
+# ----------------------------------------------------------------- cli tools
+
+test_cli_asset_urls_resolve() {
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/versions.env"
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/steps/20-cli.sh"
+    local tool vname ver arch url
+    for tool in nvim fzf lazygit lazydocker eza gitui; do
+        vname=${tool^^}_VERSION
+        ver=${!vname}
+        for arch in x86_64 aarch64; do
+            url=$(cli_asset_url "$tool" "$ver" "$arch") || fail "no URL for $tool $arch"
+            curl -fsIL "$url" >/dev/null || fail "asset does not resolve: $url"
+        done
+    done
+}
+
 # ---------------------------------------------------------------- install.sh
 
 test_install_unknown_step() {

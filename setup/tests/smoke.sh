@@ -10,6 +10,9 @@ source "$REPO_PATH/setup/lib/common.sh"
 # shellcheck source=../lib/choices.sh
 source "$REPO_PATH/setup/lib/choices.sh"
 
+# shellcheck source=../versions.env
+source "$REPO_PATH/setup/versions.env"
+
 # Saved tool choice for KEY; falls back to the install default when unsaved.
 smoke_choice() { # KEY
     local key=$1 line
@@ -67,6 +70,62 @@ check_node() {
     local v
     v=$(/usr/bin/node -v 2>&1) || { echo "/usr/bin/node -v failed"; return 1; }
     [[ $v =~ ^v22\. ]] || { echo "node version is $v, want v22.x"; return 1; }
+}
+
+check_cli_tools() {
+    local v
+    v=$(nvim --version 2>&1 | head -1)
+    [[ $v == "NVIM v$NVIM_VERSION" ]] || { echo "nvim says '$v', want NVIM v$NVIM_VERSION"; return 1; }
+    [[ $(command -v nvim) == /usr/local/bin/nvim ]] || { echo "nvim is not /usr/local/bin/nvim"; return 1; }
+    v=$(fzf --version 2>&1)
+    [[ $v == "$FZF_VERSION"* ]] || { echo "fzf says '$v', want $FZF_VERSION"; return 1; }
+    v=$(lazydocker --version 2>&1)
+    [[ $v == *"Version: $LAZYDOCKER_VERSION"* ]] || { echo "lazydocker says '$v'"; return 1; }
+    if [[ $(smoke_choice ls) == eza ]]; then
+        v=$(eza --version 2>&1)
+        [[ $v == *"v$EZA_VERSION"* ]] || { echo "eza says '$v'"; return 1; }
+    elif command -v eza >/dev/null 2>&1; then
+        echo "eza is installed but ls=ls"
+        return 1
+    fi
+    rg --version >/dev/null 2>&1 || { echo "rg --version failed"; return 1; }
+    fd --version >/dev/null 2>&1 || { echo "fd --version failed"; return 1; }
+    zoxide --version >/dev/null 2>&1 || { echo "zoxide --version failed"; return 1; }
+}
+
+check_git_tui() {
+    local choice v
+    choice=$(smoke_choice git_tui)
+    choices_init
+    if choice_has git_tui lazygit; then
+        v=$(lazygit --version 2>&1)
+        [[ $v == *"version=$LAZYGIT_VERSION"* ]] || { echo "lazygit says '$v'"; return 1; }
+        [[ $(readlink "$HOME/.config/lazygit/config.yml") == "$REPO_PATH/lazygit/config-linux.yml" ]] ||
+            { echo "lazygit config link is wrong"; return 1; }
+    elif command -v lazygit >/dev/null 2>&1; then
+        echo "lazygit is installed but git_tui=$choice"
+        return 1
+    fi
+    if choice_has git_tui gitui; then
+        v=$(gitui --version 2>&1)
+        [[ $v == *"$GITUI_VERSION"* ]] || { echo "gitui says '$v'"; return 1; }
+        [[ $(readlink "$HOME/.config/gitui") == "$REPO_PATH/gitui" ]] ||
+            { echo "gitui config link is wrong"; return 1; }
+    elif command -v gitui >/dev/null 2>&1; then
+        echo "gitui is installed but git_tui=$choice"
+        return 1
+    fi
+}
+
+check_tmux_build() {
+    local v
+    v=$(tmux -V 2>&1)
+    [[ $v == "tmux $TMUX_VERSION" ]] || { echo "tmux says '$v', want tmux $TMUX_VERSION"; return 1; }
+    [[ $(command -v tmux) == /usr/local/bin/tmux ]] || { echo "tmux is not /usr/local/bin/tmux"; return 1; }
+    if dpkg -s tmux >/dev/null 2>&1; then
+        echo "apt tmux is installed"
+        return 1
+    fi
 }
 
 # New check_<step> functions go above this line (one per step, in task order).

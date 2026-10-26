@@ -1,0 +1,12 @@
+gui:
+  theme:
+    # optionsTextColor:
+    #   - "#3a445a"
+    selectedLineBgColor:
+      - "#3a445a"
+    selectedRangeBgColor:
+      - "#3a445a"
+    defaultFgColor:
+      - "#8baed9"
+os:
+  copyCommand: "osc52" # use OSC52 to write to your local clipboard
