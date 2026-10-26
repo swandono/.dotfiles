@@ -37,7 +37,7 @@ return {
 
 			server = {
 				type = "binary",
-				custom_server_filepath = "/opt/homebrew/bin/copilot-language-server",
+				custom_server_filepath = "/usr/bin/copilot-language-server",
 			},
 		})
 
