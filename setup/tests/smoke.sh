@@ -233,15 +233,20 @@ check_zellij() {
 }
 
 check_nvim_config() {
-    local out rc=0 name lock=$REPO_PATH/lazy-lock.json keep
-    # lazy.nvim rewrites lazy-lock.json on restore; keep the committed copy so repo_clean stays meaningful.
-    keep=$(mktemp)
-    cp -p "$lock" "$keep"
-    out=$(nvim --headless "+Lazy! restore" +qa 2>&1 >/dev/null </dev/null) || rc=$?
-    cp -p "$keep" "$lock"
-    rm -f "$keep"
-    [[ $rc -eq 0 ]] || { echo "nvim headless restore exited $rc: $out"; return 1; }
-    [[ $out != *Error* ]] || { echo "nvim headless restore wrote an Error to stderr: $out"; return 1; }
+    local out name lock=$REPO_PATH/lazy-lock.json lazy_dir=$HOME/.local/share/nvim/lazy plugin commit head
+    [[ -f $lock ]] || { echo "lazy-lock.json is missing"; return 1; }
+    # Observe the pinned state without repairing it: every locked plugin must be checked out at its commit.
+    while read -r plugin commit; do
+        [[ -d $lazy_dir/$plugin ]] || { echo "locked plugin $plugin has no checkout"; return 1; }
+        head=$(git -C "$lazy_dir/$plugin" rev-parse HEAD 2>/dev/null || true)
+        [[ $head == "$commit" ]] || { echo "plugin $plugin is at '$head', want $commit"; return 1; }
+    done < <(jq -r 'to_entries[] | "\(.key) \(.value.commit)"' "$lock")
+    # Non-mutating startup probe.
+    out=$(nvim --headless +qa 2>&1 >/dev/null </dev/null) || { echo "nvim --headless +qa failed: $out"; return 1; }
+    if grep -qiE 'error|E[0-9]+:' <<<"$out"; then
+        echo "nvim startup wrote errors to stderr: $out"
+        return 1
+    fi
     name=$(nvim --headless -c 'lua io.write(vim.g.clipboard and vim.g.clipboard.name or "none")' -c q 2>&1 </dev/null)
     [[ $name == "OSC 52" ]] || { echo "vim.g.clipboard.name is '$name', want 'OSC 52'"; return 1; }
 }
