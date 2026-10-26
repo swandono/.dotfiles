@@ -42,19 +42,20 @@ _ai_install_opencode() {
 
 # npm package PACKAGE (latest) when BIN does not run yet.
 _ai_npm_latest() { # BIN PACKAGE
+    local out
     _ai_runs "$1" && return 0
-    /usr/bin/npm install -g --no-fund --no-audit "$2" >/dev/null || return 1
+    out=$(/usr/bin/npm install -g --no-fund --no-audit "$2" 2>&1) || { printf '%s\n' "$out" >&2; return 1; }
     mark_changed "npm installed $2"
 }
 
 # Pinned global NAME@VERSION on the system npm, skipped when `npm ls -g` already shows it.
 _ai_npm_pinned() { # NAME VERSION
-    local listing
+    local listing out
     listing=$(/usr/bin/npm ls -g --depth=0 --json 2>/dev/null || true)
     if [[ $(jq -r --arg n "$1" '.dependencies[$n].version // empty' <<<"$listing") == "$2" ]]; then
         return 0
     fi
-    /usr/bin/npm install -g --no-fund --no-audit "$1@$2" >/dev/null || return 1
+    out=$(/usr/bin/npm install -g --no-fund --no-audit "$1@$2" 2>&1) || { printf '%s\n' "$out" >&2; return 1; }
     mark_changed "npm installed $1@$2"
 }
 
@@ -88,10 +89,17 @@ step_ai_clis() {
     try_tool bd _ai_install_bd
 }
 
+# Free KiB on the filesystem holding DIR.
+_ai_free_kib() { # DIR
+    df -Pk "$1" | awk 'NR == 2 { print $4 }'
+}
+
 # Binary and lib dir from the official release archive, under /usr/local like the project's own
-# installer does, but without its user, groups, service or models.
+# installer does, but without its user, groups, service or models. The archive is unpacked into
+# a staging dir on the /usr/local filesystem first, so a failed download or extraction leaves a
+# working install untouched; the swap is renames only.
 _ollama_install() {
-    local arch asset base sha tmp
+    local arch asset base sha tmp stage dir need_kib=6291456 free_kib
     if _cli_has_version ollama "$OLLAMA_VERSION"; then return 0; fi
     arch=amd64
     [[ $(bootstrap_arch) == aarch64 ]] && arch=arm64
@@ -99,10 +107,36 @@ _ollama_install() {
     base=https://github.com/ollama/ollama/releases/download/v$OLLAMA_VERSION
     sha=$(sha256_from_sums "$base/sha256sum.txt" "$asset") || return 1
     tmp=$(mktemp -d)
-    fetch "$base/$asset" "$tmp/$asset" "$sha" || { rm -rf "$tmp"; return 1; }
-    rm -rf /usr/local/lib/ollama
-    tar --zstd -xf "$tmp/$asset" -C /usr/local || { rm -rf "$tmp"; return 1; }
-    rm -rf "$tmp"
+    # Room for the archive (about 2 GB) in the temp dir and for its extraction in /usr/local.
+    for dir in "$tmp" /usr/local; do
+        free_kib=$(_ai_free_kib "$dir")
+        if [[ -z $free_kib || $free_kib -lt $need_kib ]]; then
+            log_warn "not enough disk space for ollama: need 6 GiB free on $dir, have ${free_kib:-0} KiB"
+            rm -rf "$tmp"
+            return 1
+        fi
+    done
+    stage=$(mktemp -d /usr/local/.ollama-stage.XXXXXX) || { rm -rf "$tmp"; return 1; }
+    fetch "$base/$asset" "$tmp/$asset" "$sha" || { rm -rf "$tmp" "$stage"; return 1; }
+    if ! tar --zstd --no-same-owner -xf "$tmp/$asset" -C "$stage" ||
+        [[ ! -x $stage/bin/ollama || ! -d $stage/lib/ollama ]]; then
+        log_warn "ollama archive did not extract to bin/ollama and lib/ollama"
+        rm -rf "$tmp" "$stage"
+        return 1
+    fi
+    rm -rf "$tmp" /usr/local/lib/ollama.old
+    mkdir -p /usr/local/lib /usr/local/bin
+    if [[ -e /usr/local/lib/ollama ]]; then
+        mv /usr/local/lib/ollama /usr/local/lib/ollama.old || { rm -rf "$stage"; return 1; }
+    fi
+    if ! mv "$stage/lib/ollama" /usr/local/lib/ollama ||
+        ! mv -f "$stage/bin/ollama" /usr/local/bin/ollama; then
+        rm -rf /usr/local/lib/ollama
+        [[ ! -e /usr/local/lib/ollama.old ]] || mv /usr/local/lib/ollama.old /usr/local/lib/ollama
+        rm -rf "$stage"
+        return 1
+    fi
+    rm -rf /usr/local/lib/ollama.old "$stage"
     mark_changed "installed ollama $OLLAMA_VERSION"
 }
 
