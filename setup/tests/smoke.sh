@@ -439,7 +439,11 @@ check_net_sec() {
 
 check_browser() {
     local out
-    out=$(google-chrome --version 2>&1) || { echo "google-chrome --version failed: $out"; return 1; }
+    command -v Xvfb >/dev/null 2>&1 || { echo "Xvfb is not installed"; return 1; }
+    # Chrome has no aarch64 build, so the browser step skips it there.
+    if [[ $(bootstrap_arch) != aarch64 ]]; then
+        out=$(google-chrome --version 2>&1) || { echo "google-chrome --version failed: $out"; return 1; }
+    fi
     # Chrome owns its apt source; any second one would make apt warn about duplicates.
     out=$(apt-get update 2>&1 || true)
     [[ $out != *"configured multiple times"* ]] || { echo "duplicate apt source: $out"; return 1; }

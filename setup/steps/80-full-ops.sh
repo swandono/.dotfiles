@@ -167,12 +167,13 @@ _browser_chrome() {
 }
 
 step_browser() {
+    # Only Chrome lacks an aarch64 build; xvfb and the fonts install everywhere.
     if [[ $(bootstrap_arch) == aarch64 ]]; then
-        log_warn "Google Chrome has no aarch64 build; skipping the browser step"
-        BOOTSTRAP_SKIPPED+=("browser")
-        return 0
+        log_warn "Google Chrome has no aarch64 build; skipping chrome"
+        BOOTSTRAP_SKIPPED+=("chrome")
+    else
+        try_tool chrome _browser_chrome
     fi
-    try_tool chrome _browser_chrome
     try_tool browser-apt apt_install xvfb fonts-liberation fonts-noto-color-emoji fonts-ipafont-gothic \
         fonts-wqy-zenhei fonts-tlwg-loma-otf fonts-freefont-ttf fonts-unifont xfonts-cyrillic xfonts-scalable
 }

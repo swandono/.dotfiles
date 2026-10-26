@@ -467,6 +467,20 @@ test_ops_download_urls_resolve() {
     done
 }
 
+test_browser_aarch64_skips_only_chrome() {
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/steps/80-full-ops.sh"
+    try_tool() { echo "$1" >>"$PWD/calls"; }
+    BOOTSTRAP_ARCH=aarch64 step_browser 2>/dev/null
+    assert_eq browser-apt "$(cat calls)" "tools run on aarch64"
+    assert_eq chrome "${BOOTSTRAP_SKIPPED[*]}" "BOOTSTRAP_SKIPPED"
+    rm calls
+    BOOTSTRAP_SKIPPED=()
+    BOOTSTRAP_ARCH=x86_64 step_browser 2>/dev/null
+    assert_eq "chrome browser-apt" "$(tr '\n' ' ' <calls | sed 's/ $//')" "tools run on x86_64"
+    assert_eq 0 "${#BOOTSTRAP_SKIPPED[@]}" "nothing skipped on x86_64"
+}
+
 test_go_main_mod_match_is_exact() {
     # shellcheck source=/dev/null
     source "$SETUP_DIR/steps/70-full-lang.sh"
