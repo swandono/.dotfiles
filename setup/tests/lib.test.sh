@@ -335,6 +335,26 @@ test_cli_asset_urls_resolve() {
     done
 }
 
+test_ops_download_urls_resolve() {
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/versions.env"
+    local url
+    local gh_av=https://github.com/99designs/aws-vault/releases/download/v$AWS_VAULT_VERSION
+    local gh_mk=https://github.com/FiloSottile/mkcert/releases/download/v$MKCERT_VERSION
+    local ssm=https://s3.amazonaws.com/session-manager-downloads/plugin/$SSM_PLUGIN_VERSION
+    for url in \
+        "$gh_av/SHA256SUMS" "$gh_av/aws-vault-linux-amd64" "$gh_av/aws-vault-linux-arm64" \
+        "$gh_mk/mkcert-v$MKCERT_VERSION-linux-amd64" "$gh_mk/mkcert-v$MKCERT_VERSION-linux-arm64" \
+        "$ssm/ubuntu_64bit/session-manager-plugin.deb" "$ssm/ubuntu_arm64/session-manager-plugin.deb" \
+        "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-$AWSCLI_VERSION.zip" \
+        "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-$AWSCLI_VERSION.zip.sig" \
+        "https://awscli.amazonaws.com/awscli-exe-linux-aarch64-$AWSCLI_VERSION.zip" \
+        "https://awscli.amazonaws.com/awscli-exe-linux-aarch64-$AWSCLI_VERSION.zip.sig" \
+        https://dl.google.com/linux/linux_signing_key.pub; do
+        curl -fsIL "$url" >/dev/null || fail "asset does not resolve: $url"
+    done
+}
+
 test_go_main_mod_match_is_exact() {
     # shellcheck source=/dev/null
     source "$SETUP_DIR/steps/70-full-lang.sh"

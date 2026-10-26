@@ -407,6 +407,39 @@ check_java() {
     check_repo_clean
 }
 
+check_ops() {
+    local out
+    out=$(aws --version 2>&1) || { echo "aws --version failed"; return 1; }
+    [[ $out == aws-cli/$AWSCLI_VERSION* ]] || { echo "aws --version: $out"; return 1; }
+    out=$(session-manager-plugin --version 2>&1) || true
+    [[ $out == "$SSM_PLUGIN_VERSION" ]] || { echo "session-manager-plugin --version: $out"; return 1; }
+    out=$(aws-vault --version 2>&1) || true
+    [[ $out == "v$AWS_VAULT_VERSION" ]] || { echo "aws-vault --version: $out"; return 1; }
+    out=$(mkcert -version 2>&1) || true
+    [[ $out == "v$MKCERT_VERSION" ]] || { echo "mkcert -version: $out"; return 1; }
+    rclone version >/dev/null 2>&1 || { echo "rclone version failed"; return 1; }
+    psql --version >/dev/null 2>&1 || { echo "psql --version failed"; return 1; }
+    redis-cli --version >/dev/null 2>&1 || { echo "redis-cli --version failed"; return 1; }
+    out=$(zsh -i -c 'whence -w awv' 2>&1)
+    [[ $out == *"awv: function"* ]] || { echo "awv is not a function: $out"; return 1; }
+}
+
+check_net_sec() {
+    local pkg
+    for pkg in openvpn wireguard clamav clamav-freshclam rkhunter lynis; do
+        dpkg -s "$pkg" >/dev/null 2>&1 || { echo "$pkg is not installed"; return 1; }
+    done
+    if dpkg -s postfix >/dev/null 2>&1; then echo "postfix got installed"; return 1; fi
+}
+
+check_browser() {
+    local out
+    out=$(google-chrome --version 2>&1) || { echo "google-chrome --version failed: $out"; return 1; }
+    # Chrome owns its apt source; any second one would make apt warn about duplicates.
+    out=$(apt-get update 2>&1 || true)
+    [[ $out != *"configured multiple times"* ]] || { echo "duplicate apt source: $out"; return 1; }
+}
+
 # New check_<step> functions go above this line (one per step, in task order).
 
 smoke_main() {
