@@ -9,6 +9,9 @@ BOOTSTRAP_SKIPPED=()
 BOOTSTRAP_MODE=${BOOTSTRAP_MODE:-strict}
 _APT_UPDATED=0
 _ISO_RC=0
+# Every apt-get call waits up to 10 minutes for the dpkg lock (unattended-upgrades holds it on a
+# fresh server) instead of failing at once.
+APT_LOCK_OPTS=(-o DPkg::Lock::Timeout=600)
 
 # ------------------------------------------------------------------ logging
 
@@ -80,7 +83,7 @@ stamp_set() {
 
 _apt_update_once() {
     if [[ $_APT_UPDATED -eq 0 ]]; then
-        DEBIAN_FRONTEND=noninteractive apt-get update -qq
+        DEBIAN_FRONTEND=noninteractive apt-get update -qq "${APT_LOCK_OPTS[@]}"
         _APT_UPDATED=1
     fi
 }
@@ -94,7 +97,7 @@ apt_install() {
     done
     [[ ${#missing[@]} -gt 0 ]] || return 0
     _apt_update_once
-    DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y -qq "${APT_LOCK_OPTS[@]}" \
         -o Dpkg::Options::=--force-confold "${missing[@]}"
     mark_changed "apt installed ${missing[*]}"
 }

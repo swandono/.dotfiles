@@ -143,6 +143,19 @@ test_apt_add_repo_removes_own_duplicate() {
     assert_eq 1 "$BOOTSTRAP_CHANGED" "BOOTSTRAP_CHANGED"
 }
 
+test_apt_calls_wait_for_the_dpkg_lock() {
+    mkdir bin
+    printf '#!/bin/sh\necho "apt-get $*" >>"%s/calls"\n' "$PWD" >bin/apt-get
+    printf '#!/bin/sh\nexit 1\n' >bin/dpkg-query
+    chmod +x bin/apt-get bin/dpkg-query
+    PATH=$PWD/bin:$PATH apt_install foo 2>/dev/null || fail "apt_install failed"
+    # shellcheck source=/dev/null
+    source "$SETUP_DIR/steps/80-full-ops.sh"
+    PATH=$PWD/bin:$PATH _net_sec_apt 2>/dev/null || fail "_net_sec_apt failed"
+    assert_eq 4 "$(grep -c 'DPkg::Lock::Timeout=600' calls)" "apt-get calls with the lock timeout"
+    assert_eq 4 "$(wc -l <calls)" "apt-get calls"
+}
+
 # -------------------------------------------------------------------- stamps
 
 test_stamp_roundtrip() {

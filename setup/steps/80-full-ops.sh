@@ -122,8 +122,8 @@ _net_sec_apt() {
         [[ $status == "install ok installed" ]] || missing+=("$pkg")
     done
     [[ ${#missing[@]} -gt 0 ]] || return 0
-    DEBIAN_FRONTEND=noninteractive apt-get update -qq || return 1
-    DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive apt-get update -qq "${APT_LOCK_OPTS[@]}" || return 1
+    DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends "${APT_LOCK_OPTS[@]}" \
         -o Dpkg::Options::=--force-confold "${missing[@]}" || return 1
     mark_changed "apt installed ${missing[*]}"
 }
