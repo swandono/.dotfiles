@@ -24,7 +24,9 @@ _ai_runs() { # NAME
 
 _ai_install_claude() {
     if ! _ai_runs claude; then
-        run_vendor_script https://claude.ai/install.sh || return 1
+        # Root under `sudo -i` keeps SUDO_USER, which the installer reads as an accidental
+        # sudo and refuses. Installing for root is the intent here.
+        CLAUDE_INSTALL_ALLOW_SUDO=1 run_vendor_script https://claude.ai/install.sh || return 1
         mark_changed "installed claude"
     fi
     [[ -x /usr/local/bin/claude && ! -L /usr/local/bin/claude ]] && return 0
