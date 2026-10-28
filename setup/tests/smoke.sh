@@ -477,6 +477,12 @@ check_ai_clis() {
             ! command -v "$bin" >/dev/null 2>&1 || { echo "$bin is installed but not chosen"; return 1; }
         fi
     done
+    if [[ $(smoke_choice ai) == *opencode* ]]; then
+        [[ $(readlink "$HOME/.config/opencode/cli.json") == "$REPO_PATH/opencode/cli-linux.json" ]] ||
+            { echo "$HOME/.config/opencode/cli.json link is wrong"; return 1; }
+        [[ $(readlink "$HOME/.config/opencode/themes/one.json") == "$REPO_PATH/opencode/themes/one.json" ]] ||
+            { echo "$HOME/.config/opencode/themes/one.json link is wrong"; return 1; }
+    fi
     # Without ~/.gemini_env the zshrc defines no gemini alias, so the installed CLI (or nothing) runs.
     if [[ ! -e $HOME/.gemini_env ]]; then
         out=$(zsh -i -c 'whence -w gemini' 2>&1 </dev/null) || true

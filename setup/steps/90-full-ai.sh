@@ -47,6 +47,10 @@ _ai_install_opencode() {
         run_vendor_script https://opencode.ai/v2/install --no-modify-path || return 1
         mark_changed "installed opencode 2"
     fi
+    # OpenCode 2 reads its UI settings (theme, sidebar) from cli.json; opencode.json in the
+    # repo is the Mac's OpenCode 1 config and is not linked here.
+    link_file "$REPO_DIR/opencode/cli-linux.json" "$HOME/.config/opencode/cli.json"
+    link_file "$REPO_DIR/opencode/themes/one.json" "$HOME/.config/opencode/themes/one.json"
     [[ -x /usr/local/bin/opencode && ! -L /usr/local/bin/opencode ]] && return 0
     _ai_link opencode "$HOME/.opencode/bin/opencode"
 }
