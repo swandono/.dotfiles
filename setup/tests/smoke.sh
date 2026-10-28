@@ -197,6 +197,8 @@ check_zsh() {
         out=$(zsh -i -c 'whence -w cd' 2>&1 </dev/null) || true
         [[ $out == "cd: function" ]] || { echo "whence -w cd says '$out'"; return 1; }
     fi
+    out=$(zsh -i -c 'whence -w clhere' 2>&1 </dev/null) || true
+    [[ $out == "clhere: function" ]] || { echo "whence -w clhere says '$out'"; return 1; }
     echo 'alias zz_probe=1' >>"$HOME/.zshrc.local"
     zsh -i -c 'alias zz_probe' >/dev/null 2>&1 </dev/null || { echo ".zshrc.local is not sourced"; return 1; }
     sed -i '/^alias zz_probe=1$/d' "$HOME/.zshrc.local"

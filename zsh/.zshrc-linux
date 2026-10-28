@@ -204,8 +204,8 @@ if (( $+commands[aws-vault] )); then
   }
 fi
 
-# clhere: per-folder Claude profile via direnv (see ~/.clhere); set CLHERE_PROFILE in ~/.zshrc.local
-[[ -f ~/.clhere ]] && source ~/.clhere
+# clhere: per-folder Claude profile via direnv; set CLHERE_PROFILE in ~/.zshrc.local
+source "${${(%):-%x}:A:h}/clhere.zsh"
 
 # direnv: per-folder env from .envrc (keep near the end)
 (( $+commands[direnv] )) && eval "$(direnv hook zsh)"
