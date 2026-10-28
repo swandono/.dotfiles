@@ -9,16 +9,20 @@ local function use_osc52_clipboard()
 	return vim.fn.has("mac") == 0
 end
 
+-- Both registers use the "+" selection: OSC 52 sends "*" as the primary
+-- selection, which never reaches the macOS clipboard, while on a Mac "*" and
+-- "+" are the same clipboard and mappings rely on that.
 if use_osc52_clipboard() then
+	local osc52 = require("vim.ui.clipboard.osc52")
 	vim.g.clipboard = {
 		name = "OSC 52",
 		copy = {
-			["+"] = require("vim.ui.clipboard.osc52").copy("+"),
-			["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+			["+"] = osc52.copy("+"),
+			["*"] = osc52.copy("+"),
 		},
 		paste = {
-			["+"] = require("vim.ui.clipboard.osc52").paste("+"),
-			["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+			["+"] = osc52.paste("+"),
+			["*"] = osc52.paste("+"),
 		},
 	}
 end
