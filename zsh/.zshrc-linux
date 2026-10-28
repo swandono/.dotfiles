@@ -133,7 +133,7 @@ if [[ -d $PNPM_HOME && ":$PATH:" != *":$PNPM_HOME:"* ]]; then
 fi
 
 # zoxide
-(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
+(( $+commands[zoxide] )) && eval "$(zoxide init --cmd cd zsh)"
 
 # prompt
 if [[ $BOOTSTRAP_PROMPT == p10k ]]; then
