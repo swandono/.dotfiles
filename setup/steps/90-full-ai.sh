@@ -33,10 +33,19 @@ _ai_install_claude() {
     _ai_link claude "$HOME/.local/bin/claude"
 }
 
+# True when `opencode --version` reports major version 2 or later.
+_ai_opencode_v2() {
+    local v
+    v=$(opencode --version 2>/dev/null) || return 1
+    [[ $v =~ ([0-9]+)\.[0-9]+\.[0-9]+ ]] && ((BASH_REMATCH[1] >= 2))
+}
+
+# opencode.ai/install only ever installs OpenCode 1; V2 has its own installer, which also
+# replaces a V1 binary in place and adds the opencode2 wrapper next to it.
 _ai_install_opencode() {
-    if ! _ai_runs opencode; then
-        run_vendor_script https://opencode.ai/install --no-modify-path || return 1
-        mark_changed "installed opencode"
+    if ! _ai_runs opencode || ! _ai_opencode_v2; then
+        run_vendor_script https://opencode.ai/v2/install --no-modify-path || return 1
+        mark_changed "installed opencode 2"
     fi
     [[ -x /usr/local/bin/opencode && ! -L /usr/local/bin/opencode ]] && return 0
     _ai_link opencode "$HOME/.opencode/bin/opencode"
